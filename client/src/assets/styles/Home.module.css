@@ -22,6 +22,7 @@
    font-size: 30px;
    text-align: center;
    max-height: 30px;
+   margin-top: 200px;
 }
 .cards{
    max-width: 100%;
@@ -32,7 +33,7 @@
    justify-content: space-evenly;
    flex-shrink: 1;
    flex-wrap: wrap;
-   margin-top: 150px;
+   /* margin-top: 150px; */
 }
 
 .notfound {

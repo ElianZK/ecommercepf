@@ -67,7 +67,7 @@ const Home = () => {
             dispatch(getProductByName(search))
         }
         console.log(products)
-    }, [dispatch,page,category,brand])
+    }, [dispatch,page,category,brand,limit])
   
 
     return (
