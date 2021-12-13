@@ -7,7 +7,7 @@ const {Product, CategoryBrand, Brand, Category} =require('./src/db');
 
 
 // Syncing all the models at once.
-conn.sync({ force: true }).then(async () => {
+conn.sync({ force: false }).then(async () => {
   try{
     //[si ya hay elementos en la base de datos no hago fetch a la api
     let aux = await Product.count();

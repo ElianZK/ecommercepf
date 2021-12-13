@@ -35,7 +35,7 @@ const Details = () => {
         {product?<div className={s.container}>
             <div className={s.data}>
                 <div className={`${s.subcontainer} ${s.imgcontainer}`}>
-                    <Slide>
+                    <Slide easing="ease">
                         <div className={s.images}>
                             {product.image.map((image, i)=>(
                             <div key={i} className={s.image}><img  src={image} alt="Producto"/></div>))}
@@ -45,7 +45,7 @@ const Details = () => {
                 <div className={`${s.subcontainer} ${s.details}`}>
                     <button className={s.btnfav}><FontAwesomeIcon icon={Heartwhite} /></button>
                     <h2 className={s.prodname}>{product.name}</h2>
-                    <p className={s.prodprice}>{`$${formatMoney(product.price,'ARS')}`}</p>
+                    <p className={s.prodprice}>{` ${formatMoney(product.price)}`}<span > ARS</span></p>
                     {product.stock>0?<div className={s.grupcount}>
                         <label>Cantidad</label>
                         <input type="number" min="1" max={product.stock}/>

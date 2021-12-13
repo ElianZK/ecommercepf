@@ -2,7 +2,7 @@ const {Brand, Category} = require('../../../db')
 
 const getCategories = async(req, res, next)=>{
   try{
-    const {brands} = req.query;
+    const {brands, all} = req.query;
     if(brands){
       let brands = await Category.findAll({
         attributes:{
@@ -23,6 +23,13 @@ const getCategories = async(req, res, next)=>{
         return {category: el.name, brands:brandArr};
       })
       return res.status(200).json(brands);
+    }else if (all){
+      let brands = await Brand.findAll({
+        attributes:{
+          exclude:["idBrand"]
+        }
+      })
+      return res.status(200).json(brands.map(el=>el.name))
     }else{
       let categories = await Category.findAll({
         attributes:{

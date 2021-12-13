@@ -29,8 +29,7 @@ const Nav = () => {
 
     return (
         <header className={s.container}>
-            <nav className={s.options}>
-               
+            <nav className={s.options}>               
                 <img className={s.logo} src={logo} onClick={()=>{window.location='/'}} alt="logo ecommerce"/> 
                 <SearchBar />
                 <div className={s.buttons}>
