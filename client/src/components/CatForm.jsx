@@ -73,7 +73,7 @@ return(
 
             </div><br></br>
 
-            <div className={s.Select}>
+           {/*  <div className={s.Select}>
                 <select 
                         name="Abiable" 
                         placeholder="Abiable Categories" 
@@ -86,8 +86,8 @@ return(
                             {a}
                         </option>
                     ))}
-                </select> 
-            </div><br></br>
+                </select>  
+            </div><br></br>*/}
         </div>
 
         <Link to='/'>

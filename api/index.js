@@ -49,6 +49,7 @@ conn.sync({ force: false }).then(async () => {
          //! console.log("category: ", category.toJSON());
          //! console.log("RELATION: ", relation.toJSON());
          //! console.log("REL ID: ", relId)
+         
         //[Agrego al producto el id de la relación.
         let product = await Product.create({
           ...prod.data, idRelation:relId},
