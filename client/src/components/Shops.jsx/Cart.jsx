@@ -1,7 +1,7 @@
 import React from 'react'
 import { NavLink } from "react-router-dom"; 
 import { useDispatch, useSelector } from "react-redux";
-
+import {ProductCard} from '../ProductCard'
 import s from '../../assets/styles/Cart.module.css'
 import {addToCart,removeOneFromCart, removeAllFromCart,clearCart} from '../../actions/index'
 
@@ -20,14 +20,14 @@ export default function Cart() {
 
     return (
         <div >
-      
-            <h3>Shopping Cart</h3>
-            {cartList.length > 0 ? (<div>
-                
-                {cartList.map(e=>{
-                return (<div key={e.id}>
+            <h2>Shopping Cart</h2>
+            <h3>Products</h3>
+            <article className={s.box}></article>
+            {cartList.length > 0 ? (<div>    
+                {cartList.map(p=>{
+                return (<ProductCard key={p.id} >
                        <div>
-                       <p id={e.id}>x{e.count}</p>
+                       <p id={p.id}>x{p.count}</p>
                        <div>
                         <p>{e.name}</p>
                         <p>{e.thumbnail}</p></div>
