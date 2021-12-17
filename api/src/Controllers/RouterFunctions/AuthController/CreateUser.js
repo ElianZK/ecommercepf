@@ -29,8 +29,9 @@ const CreateUser = async (req, res, next)=>{
         })
     }
         //genero mi JWT
-    // let token = await generarJWT( newUser.idUser, newUser.email );
-        return res.json({created: created, newUser })
+    let token = await generarJWT( newUser );
+    console.log(`token---------->`, token)
+        return res.json({created: created, newUser, token })
     } catch (error) {
         next(error)
     }
