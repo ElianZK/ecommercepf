@@ -19,4 +19,5 @@ export const EDIT_CATEGORY = 'EDIT_CATEGORY';
 export const EDIT_BRANDS = 'EDIT_BRANDS';
 export const REMOVE_PRODUCT = 'REMOVE_PRODUCT';
 export const EDIT_PRODUCT = 'EDIT_PRODUCT';
+export const CREATE_USER = 'CREATE_USER';
 
