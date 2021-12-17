@@ -22,7 +22,8 @@ import { GET_ALL_PRODUCTS,
     ADD_TO_CART,
     REMOVE_ALL_FROM_CART,
     REMOVE_ONE_FROM_CART,
-    CLEAR_CART
+    CLEAR_CART,
+    CREATE_USER
 } from "./actionsTypes";
 import axios from 'axios';
 import Swal from 'sweetalert2';
@@ -175,33 +176,19 @@ const SERVER = 'http://localhost:3001';
     }
 
     export function login(payload){
-        let res = null;
         return async (dispatch) => {
-            if(payload.submitType === "login"){
-                // console.log(`http://localhost/login?name=${payload.user.name}&email=${payload.user.email}&password=${payload.user.password}`);
-                
-                // res = await axios(`http://localhost/login?name=${payload.user.name}&email=${payload.user.email}&password=${payload.user.password}`);      
-            }else{
-                var {user} = payload;
-                console.log(`http://localhost/login?name=${user.givenName}&email=${user.email}`);
-
-                //res = await axios(`http://localhost/login?name=${payload.user.name}&email=${payload.user.email}`);
-            }
+            //console.log(`http://localhost/login?name=${payload.user.name}&email=${payload.user.email}&password=${payload.user.password}`);
+            // res = await axios(`http://localhost/login?name=${payload.user.name}&email=${payload.user.email}&password=${payload.user.password}`);      
             
-            res = {
-                isConnected: true,
+            dispatch({
+                isVerified: payload.isVerified,
                 user: {
-                    name: user.givenName || "",
-                    email: user.email || ""
+                    token: payload.token,
+                    name: payload.name,
+                    email: payload.email,  
+                    image: payload.image,
+                    lastUpdate: 0
                 }
-            }
-
-            console.log(res)
-            // res = {status: "failure"}
-
-            return dispatch({
-                type: LOGIN,
-                payload: res
             })
         }
     };
@@ -273,10 +260,10 @@ const SERVER = 'http://localhost:3001';
         }
     };
 
-    export function editBrand(id){
+    export function editBrand(id,name){
         try{
             return async function(dispatch){
-                const edBrands= await axios.put(`${SERVER}/brands/${id}`)
+                const edBrands= await axios.put(`${SERVER}/brands/${id}`,{name:name})
                 return dispatch({
                     type: EDIT_BRANDS,
                     payload: id
@@ -337,6 +324,19 @@ const SERVER = 'http://localhost:3001';
     }
 
     
+    export function createUser(body) {
+        return async function(dispatch){
+            try{
+                const res = await axios.post(`${SERVER}/user/`, body)
+                return dispatch({
+                    type: CREATE_USER,
+                    payload: res
+                })     
+            }catch(err){
+                console.log(err)
+            }   
+        }
+    };
 
    
 
