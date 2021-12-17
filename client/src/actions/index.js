@@ -19,6 +19,10 @@ import { GET_ALL_PRODUCTS,
     EDIT_BRANDS,
     LOGIN,
     LOGOUT,
+    ADD_TO_CART,
+    REMOVE_ALL_FROM_CART,
+    REMOVE_ONE_FROM_CART,
+    CLEAR_CART
 } from "./actionsTypes";
 import axios from 'axios';
 import Swal from 'sweetalert2';
@@ -242,7 +246,7 @@ const SERVER = 'http://localhost:3001';
             return async function (dispatch){
                 const remBrands = await axios.delete(`${SERVER}/brands/${id}`)
                 return dispatch ({
-                    type: REMOVE_BRANDS,
+                    type: REMOVE_PRODUCT,
                     payload: id
                 })
             }
@@ -286,26 +290,51 @@ const SERVER = 'http://localhost:3001';
     export function editProduct(id, name, price, stock, sold_quantity, condition, image, thumbnail, attribute, categories, brands) {
         return async function(dispatch){
             try{
-                const remProduct= await axios.delete(`${SERVER}/products/${id, {name: name, price: price, stock: stock, sold_quantity: sold_quantity, condition: condition, image: image, thumbnail: thumbnail, attribute: attribute, categories: categories, brands: brands}}`)
+                const remProduct= await axios.put(`${SERVER}/products/${id}`, {name: name, price: price, stock: stock, sold_quantity: sold_quantity, condition: condition, image: image, thumbnail: thumbnail, attribute: attribute, categories: categories, brands: brands})
                 return dispatch({
                     type: EDIT_PRODUCT,
-                    payload: {  id, 
-                                name, 
-                                price, 
-                                stock, 
-                                sold_quantity, 
-                                condition, 
-                                image, 
-                                thumbnail, 
-                                attribute, 
-                                categories, 
-                                brands}
+                    payload: remProduct
                 })     
             }catch(err){
                 console.log(err)
             }   
         }
     };
+
+    export function addToCart(id){
+        try{
+            return async function (dispatch){
+                const itemCart= await axios.get(`${SERVER}/cart/${id}`)
+                return dispatch ({
+                    type: ADD_TO_CART,
+                    payload: itemCart
+                })
+                }
+        }catch(err){
+        console.log(err)
+        }
+    }
+
+    export function removeOneFromCart(id){
+        return {
+            type: REMOVE_ONE_FROM_CART,
+            payload: id
+        }
+    }
+
+    export function removeAllFromCart(id){
+        return{
+            type: REMOVE_ALL_FROM_CART,
+            payload: id
+        }
+    }
+
+    export function clearCart(payload){
+        return {
+            type: CLEAR_CART,
+            payload
+        }
+    }
 
     
 
