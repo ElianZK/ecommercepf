@@ -11,7 +11,7 @@ const initialState ={
 }
 
     export function cartStorage(item, action){    //Storage es objeto
-        let itemCart =JSON.parse(windows.localStorage.getItem("cart")) // se codifica pq solo maneja cadena
+        let itemCart =JSON.parse(window.localStorage.getItem("cart")) // se codifica pq solo maneja cadena
         
         if(itemCart === null) return itemCart = {};
 
@@ -28,7 +28,7 @@ const initialState ={
         if(action === 'Clear Cart'){
             itemCart={}
         }
-        windows.localStorage.setItem("cart", JSON.stringify(itemCart))
+        window.localStorage.setItem("cart", JSON.stringify(itemCart))
         return itemCart
     };
 
@@ -61,6 +61,9 @@ export function ordenReducer(state = initialState, action){
             return {
                 ...state,
                 cart: cleCart
-            }   
+            }
+            
+        default:
+            return state    
     }
 }
