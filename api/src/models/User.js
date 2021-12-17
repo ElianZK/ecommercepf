@@ -17,25 +17,10 @@ module.exports = (sequelize) => {
             required: true,
             allowNull: false,
         },
-        DNI: {
-            type: DataTypes.INTEGER,
-            required: true,
-            allowNull: false,
-            unique:true
-        },
-        name: {
-            type: DataTypes.STRING,
-            required: true,
-            allowNull: false
-        },
-        lastName: {
-            type: DataTypes.STRING,
-            required: true,
-            allowNull: false
-        },
         email: {
             type: DataTypes.STRING,
             allowNull: false,
+            required:true,
             unique:true,
             validate:{
                 isEmail: true
@@ -44,18 +29,11 @@ module.exports = (sequelize) => {
         password: {
             type: DataTypes.STRING,
             required: true,
-            allowNull: false,
-            // set(value){
-            //     this.setDataValue('password', bcrypt.hashSync(value,10))
-            // }
-        },        
-        phone: {
+            allowNull: false
+        },
+        phone:{
             type: DataTypes.STRING,
-            allowNull: false,
-            unique:true,
-            validate:{
-                len:[1,13]
-            }
+            allowNull:false
         }
     },{
         timestamps:false
