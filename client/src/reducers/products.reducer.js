@@ -2,21 +2,28 @@ import{ GET_ALL_PRODUCTS,
         GET_PRODUCT_BY_NAME,
         GET_PRODUCT_ID,
         GET_ALL_CATEGORIES,
+        GET_ALL_BRANDS,
         FILTER_PRODUCTS_BY_CATEGORY,
         //FILTER_PRODUCTS_BY_PRICE,
         FILTER_PRODUCTS_BY_BRANDS,
         SORT_PRODUCTS,
         CREATE_CATEGORY,
         CREATE_PRODUCT,
+        CREATE_BRANDS,
         FILTERS_CLEAR,
         LOGIN,
-        LOGOUT
+        LOGOUT,
+        REMOVE_CATEGORY,
+        REMOVE_BRANDS,
+        EDIT_CATEGORY,
+        EDIT_BRANDS
     } from '../actions/actionsTypes'
 
 const initialState = {
     allProducts: [], 
     productDetail: [],
     categories: [], 
+    brands: [],
     loginInfo:{
         isConnected: false,
         user: {
@@ -52,6 +59,17 @@ export function productsReducer(state = initialState, action){
                 ...state,
                 categories: action.payload
             };
+
+        case  GET_ALL_BRANDS: 
+        return {
+            ...state,
+            brands: action.payload
+        };
+
+        case  CREATE_BRANDS: 
+        return {
+            ...state,
+        };
 
         case CREATE_CATEGORY:
             return {
@@ -118,12 +136,10 @@ export function productsReducer(state = initialState, action){
                     return  b.price - a.price;
                 })      
             }
-        return {
-            ...state,
-            allProducts: {...state.allProducts,productsInfo: sorts}
-            
-
-        };
+            return {
+                ...state,
+                allProducts: {...state.allProducts, productsInfo: sorts}         
+            };
 
         case LOGIN:
             return{
@@ -142,6 +158,32 @@ export function productsReducer(state = initialState, action){
                 ...state,
                 allProducts: state.allProducts
             } 
+
+        case  REMOVE_CATEGORY: 
+            return {
+                ...state,
+                categories: state.categories.filter(p => p.idCategory !== action.payload)
+            };  
+            
+        case REMOVE_BRANDS:
+            return {
+                ...state,
+                brands: state.categories.filter(p => p.brand !== action.payload)
+            } 
+            
+        case EDIT_CATEGORY:
+            return {
+                ...state,
+                categories: [...state.categories.map((category) => category.id === action.payload.id?
+                    action.payload : category)]
+            }
+        
+            case EDIT_BRANDS:
+                return {
+                    ...state,
+                    brands: [...state.brands.map((brand) => brand.id === action.payload.id?
+                        action.payload : brand)]
+                }        
 
         default:
             return state;

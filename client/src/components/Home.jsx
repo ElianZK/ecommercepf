@@ -5,13 +5,13 @@ import {useDispatch , useSelector} from 'react-redux';
 import { getAllProducts, 
     getProductByName, 
     sortProducts,
-    filterByCategory,
-    filterProductByBrand,
 } from '../actions/index.js'
 import { useParams } from "react-router-dom";
 import Filters from "./Filters.jsx";
 import Pagination from "./Pagination.jsx";
 import imgnotfound from "../assets/img/notfound.gif";
+
+import {formatMoney} from 'accounting'
 
 
 const Home = () => {

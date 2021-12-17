@@ -32,14 +32,11 @@ const getCategories = async(req, res, next)=>{
       return res.status(200).json(brands.map(el=>el.name))
     }else{
       let categories = await Category.findAll({
-        attributes:{
-          exclude:["idCategory"]
-        },
         through:{
           attributes:[]
         }
       });
-      return res.status(200).json(categories.map(el=>el.name))
+      return res.status(200).json(categories)
     }
   }catch(err){
     console.log("GET /categories: ", err)

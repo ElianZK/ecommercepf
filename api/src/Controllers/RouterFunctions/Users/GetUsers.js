@@ -3,18 +3,21 @@ const { User } = require('../../../db');
 
 const GetUsers = async(req, res, next) =>{
     try {
+        let { offset = 0, limit = 6 } = req.query;
+
+        if(limit>6) next({message:"no superar el limit, el maximo permitido es 10"})
         
-        const userBD = await User.findAll();
-        if (userBD.length === 0) {
+        let {count, rows} = await User.findAndCountAll({ offset, limit });
+
+        if (rows.length===0) {
             return res.status(404).json({message:"DB no contiene Usuario"})
         } else {
+        
+            let userinfo = rows.map(e=>{
+                return e
+            })
             
-            let {page} = req.query;
-            console.log(`page==>`, page)
-            if(page===undefined) {page=1};
-            const itemsPerPage = 10;
-
-            res.json(userBD.slice(itemsPerPage*(page-1),(itemsPerPage*(page-1))+itemsPerPage))
+            res.json({userinfo,total:count, limit, offset})
         }
     } catch (error) {
         next(error)

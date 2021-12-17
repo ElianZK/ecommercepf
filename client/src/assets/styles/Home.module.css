@@ -33,7 +33,7 @@
    justify-content: space-evenly;
    flex-shrink: 1;
    flex-wrap: wrap;
-   /* margin-top: 150px; */
+   margin-top: 150px;
 }
 
 .notfound {

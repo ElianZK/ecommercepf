@@ -1,0 +1,111 @@
+.Container{
+    background-color: rgb(230, 220, 189);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    
+}
+
+.Form{
+    margin-top:120px;
+    width: 500px;
+    height: 400px;
+    background-color: #272343;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+}
+
+.title{
+    height: 100px;
+    width: 500px;
+    display: flex;
+    justify-content: center;
+}
+
+.InputSelect{
+    width: 500px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    
+}
+
+
+.Home{
+    display: flex;
+    width: 500px;
+    height: 100px;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.Input{
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+.Input span{
+    margin-top: 5px;
+    margin-bottom: 50px;
+    color: white;
+    background-color: rgb(251, 26, 26);
+}
+
+input{
+    height: 30px;
+    border-radius: 3px;
+
+}
+
+select{
+    height: 30px;
+    border-radius: 3px;
+
+}
+
+button{
+    background-color: #ffd803;
+    height: 30px;
+    border-radius: 3px;
+    
+}
+h2{
+    color: #fffffe;
+    font-size: xx-large;
+}
+
+.Form + div{
+    width: 600px;
+    margin-top: 30px;
+    margin-bottom: 50px;
+}
+.btnEdit{
+    width: 30px;
+    height: 30px;
+    background-color: rgb(118, 246, 118);
+    border: 1px solid black;
+    margin-right: 20px;
+}
+.btnEdit:hover{
+    background-color: rgb(4, 255, 4);
+    border: solid 2px black;
+}
+
+.btnDel{
+    width: 30px;
+    height: 30px;
+    background-color: rgb(236, 47, 47);
+    color: white;
+    border: 1px solid black;
+}
+
+.btnDel:hover{
+    background-color: rgb(231, 0, 0);
+    border: solid 2px black;
+}

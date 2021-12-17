@@ -1,0 +1,123 @@
+.Background{
+    background-color: rgb(230, 220, 189);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    height: 100%;
+    width: 100vw;
+}
+
+.Container{
+    margin-top:120px;
+    width: 500px;
+    /* height: 100%; */
+    background-color: #272343;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title{
+    height: 100px;
+    width: 500px;
+    display: flex;
+    justify-content: center;
+}
+
+.InputSelect{
+    width: 500px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    
+}
+
+
+.Home{
+    display: flex;
+    width: 500px;
+    height: 100px;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.Input{
+    display:flex;
+    flex-direction: column;
+}
+
+.Input span{
+    margin-top: 5px;
+    margin-bottom: 50px;
+    color:white;
+    background-color: red;
+    border-radius: 3px;
+}
+.SelectLink{
+    display: flex;
+    width: 500px;
+}
+
+.SelectLink ul{
+    height: all;
+    width: all;
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-content: stretch;
+
+}
+
+.SelectLink ul li{
+    display: flex;
+    /* padding-bottom: 5px; */
+    margin: 10px;
+    height: 30px;
+    background-color: #ffd803;
+    border-radius: 2px;
+    color: black;
+    justify-content: center;
+}
+
+
+.Delete{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    height: 13px;
+    width: 13px;
+    border-radius: 50%;
+    background-color: white;
+}
+.Delete:hover{
+    background-color: red;
+}
+
+input{
+    height: 30px;
+    border-radius: 3px;
+}
+
+select{
+    height: 30px;
+    border-radius: 3px;
+
+}
+
+button{
+    background-color: #ffd803;
+    height: 30px;
+    border-radius: 3px;
+    
+}
+h2{
+    color: #fffffe;
+    font-size: xx-large;
+}

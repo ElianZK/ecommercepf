@@ -2,13 +2,18 @@ const server = require('./src/app.js');
 const { conn } = require('./src/db.js');
 const { getProducts} =require('./src/Controllers/DbLoading/getProds');
 const {Product, CategoryBrand, Brand, Category} =require('./src/db');
-
+var start = false;
 
 
 
 // Syncing all the models at once.
 conn.sync({ force: false }).then(async () => {
-  try{
+  if (start) {
+    server.listen(3001,  () => {
+      console.log('%s listening at 3001'); // eslint-disable-line no-console
+    });
+  }else{
+    try{
     //[si ya hay elementos en la base de datos no hago fetch a la api
     let aux = await Product.count();
     //! console.log(aux)
@@ -44,6 +49,7 @@ conn.sync({ force: false }).then(async () => {
          //! console.log("category: ", category.toJSON());
          //! console.log("RELATION: ", relation.toJSON());
          //! console.log("REL ID: ", relId)
+         
         //[Agrego al producto el id de la relación.
         let product = await Product.create({
           ...prod.data, idRelation:relId},
@@ -55,8 +61,11 @@ conn.sync({ force: false }).then(async () => {
     server.listen(3001,  () => {
       console.log('%s listening at 3001'); // eslint-disable-line no-console
     });
+    start = true;
 
-  }catch(err){
+    }catch(err){
     console.log("INDEX: ", err)
+    }
   }
+  
 });
