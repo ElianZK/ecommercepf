@@ -1,4 +1,3 @@
-const {Op} = require('sequelize');
 const {Cart, User, Product} = require("../../../../db");
 
 
@@ -24,7 +23,6 @@ const putUserCart = async (req,res,next)=>{
       }
     })
     //! console.log( products.map(el=>el.toJSON()));
-    console.log("PRODUCTS: ", products.length)
     if(!products.length) return res.status(200).json({msg:"Cart deleted"});
 
 
