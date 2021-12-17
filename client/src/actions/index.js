@@ -18,7 +18,8 @@ import { GET_ALL_PRODUCTS,
     EDIT_PRODUCT,
     LOGIN,
     LOGOUT,
-    EDIT_BRANDS
+    EDIT_BRANDS,
+    CREATE_USER
 } from "./actionsTypes";
 import axios from 'axios';
 import Swal from 'sweetalert2';
@@ -297,7 +298,19 @@ const SERVER = 'http://localhost:3001';
         }
     };
 
-    
+    export function createUser(body) {
+        return async function(dispatch){
+            try{
+                const res = await axios.post(`${SERVER}/user/`, body)
+                return dispatch({
+                    type: CREATE_USER,
+                    payload: res
+                })     
+            }catch(err){
+                console.log(err)
+            }   
+        }
+    };
 
    
 

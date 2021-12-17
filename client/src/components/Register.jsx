@@ -1,11 +1,13 @@
-import React,{useState}  from 'react'
-import { useEffect } from 'react'
+import React,{useState, useEffect}  from 'react';
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import Swal from 'sweetalert2';
 
 import s from '../assets/styles/Register.module.css'
+
+// localhost:3001/users/CreateUser
 
 function Register() {    
     // mensajitos al faltar un dato al autenticarse
@@ -42,6 +44,8 @@ function Register() {
     }
 
     const navigate = useNavigate();
+
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if(AuthError){
@@ -91,7 +95,9 @@ function Register() {
 
                 const auth = getAuth();
                 
-                const {email, pass} = data;
+                const {name, lastname, email, pass, tel} = data;
+
+                dispatch(createUser({name, lastname, email, pass, tel}));
 
                 createUserWithEmailAndPassword(auth, email, pass)
                 .then((userCredential) => {
