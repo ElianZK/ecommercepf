@@ -269,10 +269,10 @@ const SERVER = 'http://localhost:3001';
         }
     };
 
-    export function editBrand(id){
+    export function editBrand(id,name){
         try{
             return async function(dispatch){
-                const edBrands= await axios.put(`${SERVER}/brands/${id}`)
+                const edBrands= await axios.put(`${SERVER}/brands/${id}`,{name:name})
                 return dispatch({
                     type: EDIT_BRANDS,
                     payload: id

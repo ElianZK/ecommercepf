@@ -4,9 +4,9 @@ import {useDispatch, useSelector} from 'react-redux';
 import {Link} from 'react-router-dom';
 import s from '../../assets/styles/CategoryForm.module.css';
 import Swal from 'sweetalert2';
+import DataTable from 'react-data-table-component';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faTrashAlt, faEdit } from '@fortawesome/free-solid-svg-icons'
-import DataTable from 'react-data-table-component';
 
 export default function CatForm (){
     const dispatch = useDispatch();
@@ -75,7 +75,7 @@ export default function CatForm (){
     let tcategorys=categories.map((a,i)=>{
         return {
             key: i,
-            id: a.idCategory,
+            id: i+1,
             namecat: a.name,
             buttons: [
                 <abbr title="Editar categoria" key={0}><button className={s.btnEdit} onClick={()=>editCat(a.idCategory)} ><FontAwesomeIcon icon={faEdit}/></button></abbr>,
@@ -121,50 +121,31 @@ export default function CatForm (){
         })
     }
 
-return(
+return (
 <>
 <div className={s.Container}>
-    {/* <!-- AÑADIR COMPONENTE NAVBAR -->
-    <!-- AÑADIR BOTON DESPLEGABLE PERFIL --> */}
     <form className={s.Form} >
         <div className={s.Title}> 
             <h2>Product Category Creation</h2>
         </div>
 
-        <div className={s.InputSelect}>
-            <div className={s.Input}>
-                <input 
-                    onChange={handleChange}
-                    value={category.name}
-                    name='name'
-                    type="text"
-                    placeholder="Add a New Category"
-                />
-                {error.name?<span>{error.name}</span>:null}
-                <button 
-                    type="submit"
-                    onClick={handleSubmit}>
-                        Add
-                </button>
 
-            </div><br></br>
+        <div className={s.formGroup}>
+            <input 
+                onChange={handleChange}
+                value={category.name}
+                name='name'
+                type="text"
+                placeholder="Add a New Category"/>
+            {error.name?<span>{error.name}</span>:null}
+            <button 
+                type="submit"
+                onClick={handleSubmit}>
+                    Add
+            </button>
 
-             {/* <div className={s.Select}> */}
-             <div>
-                {/* <select 
-                        name="Abiable" 
-                        placeholder="Abiable Categories" 
-                        >
-                    <option>Abiable Categories</option> */}
-                
-                    
-            </div><br></br>{/**/}
         </div>
 
-        <Link to='/'>
-            <button>Home Page</button>
-        </Link>
-        
         
     </form>
     <DataTable
@@ -173,4 +154,5 @@ return(
     />
 </div>
 </>
-)}
+)
+}

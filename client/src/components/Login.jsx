@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
@@ -7,26 +7,48 @@ import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons'
 import s from "../assets/styles/login.module.css";
 import googleIcon from "../assets/img/google.png";
 import githubIcon from "../assets/img/github.png";
-//import { login } from "../actions";
-import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+//import { useUser } from 'reactfire';
+import { getAuth, 
+    signInWithPopup, 
+    GoogleAuthProvider,
+    GithubAuthProvider, 
+    FacebookAuthProvider, 
+    setPersistence, 
+    browserSessionPersistence,
+    inMemoryPersistence,
+    onAuthStateChanged
+} from 'firebase/auth';
 
 const Login = () => {
     const auth = getAuth();
     const dispatch = useDispatch();
-
+    const [user,setUser]= useState(auth.user)
+    
+    console.log('data',user); 
     const navigate = useNavigate()
 
     const [inputs, setInputs] = useState({
-        name: "",
         email: "",
         password: ""
     });
     const [login, setLogin] = useState(false)
 
-    const extLoginGoogle= async (e)=>{
+    const mkLogin= async (e,type)=>{
         e.preventDefault();
-        const provider = new GoogleAuthProvider();
-          await signInWithPopup(auth, provider)
+        console.log(type)
+        let provider;
+        if(type==='google') provider = new GoogleAuthProvider();
+        else if(type==='github') provider = new GithubAuthProvider();
+        else if(type==='facebook') provider = new FacebookAuthProvider();
+        setPersistence(auth, inMemoryPersistence)
+        .then(()=>{
+            return signInWithPopup(auth, provider).then(res=>{setUser(res.user)})
+        }).catch((error) => {
+            console.log('error '+error)
+        });
+        //let 
+        //if(type==='email')
+          /*await signInWithPopup(auth, provider)
            .then((userCredential) => {
             const userdat = userCredential.user;
             console.log(userdat)
@@ -35,14 +57,27 @@ const Login = () => {
           })
           .catch((error) => {
             console.log('error '+error)
-          });
+          }); */
+        
       }
+
+      useEffect(() => {
+          console.log(user)
+        auth.onAuthStateChanged((data) =>{
+            if (data) {
+              setUser(data)
+            } else {
+              // No user is signed in.
+            }
+          });
+      }, [user])
 
     return (
         <div className={s.container}>
             <div className={s.wrapLogin}>
-                {!login?<form className={s.form} >
-                    <h2 className={s.title}>Login</h2>
+                <div>{console.log(auth.user)}</div>
+                {!user?<form className={s.form} >
+                    {/* <h2 className={s.title}>Login</h2> */}
                     <div className={s.formGroup}>
                         <input 
                             onChange={e => setInputs(prev => {
@@ -78,7 +113,7 @@ const Login = () => {
                     </div>
                     <Link className={s.link} to="/reset_pass">¿Olvidaste tu contraseña?</Link>
                 <div className={s.containerbuttons}>
-                    <button name="loginWithGoogle" className={`${s.firstbtn} ${s.alternativeSubmit}`} onClick={extLoginGoogle}>
+                    <button name="loginWithGoogle" className={`${s.firstbtn} ${s.alternativeSubmit}`} onClick={(e)=>mkLogin(e,'google')}>
                         <img className={s.icon} src={googleIcon} alt="icono"/>
                     </button>
 

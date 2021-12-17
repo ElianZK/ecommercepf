@@ -1,7 +1,7 @@
-
+import { initializeApp } from "firebase/app";
 require('dotenv').config();
 
-const data={
+const firebaseconf={
     apiKey: process.env.REACT_APP_FIREBASE_APIKEY,
     authDomain: process.env.REACT_APP_FIREBASE_AUTHDOMAIN,
     projectId: process.env.REACT_APP_FIREBASE_PROJECTID,
@@ -10,5 +10,13 @@ const data={
     appId: process.env.REACT_APP_FIREBASE_APPID,
     measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENTID
 } 
-  
-export default data
+const app = initializeApp(firebaseconf);  
+/*//export default data
+exports = {
+    firebaseconf: firebaseconf,
+    app: app
+} */
+export {
+    firebaseconf,
+    app
+};
