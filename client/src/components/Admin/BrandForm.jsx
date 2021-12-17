@@ -6,6 +6,7 @@ import s from '../../assets/styles/BrandForm.module.css';
 import s2 from '../../assets/styles/CategoryForm.module.css';
 import Swal from 'sweetalert2';
 import DataTable from 'react-data-table-component';
+/* import { DataGrid } from '@mui/x-data-grid'; */
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faTrashAlt, faEdit } from '@fortawesome/free-solid-svg-icons'
 import { editBrand } from "../../actions/index";
@@ -21,7 +22,8 @@ export default function BrandForm (){
     const [error, setError] = useState({
         name: 'Introduzca un nombre para continuar',
     })
-
+    const [search, setSearch] = useState('')
+    const [searchres, setSearchres] = useState(null)
     const columns = [
         {
             name: 'No',
@@ -166,9 +168,21 @@ return(
         </div>
         
     </form>
+    <div className={s.containerSearch}>
+        <input name="name" placeholder="Ingrese la marca" onChange={(e)=>{
+            let name= e.target.value;
+            setSearch(name)
+            setSearchres(
+                tbrands.filter(br=>{
+                    return br.name.includes(name)
+                })
+            )
+        }}/>
+    </div>
     <DataTable
         columns={columns}
-        data={tbrands} 
+        data={searchres?searchres:tbrands} 
+        pagination
     />
 </div>
 </>

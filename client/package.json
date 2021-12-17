@@ -16,8 +16,6 @@
     "accounting": "^0.4.1",
     "axios": "^0.24.0",
     "cra-template": "1.1.2",
-    "datatables.net": "^1.11.3",
-    "datatables.net-dt": "^1.11.3",
     "dotenv": "^10.0.0",
     "firebase": "^9.6.1",
     "install": "^0.13.0",

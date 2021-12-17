@@ -1,15 +1,16 @@
 import{
     LOGIN,
     LOGOUT,
+    RESET,
 } from '../actions/actionsTypes'
 
 const initialState = {
     loginInfo:{
-        isConnected: false,
+        isVerified: false,
         user: {
-            name: "",
-            email: ""
-        }
+            token: null,
+        },
+        lastUpdate: 0
     }
 }
 
@@ -23,8 +24,7 @@ export function usersReducer(state = initialState, action){
         
         case LOGOUT:
             return{
-                ...state,
-                loginInfo: action.payload
+                ...initialState
             }
         default:
             return state;

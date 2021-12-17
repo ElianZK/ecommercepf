@@ -97,7 +97,7 @@ function Register() {
                 
                 const {name, lastname, email, pass, tel} = data;
 
-                dispatch(createUser({name, lastname, email, pass, tel}));
+                //dispatch(createUser({name, lastname, email, pass, tel}));
 
                 createUserWithEmailAndPassword(auth, email, pass)
                 .then((userCredential) => {

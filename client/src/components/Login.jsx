@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from 'react-redux';
+import {useDispatch , useSelector} from 'react-redux';
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons'
 import s from "../assets/styles/login.module.css";
 import googleIcon from "../assets/img/google.png";
 import githubIcon from "../assets/img/github.png";
-//import { useUser } from 'reactfire';
 import { getAuth, 
     signInWithPopup, 
     GoogleAuthProvider,
@@ -15,24 +14,19 @@ import { getAuth,
     FacebookAuthProvider, 
     setPersistence, 
     browserSessionPersistence,
-    inMemoryPersistence,
-    onAuthStateChanged
 } from 'firebase/auth';
+
 
 const Login = () => {
     const auth = getAuth();
     const dispatch = useDispatch();
-    const [user,setUser]= useState(auth.user)
-    
-    console.log('data',user); 
     const navigate = useNavigate()
-
+    const login = useSelector(state=>state.usersReducer.loginInfo)
+    
     const [inputs, setInputs] = useState({
         email: "",
         password: ""
     });
-    const [login, setLogin] = useState(false)
-
     const mkLogin= async (e,type)=>{
         e.preventDefault();
         console.log(type)
@@ -40,9 +34,12 @@ const Login = () => {
         if(type==='google') provider = new GoogleAuthProvider();
         else if(type==='github') provider = new GithubAuthProvider();
         else if(type==='facebook') provider = new FacebookAuthProvider();
-        setPersistence(auth, inMemoryPersistence)
+        setPersistence(auth, browserSessionPersistence)
         .then(()=>{
-            return signInWithPopup(auth, provider).then(res=>{setUser(res.user)})
+            return signInWithPopup(auth, provider).then(res=>{
+                
+                //setUser(res.user)
+            })
         }).catch((error) => {
             console.log('error '+error)
         });
@@ -60,23 +57,16 @@ const Login = () => {
           }); */
         
       }
-
-      useEffect(() => {
-          console.log(user)
-        auth.onAuthStateChanged((data) =>{
-            if (data) {
-              setUser(data)
-            } else {
-              // No user is signed in.
-            }
-          });
-      }, [user])
-
+    useEffect(() => {
+        console.log(login)
+        if(login.user.token){
+            navigate('/')
+        }
+    }, [])
     return (
         <div className={s.container}>
             <div className={s.wrapLogin}>
-                <div>{console.log(auth.user)}</div>
-                {!user?<form className={s.form} >
+                <form className={s.form} >
                     {/* <h2 className={s.title}>Login</h2> */}
                     <div className={s.formGroup}>
                         <input 
@@ -125,7 +115,7 @@ const Login = () => {
                     {/* <button name="login" className={`${s.normalSubmit} ${s.btnText}`} type="submit">Ingresar</button> */}
 
                     <Link className={s.link} to="/register">Si no tenes cuenta, create una aquí</Link>
-                </form>:<button >Log out</button>}
+                </form>
             </div>
         </div>
     )
