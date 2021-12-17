@@ -26,14 +26,14 @@ const  LoginUser = async (req, res, next)=>{
         }
 
         // genero JWT
-        // const token = await generarJWT(user.idUser)
+        const token = await generarJWT(user)
         res.json({
             ok:true,
             message:'ingreso',
             uid:user.idUser,
             email: user.email,
             password:user.password,
-            // token
+            token
         })
     } catch (error) {
         next(error)
