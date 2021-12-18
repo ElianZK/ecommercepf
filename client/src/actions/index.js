@@ -174,8 +174,7 @@ const SERVER = 'http://localhost:3001';
     export function login(payload){
         return async (dispatch) => {
             //console.log(`http://localhost/login?name=${payload.user.name}&email=${payload.user.email}&password=${payload.user.password}`);
-            // res = await axios(`http://localhost/login?name=${payload.user.name}&email=${payload.user.email}&password=${payload.user.password}`);      
-            
+            //let res = await axios(`${SERVER}/${dispatch}`);      
             dispatch({
                 isVerified: payload.isVerified,
                 user: {
