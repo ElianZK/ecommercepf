@@ -1,5 +1,5 @@
 
-const { DataTypes } = require('sequelize');
+const { DataTypes, DATE } = require('sequelize');
 // const bcrypt = require('bcrypt')
 // Exportamos una funcion que define el modelo
 // Luego le injectamos la conexion a sequelize.
@@ -15,6 +15,10 @@ module.exports = (sequelize) => {
             type: DataTypes.ENUM("admin","user"),
             required: true,
             allowNull: false,
+        },
+        name:{
+            type:DataTypes.STRING,
+            allowNull:false
         },
         email: {
             type: DataTypes.STRING,
@@ -33,8 +37,17 @@ module.exports = (sequelize) => {
         phone:{
             type: DataTypes.STRING,
             allowNull:false
+        },
+        image:{
+            type:DataTypes.TEXT,
+            allowNull:false
+        },
+        address:{
+            type:DataTypes.JSON,
+            allowNull:false
         }
     },{
         timestamps:false
     });
 };
+//type, name, email, password, phone, image, address
