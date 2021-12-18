@@ -10,11 +10,16 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
             primaryKey:true,
             allowNull: false,
+            // defaultValue:DataTypes.UUIDV4
         },
         type: {
             type: DataTypes.ENUM("admin","user"),
             required: true,
             allowNull: false,
+        },
+        name:{
+            type:DataTypes.STRING,
+            allowNull:false
         },
         email: {
             type: DataTypes.STRING,
@@ -33,8 +38,21 @@ module.exports = (sequelize) => {
         phone:{
             type: DataTypes.STRING,
             allowNull:false
+        },
+        image:{
+            type:DataTypes.TEXT,
+            allowNull:false
+        },
+        address:{
+            type:DataTypes.JSON({
+                calle:{type:DataTypes.STRING},
+                cp:{type:DataTypes.STRING},
+                domicilio:{type:DataTypes.STRING}
+            }),
+            allowNull:false
         }
     },{
         timestamps:false
     });
 };
+//type, name, email, password, phone, image, address

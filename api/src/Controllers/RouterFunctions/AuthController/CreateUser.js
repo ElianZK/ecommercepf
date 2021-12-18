@@ -4,8 +4,9 @@ const { generarJWT } = require('../../../helpers/jwt');
 
 const CreateUser = async (req, res, next)=>{
     try {
-        let { type , email, password, phone} = req.body;
-        if (!email || !password ) {
+        //type, name, email, password, phone, image, address
+        let { type, name, email, password, phone, image, address } = req.body;
+        if (!name || !email || !password ) {
             return res.json("faltan datos para completar")
         }
         //encriptar el password
@@ -17,8 +18,11 @@ const CreateUser = async (req, res, next)=>{
             where:{ email },
             defaults:{
                 type,
+                name,
                 password,
-                phone
+                phone,
+                image,
+                address
             }
         });
         //compruebo si es true o false mi created
@@ -30,7 +34,7 @@ const CreateUser = async (req, res, next)=>{
     }
         //genero mi JWT
     let token = await generarJWT( newUser );
-    console.log(`token---------->`, token)
+
         return res.json({created: created, newUser, token })
     } catch (error) {
         next(error)
