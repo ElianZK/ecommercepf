@@ -7,14 +7,7 @@ import{ ADD_TO_CART,
 
 
 const initialState ={
-    // products: [
-    //     {id:1, name:tv, price: 100},
-    //     {id:2, name:celu, price: 200},
-    //     {id:3, name:compu, price: 300},
-    //     {id:4, name:teclados, price: 400},
-    //     {id:5, name:impresoras, price: 500}
-    // ]
-
+    products: [],
     cart:[]
 }
 

@@ -291,7 +291,7 @@ const SERVER = 'http://localhost:3001';
     export function addToCart(id){
         try{
             return async function (dispatch){
-                const itemCart= await axios.get(`${SERVER}/cart/${id}`)
+                const itemCart= await axios.get(`${SERVER}/user/cart/${id}`)
                 return dispatch ({
                     type: ADD_TO_CART,
                     payload: itemCart

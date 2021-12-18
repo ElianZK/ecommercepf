@@ -1,22 +1,22 @@
 import React from 'react'
-import { NavLink } from "react-router-dom"; 
 import { useDispatch, useSelector } from "react-redux";
-import {ProductCard} from '../ProductCard'
 import s from '../../assets/styles/Cart.module.css'
 import {addToCart,removeOneFromCart, removeAllFromCart,clearCart} from '../../actions/index'
+import Swal from 'sweetalert2';
+
+
 
 export default function Cart() {
     const dispatch = useDispatch()
-    const cartItems = useSelector((state) => state.cart)
+    const cart = useSelector((state) => state.cart)
+    const product = useSelector((state) => state.products)
+
     const cartList=[]
-    
     let totalPrice = 0;  
-
-    for (const i in cartItems) {
-        cartList.push(cartItems[i]);
-        totalPrice += cartItems[i].precio*cartItems[i].count   
+    for (const i in cart) {
+        cartList.push(cart[i]);
+        totalPrice += cart[i].precio*cart[i].count   
     }
-
 
     return (
     //     <div >
@@ -24,7 +24,7 @@ export default function Cart() {
     //         <h3>Products</h3>
     //         <article className={s.box}></article>
     //         {cartList.length > 0 ? (<div>    
-    //             {cartList.map(p=>{
+    //             {products.map(p=>{
     //             return (<ProductCard key={p.id} >
     //                    <div>
     //                    <p id={p.id}>x{p.count}</p>
