@@ -168,7 +168,7 @@ export function productsReducer(state = initialState, action){
         case REMOVE_BRANDS:
             return {
                 ...state,
-                brands: state.categories.filter(p => p.brand !== action.payload)
+                brands: state.brands.filter(p => p.brand !== action.payload)
             } 
             
         case EDIT_CATEGORY:

@@ -16,9 +16,13 @@ import { GET_ALL_PRODUCTS,
     REMOVE_PRODUCT,
     EDIT_CATEGORY,
     EDIT_PRODUCT,
+    EDIT_BRANDS,
     LOGIN,
     LOGOUT,
-    EDIT_BRANDS,
+    ADD_TO_CART,
+    REMOVE_ALL_FROM_CART,
+    REMOVE_ONE_FROM_CART,
+    CLEAR_CART,
     CREATE_USER
 } from "./actionsTypes";
 import axios from 'axios';
@@ -228,12 +232,12 @@ const SERVER = 'http://localhost:3001';
             return async function (dispatch){
                 const remBrands = await axios.delete(`${SERVER}/brands/${id}`)
                 return dispatch ({
-                    type: REMOVE_BRANDS,
+                    type: REMOVE_PRODUCT,
                     payload: id
                 })
             }
         }catch(err){
-            console.lor(err)
+            console.log(err)
         }
     };
 
@@ -269,13 +273,13 @@ const SERVER = 'http://localhost:3001';
         }
     };
 
-    export function removeProduct(idProduct) {
+    export function editProduct(id, name, price, stock, sold_quantity, condition, image, thumbnail, attribute, categories, brands) {
         return async function(dispatch){
             try{
-                const remProduct= await axios.delete(`${SERVER}/products/${idProduct}`)
+                const remProduct= await axios.put(`${SERVER}/products/${id}`, {name: name, price: price, stock: stock, sold_quantity: sold_quantity, condition: condition, image: image, thumbnail: thumbnail, attribute: attribute, categories: categories, brands: brands})
                 return dispatch({
-                    type: REMOVE_PRODUCT,
-                    payload: idProduct
+                    type: EDIT_PRODUCT,
+                    payload: remProduct
                 })     
             }catch(err){
                 console.log(err)
@@ -283,6 +287,42 @@ const SERVER = 'http://localhost:3001';
         }
     };
 
+    export function addToCart(id){
+        try{
+            return async function (dispatch){
+                const itemCart= await axios.get(`${SERVER}/cart/${id}`)
+                return dispatch ({
+                    type: ADD_TO_CART,
+                    payload: itemCart
+                })
+                }
+        }catch(err){
+        console.log(err)
+        }
+    }
+
+    export function removeOneFromCart(id){
+        return {
+            type: REMOVE_ONE_FROM_CART,
+            payload: id
+        }
+    }
+
+    export function removeAllFromCart(id){
+        return{
+            type: REMOVE_ALL_FROM_CART,
+            payload: id
+        }
+    }
+
+    export function clearCart(payload){
+        return {
+            type: CLEAR_CART,
+            payload
+        }
+    }
+
+    
     export function createUser(body) {
         return async function(dispatch){
             try{

@@ -8,6 +8,7 @@ import Nav from './components/Nav'
 import Register from './components/Register'
 import CatForm from './components/Admin/CategoryForm'
 import BrandForm from './components/Admin/BrandForm'
+import Cart from './components/Shops.jsx/Cart';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route exact path="/search/:search" element={<Home/>} />
         <Route exact path="/addCategory" element={<CatForm/>} />
         <Route exact path="/addBrand" element={<BrandForm/>} />
+        <Route exact path="/addToCart" element={<Cart />} />
       </Routes>
     </div>
   );
