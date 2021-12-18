@@ -15,6 +15,7 @@ import { getAuth,
     setPersistence, 
     browserSessionPersistence,
 } from 'firebase/auth';
+import { login } from '../actions/index'
 
 
 const Login = () => {
@@ -37,7 +38,8 @@ const Login = () => {
         setPersistence(auth, browserSessionPersistence)
         .then(()=>{
             return signInWithPopup(auth, provider).then(res=>{
-                
+                console.log(res.user);
+                //dispatch()
                 //setUser(res.user)
             })
         }).catch((error) => {
