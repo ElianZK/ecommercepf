@@ -1,63 +1,65 @@
 import React from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import s from '../../assets/styles/Cart.module.css'
-import {addToCart,removeOneFromCart, removeAllFromCart,clearCart} from '../../actions/index'
+import {removeOneFromCart, removeAllFromCart} from '../../actions/index'
 import Swal from 'sweetalert2';
+import { Link } from 'react-router-dom';
 
 
 
 export default function Cart() {
     const dispatch = useDispatch()
-    const cart = useSelector((state) => state.cart)
-    const product = useSelector((state) => state.products)
+    const cart = useSelector((state) => state.ordenReducer.cart)
+    
 
     const cartList=[]
-    let totalPrice = 0;  
+    let totalAmount = 0;  
     for (const i in cart) {
         cartList.push(cart[i]);
-        totalPrice += cart[i].precio*cart[i].count   
+        totalAmount += cart[i].price*cart[i].quantity 
     }
 
-    return (
-    //     <div >
-    //         <h2>Shopping Cart</h2>
-    //         <h3>Products</h3>
-    //         <article className={s.box}></article>
-    //         {cartList.length > 0 ? (<div>    
-    //             {products.map(p=>{
-    //             return (<ProductCard key={p.id} >
-    //                    <div>
-    //                    <p id={p.id}>x{p.count}</p>
-    //                    <div>
-    //                     <p>{e.name}</p>
-    //                     <p>{e.thumbnail}</p></div>
-    //                     <div>
-    //                     <p><span>$</span>{e.price}</p>  
-    //                     </div>
-    //                    </div>
-    //                   <button  onClick={()=> dispatch(removeAllFromCart(e.id, e.count))}/>
-    //                     <div>
-    //                         {e.count < e.stock ? <button onClick={ () => dispatch(addToCart(e.id)) }/> : null }
-    //                        <button  onClick={()=> dispatch(removeOneFromCart(e.id,e.count))}/>
-    //                     </div>    
-                                    
-    //                 {/* </div>) */}
-    //             })
-    //             } 
-    //         </div>) : (<div><p>Your Cart is Empty</p></div>)
-    //         }    
 
-    //           {
-    //             cartList.length !== 0 ? (
-    //             <div> 
-    //                 <p><span>Total:</span> <span>$</span>{totalPrice.toFixed(2)} </p> <hr/>
-    //                 <div >
-    //                     <NavLink to='/checkout'><span>Confirm Your Purchase</span></NavLink>
-    //                 </div>   
-    //                 <button onClick={()=> dispatch(clearCart(cartList))}>Clean Cart</button>
-    //             </div>) : null
-    //         }
-    //     </div>
-    <div></div>
+    return (
+        
+        <div className={s.container}>
+            <h2>Shopping Cart</h2>
+                <h3>Products</h3>
+            {cartList.length ? 
+               <div>
+                   {cart.map((p) => {
+                return (
+                    <div key={p.id}> 
+                        <img src={p.thumbnail} alt={p.name}/>
+                            <button  onClick={()=> dispatch(removeAllFromCart(p.id, p.quantity))}></button>
+                           <p>Producto:  {p.name}</p>
+                        <div>
+                            <p>Price per unitity: <span>$</span>{p.price}</p>  
+                        </div>
+                           <div>  Quantity: {p.quantity}  </div>
+                                <div > Amount: ${p.price * p.quantity}</div>
+                            <div>
+                                <button>Add</button>
+                            </div>
+                            <div>
+                           <button  onClick={()=> dispatch(removeOneFromCart(p.id, p.quantity))} >Substract</button>
+                        </div>
+                       </div>)
+                    })
+                }
+                </div> : (<p>Your Cart is Empty</p>)
+            }
+            <div>
+                {cartList.length !== 0 ? (
+                <div> 
+                    <p><span>Total Amount:</span> <span>$</span>{totalAmount.toFixed(2)} </p> <hr/>
+                    <button onClick={()=> dispatch(removeAllFromCart(cartList))}>Clean Cart</button>
+                </div>) : null
+                }
+                <div >
+                    <Link to='/checkout'><span>Confirm Your Purchase</span></Link>
+                </div>   
+            </div>
+        </div>
     )
 }

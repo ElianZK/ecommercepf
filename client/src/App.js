@@ -22,7 +22,7 @@ function App() {
         <Route exact path="/search/:search" element={<Home/>} />
         <Route exact path="/addCategory" element={<CatForm/>} />
         <Route exact path="/addBrand" element={<BrandForm/>} />
-        <Route exact path="/addToCart" element={<Cart />} />
+        <Route exact path="/cart" element={<Cart />} />
       </Routes>
     </div>
   );
