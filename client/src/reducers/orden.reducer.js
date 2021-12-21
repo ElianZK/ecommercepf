@@ -12,7 +12,9 @@ const initialState ={
         {name:'tv', price: 100, quantity:6},
         {name:'celu', price: 200, quantity:2},
         {name:'celu', price: 200, quantity:2}
-    ]
+    ],
+    // orderId:[],
+    // orders:[]
 }
 
     // export function cartStorage(item, action){    //Storage es objeto
@@ -67,12 +69,12 @@ export function ordenReducer(state = initialState, action){
                 cart: action.payload
             }    
             
-        // case CLEAR_CART:
-        //     //const cleCart = cartStorage(action.payload, 'Clear Cart') 
-        //     return {
-        //         ...state,
-        //         cart: []
-        //      }
+        case CLEAR_CART:
+            //const cleCart = cartStorage(action.payload, 'Clear Cart') 
+            return {
+                ...state,
+                cart: []
+             }
             
         default:
             return state    

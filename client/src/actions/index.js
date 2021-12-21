@@ -24,7 +24,7 @@ import { GET_ALL_PRODUCTS,
     REMOVE_ONE_FROM_CART,
     CLEAR_CART,
     CREATE_USER,
-    GET_PRODUCT_CART_USER,
+    GET_PRODUCTS_CART,
     CHANGE_QUANTITY
 } from "./actionsTypes";
 import axios from 'axios';
@@ -299,22 +299,25 @@ const SERVER = 'http://localhost:3001';
             }
         }   
     };
-
+    
+//me traigo el carro de productos tanto de usuarios como de invitados
     export function getProductCartUser(userId){
         return async function (dispatch){
             try{
                 if(!userId){
-                    const itemProducts = JSON.parse(localStorage.getItem("cart") || "[]")
+                    const itemsCart = JSON.parse(localStorage.getItem("cart") || "[]")
                     return dispatch({
-                        type: GET_PRODUCT_CART_USER,
-                        payload: itemProducts
+                        type: GET_PRODUCTS_CART,
+                        payload: itemsCart
                     })
                 
                 }else{
-                    const itemCart= await axios.get(`${SERVER}/user/cart/${userId}`)
+                    const {itemsCart}= await axios.get(`${SERVER}/user/cart/${userId}`)
+                    //me creo el elemento order en base a lo que tenia en carrito para ese usuario
+                    localStorage.setItem("orderId", itemsCart.orderId) //orderId es el estado para la orden de ese usuario
                     return dispatch ({
                         type: ADD_TO_CART,
-                        payload: itemCart
+                        payload: itemsCart
                     })
                  }
             }catch(err){
@@ -323,14 +326,15 @@ const SERVER = 'http://localhost:3001';
         }
     }
 
-    export function addToCart(product, userId){
+    //para boton de carro y cantidades seleccionadas
+    export function addToCart(idProduct, userId){
         return async (dispatch) =>{
             try{
                 if(!userId){
                     const products = JSON.parse(localStorage.getItem("cart") || "[]");
                     const itemFind = false;
                     products = products.map((p) => {
-                        if(p.id === product.id){
+                        if(p.id === idProduct){
                             itemFind = true;
                             return {
                                 ...p,
@@ -339,18 +343,19 @@ const SERVER = 'http://localhost:3001';
                         }
                         return p;
                     });
-                        if(!itemFind) products.push(product);
-                        localStorage.setItem("cart", JSON.strigify(products));
+                        if(!itemFind) products.push(idProduct);
+                        localStorage.setItem("cart", JSON.strigify(products)); //falta autencicacion
                         return dispatch({
                             type: ADD_TO_CART,
                             payload:products
                         })
+                        
                 }else if(userId){
-                    const body = {id: product.id, quantity: 1};
+                    const body = {id: idProduct, quantity: 1};
                     const productUserId = await axios.post(`${SERVER}/user/cart/${userId}`,body)
                     return dispatch ({
                         type: ADD_TO_CART,
-                        payload: productUserId.data
+                        payload: productUserId
                     })
                 }
             }catch(err){
@@ -364,10 +369,16 @@ const SERVER = 'http://localhost:3001';
             try{
                 if(!userId){
                         const products = JSON.parse(localStorage.getItem("cart") || "[]");
+                        const itemFind = false;
                         products = products.map((p) => {
                             if(p.id === idProduct){
-                                p.quantity = 0;
-                            }return p;
+                                itemFind = true;
+                                return {
+                                    ...p,
+                                    quantity: Number(p.quantity) -1
+                                }
+                            }
+                            return p;
                         });
                         localStorage.setItem("cart", JSON.stringify(products));
                         return dispatch({
@@ -407,12 +418,12 @@ const SERVER = 'http://localhost:3001';
     }
 
 
-    // export function clearCart(payload){
-    //     return {
-    //         type: CLEAR_CART,
-    //         payload
-    //     }
-    // } 
+    export function clearCart(payload){
+        return {
+            type: CLEAR_CART,
+            payload
+        }
+    } 
     
     export function changeQuantity(idProduct, quantity, userId){
         try{
@@ -427,7 +438,7 @@ const SERVER = 'http://localhost:3001';
                 if(!userId){
                     const products= JSON.parse(localStorage.getItem("cart"));
                     products = products.map((p) => {
-                        if(p.id === products.id){
+                        if(p.id === idProduct){
                             p.quantity = quantity;
                         }
                         return p
@@ -440,7 +451,7 @@ const SERVER = 'http://localhost:3001';
                 }
             }
         }catch(err) {
-            console.log({msg: 'Cart not Empty'}, err)
+            console.log(err)
         }
     }
     
