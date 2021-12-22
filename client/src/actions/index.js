@@ -305,7 +305,7 @@ const SERVER = 'http://localhost:3001';
         return async function (dispatch){
             try{
                 if(!userId){
-                    const itemsCart = JSON.parse(localStorage.getItem("cart") || "[]")
+                    const itemsCart = JSON.parse(localStorage.getItem("cart")) || [];
                     return dispatch({
                         type: GET_PRODUCTS_CART,
                         payload: itemsCart
@@ -327,14 +327,14 @@ const SERVER = 'http://localhost:3001';
     }
 
     //para boton de carro y cantidades seleccionadas
-    export function addToCart(idProduct, userId){
+    export function addToCart(product, userId){ //product es el nuevo q voy incorporando al cart
         return async (dispatch) =>{
             try{
                 if(!userId){
-                    const products = JSON.parse(localStorage.getItem("cart") || "[]");
+                    const cart = JSON.parse(localStorage.getItem("cart")) || [];
                     const itemFind = false;
-                    products = products.map((p) => {
-                        if(p.id === idProduct){
+                    cart = cart.map((p) => {
+                        if(p.id === product.id){
                             itemFind = true;
                             return {
                                 ...p,
@@ -343,19 +343,19 @@ const SERVER = 'http://localhost:3001';
                         }
                         return p;
                     });
-                        if(!itemFind) products.push(idProduct);
-                        localStorage.setItem("cart", JSON.strigify(products)); //falta autencicacion
+                        if(!itemFind) cart.push(product);
+                        localStorage.setItem("cart", JSON.strigify(cart)); //falta autencicacion
                         return dispatch({
                             type: ADD_TO_CART,
-                            payload:products
+                            payload: cart
                         })
                         
                 }else if(userId){
-                    const body = {id: idProduct, quantity: 1};
-                    const productUserId = await axios.post(`${SERVER}/user/cart/${userId}`,body)
+                    const body = {id: product.idProduct, quantity: 1};
+                    const cart = await axios.post(`${SERVER}/user/cart/${userId}`,body)
                     return dispatch ({
                         type: ADD_TO_CART,
-                        payload: productUserId
+                        payload: cart
                     })
                 }
             }catch(err){
@@ -368,9 +368,9 @@ const SERVER = 'http://localhost:3001';
         return async (dispatch) =>{
             try{
                 if(!userId){
-                        const products = JSON.parse(localStorage.getItem("cart") || "[]");
+                        const cart = JSON.parse(localStorage.getItem("cart")) || [];
                         const itemFind = false;
-                        products = products.map((p) => {
+                        cart = cart.map((p) => {
                             if(p.id === idProduct){
                                 itemFind = true;
                                 return {
@@ -380,17 +380,17 @@ const SERVER = 'http://localhost:3001';
                             }
                             return p;
                         });
-                        localStorage.setItem("cart", JSON.stringify(products));
+                        localStorage.setItem("cart", JSON.stringify(cart));
                         return dispatch({
                             type: REMOVE_ONE_FROM_CART,
-                            payload: products
+                            payload: cart
                         })
                     }
                 if(userId){
-                        const productUserId = await axios.delete(`${SERVER}/user/cart/${userId}/${idProduct}`)
+                        const cart = await axios.delete(`${SERVER}/user/cart/${userId}/${idProduct}`)
                         return dispatch({
                             type: REMOVE_ONE_FROM_CART,
-                            payload: productUserId
+                            payload: cart
                     })
                 }
             }catch(err){
@@ -406,10 +406,10 @@ const SERVER = 'http://localhost:3001';
             if(!userId){
                 localStorage.removeItem("cart");
             }else{
-                const productUserId = await axios.delete(`${SERVER}/user/cart/${userId}`)
+                const cart = await axios.delete(`${SERVER}/user/cart/${userId}`)
                 return dispatch({
                     type: REMOVE_ALL_FROM_CART,
-                    payload: productUserId
+                    payload: cart
                 })
             }}     
         }catch(err) {
