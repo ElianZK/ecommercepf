@@ -9,9 +9,9 @@ import{ ADD_TO_CART,
 const initialState ={
     products: [],
     cart:[
-        {name:'tv', price: 100, quantity:6},
-        {name:'celu', price: 200, quantity:2},
-        {name:'celu', price: 200, quantity:2}
+        {id:1, image:'imagen_producto',name:'tv', price: 100, quantity:6, amount: 600},
+        {id:2,name:'celu', price: 200, quantity:2},
+        {id:3,name:'celu', price: 200, quantity:2}
     ],
     // orderId:[],
     // orders:[]

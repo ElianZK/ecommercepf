@@ -1,11 +1,11 @@
 .container{
-    height: 100vh;
+    height: 50vh;
     display: flex;
     flex-direction: column;
     background-color: rgb(247, 245, 241);
     padding: 30px;
     margin-top: 100px;
- }
+}
 
  .container .data{
     display: flex;
@@ -18,7 +18,8 @@
 h3{
     margin-top: 30px;
     margin-left: 100px;
-}h2{
-    margin-top: 40px;
+}
+h2{
+    margin-top: 80px;
     margin-left: 100px;
 }
