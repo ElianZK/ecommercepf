@@ -40,7 +40,7 @@ export default function Cart() {
     const columns=[
         {
             name: "Id",
-            selector: "id",
+            selector: row => row.id,
             sortable: true
         },
 
@@ -69,7 +69,7 @@ export default function Cart() {
 
         {
             name:"total Amount",
-            selector:"totalAmount",
+            selector:row=> row.totalAmount,
             sortable: true
         },
 
