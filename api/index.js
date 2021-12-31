@@ -1,4 +1,4 @@
-const server = require('./src/app.js');
+const server = require('./src/app');
 const { conn } = require('./src/db.js');
 const { getProducts} =require('./src/Controllers/DbLoading/getProds');
 const {Product, CategoryBrand, Brand, Category} =require('./src/db');

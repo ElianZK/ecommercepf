@@ -6,6 +6,13 @@ import Login from './components/Login';
 import Details from './components/Details'
 import Nav from './components/Nav'
 import Register from './components/Register'
+<<<<<<< Updated upstream
+=======
+import CatForm from './components/Admin/CategoryForm'
+import BrandForm from './components/Admin/BrandForm'
+import Cart from './components/Shopps/Cart';
+
+>>>>>>> Stashed changes
 function App() {
   return (
     <div className="App">
@@ -16,6 +23,13 @@ function App() {
         <Route exact path="/login" element={<Login/>}/>
         <Route exact path="/register" element={<Register/>} />
         <Route exact path="/search/:search" element={<Home/>} />
+<<<<<<< Updated upstream
+=======
+        <Route exact path="/addCategory" element={<CatForm/>} />
+        <Route exact path="/addBrand" element={<BrandForm/>} />
+        <Route exact path="/cart" element={<Cart />} />
+       
+>>>>>>> Stashed changes
       </Routes>
     </div>
   );

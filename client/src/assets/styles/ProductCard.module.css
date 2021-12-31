@@ -102,3 +102,12 @@
       height: 480px;
    }
 }
+
+.badge{
+   background-color:crimson;
+   color:antiquewhite;
+   border-radius: 50%;
+   padding: 0.2rem 0.5rem;
+   font-size: 1rem;
+   margin-left: 0.2rem;
+}

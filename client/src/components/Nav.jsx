@@ -13,6 +13,7 @@ const Nav = () => {
     const session = useSelector(state => state.productsReducer.loginInfo);
     const dispatch = useDispatch();
 
+
     const {signOut} = useGoogleLogout({
         clientId: "855728735481-riucm0j1968aq5bec0cp3qligm443549.apps.googleusercontent.com",
         onLogoutSuccess: () => {
@@ -39,6 +40,9 @@ const Nav = () => {
                     </> : <>
                         <Link to="/login"><button className={s.btn}>Log In</button></Link>
                         <Link to="/register"><button className={s.btn}>Registrarse</button></Link>
+                        <Link to="/cart"><button className={s.btn}>Cart
+                       
+                        </button></Link>
                     </>}
                 </div>
             </nav>

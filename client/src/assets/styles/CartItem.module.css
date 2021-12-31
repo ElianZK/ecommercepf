@@ -1,0 +1,90 @@
+.cart_info_btn{
+    display: flex;
+    flex-direction: row;
+    margin-left: 10rem;
+}
+
+.cart_img{
+    display: block;
+    border-radius: 0.2rem;
+    margin:0.6rem;
+    height: 7rem;
+    width: 10rem;
+    object-fit: cover;
+    object-position: center center;
+}
+
+.cart_info{
+    max-width: 45rem;
+    font-size: 1rem;
+}
+
+.cart_info_btn input{
+    height: 1.5rem;
+    width: 2rem;
+    font-size: 1rem;
+    margin-left: 1rem;
+    margin-top: 0.5rem;
+    border-radius:0.2rem;
+}
+
+/* .card_container_one{
+    display:flex;
+    flex-direction: row;
+   
+    background-size:cover;
+    margin: 1rem;
+    border-radius: 0.2rem;;
+    color:white;
+    position: relative;
+}
+
+.card_container_two{
+    display:flex;
+    flex-direction: row;
+   
+    background-size:cover;
+    margin: 1rem;
+    border-radius: 0.2rem;;
+    color:white;
+    position: relative;
+}
+
+.card_container_two{
+    display:flex;
+    flex-direction: row;
+   
+    background-size:cover;
+    margin: 1rem;
+    border-radius: 0.2rem;;
+    color:white;
+    position: relative;
+} */
+
+
+
+.delete_item_btn{
+    cursor: pointer;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: white;
+    background-color: transparent;
+    border-style: solid;
+    border-color: white;
+    border-width: 3px;
+    border-radius: 6px;
+    font-weight: 100;
+    transition: 0.3s;
+    height: 3rem;
+    width: 3rem;
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin: 1rem;
+}
+
+.delete_item_btn:hover{
+    transition:0.3;
+    cursor: pointer;
+    transform:translateY(-3px);
+    box-shadow: 0 0 5px 0 rgb(49, 48, 48);
+}

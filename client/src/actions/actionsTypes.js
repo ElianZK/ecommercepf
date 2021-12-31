@@ -11,4 +11,28 @@ export const CREATE_PRODUCT = 'CREATE_PRODUCT';
 export const FILTERS_CLEAR = 'FILTERS_CLEAR ';
 export const LOGIN = "LOGIN";
 export const LOGOUT = "LOGOUT";
+<<<<<<< Updated upstream
+=======
+export const REMOVE_CATEGORY ='REMOVE_CATEGORY';
+export const REMOVE_BRANDS ='REMOVE_BRANDS';
+export const EDIT_CATEGORY = 'EDIT_CATEGORY';
+export const EDIT_BRANDS = 'EDIT_BRANDS';
+export const REMOVE_PRODUCT = 'REMOVE_PRODUCT';
+export const EDIT_PRODUCT = 'EDIT_PRODUCT';
+
+export const ADD_TO_CART = 'ADD_TO_CART';
+export const ADD_TO_CART_FROM_DB =' ADD_TO_CART_FROM_DB';
+export const LOCALSTORAGE_CART_TO_DB ='LOCALSTORAGE_CART_TO_DB';
+export const DB_CART_TO_LOCALSTORAGE = 'DB_CART_TO_LOCALSTORAGE';
+export const GET_PRODUCTS_CART = 'GET_PRODUCTS_CART';
+export const REMOVE_ITEM_FROM_CART_LOCALSTORAGE= ' REMOVE_ITEM_FROM_CART_LOCALSTORAGE';
+export const REMOVE_ITEM_FROM_CART= 'REMOVE_ITEM_FROM_CART';
+export const CHANGE_QUANTITY = 'CHANGE_QUANTITY';
+export const CLEAR_CART = 'CLEAR_CART';
+
+export const GO_TO_CHECKOUT = 'GO_TO_CHECKOUT';
+
+export const CREATE_USER = 'CREATE_USER';
+
+>>>>>>> Stashed changes
 
