@@ -20,13 +20,15 @@ import { GET_ALL_PRODUCTS,
     LOGIN,
     LOGOUT,
     ADD_TO_CART,
+    SEE_CART,
     REMOVE_FROM_CART,
     REMOVE_ONE_FROM_CART,
     CLEAR_CART,
     CREATE_USER,
     GET_PRODUCTS_CART,
     CHANGE_QTY,
-    OPEN_MODAL
+    OPEN_MODAL,
+    UPDATE
 } from "./actionsTypes";
 import axios from 'axios';
 
@@ -207,12 +209,12 @@ const SERVER = 'http://localhost:3001';
         }
     };
 
-    // export function logOut(){
-    //     return {
-    //         type: LOGIN,
-    //         payload: {isConnected: false}
-    //     } 
-    // };
+    export function logOut(){
+        return {
+            type: LOGIN,
+            payload: {isConnected: false}
+        } 
+    };
 
     export function removeCategory(id){
         return async function(dispatch){
@@ -300,44 +302,70 @@ const SERVER = 'http://localhost:3001';
             }
         }   
     };
+
     
-    export function addToCart(payload) {
-        //console.log('soy payload de addcart', payload);
-        return {
-            type: ADD_TO_CART,
-            payload: payload,
-        };
-    }
     
-    export function postCartInDB(payload) {
-        return async function (dispatch) {
+    export function addToCart(idproduct, qty) {
+        return async function(dispatch){
             try {
-                const cartInDB=await axios.post(`${SERVER}/user/cart/${userId}`, payload);
-                return dispatch({
-                    type: POST_CART_IN_DB,
-                    payload: cartInDB
-                })
+                const {data} =await axios.get(`${SERVER}/products/${idproduct}`)
+                dispatch({
+                    type: ADD_TO_CART,
+                    payload: {
+                        name: data.name,
+                        image: data.image,
+                        price: data.price,
+                        stock: data.stock,
+                        product: data.idproduct,
+                        qty,
+                      } 
+                }) 
             } catch (error) {
-                console.log(error);
+                console.error(error)
             }
-        };
+        }      
     }
-    export function removeFromCart(payload) {
+
+    export function seeCart(){
+        return{
+            type: SEE_CART
+        }
+    }
+    
+    // export function postCartInDB(userId) {
+    //     return async function (dispatch) {
+    //         try {
+    //             const cartInDB=await axios.post(`${SERVER}/user/cart/${userId}`, payload);
+    //             return dispatch({
+    //                 type: POST_CART_IN_DB,
+    //                 payload: cartInDB
+    //             })
+    //         } catch (error) {
+    //             console.log(error);
+    //         }
+    //     };
+    // }
+    export function removeFromCart(idproduct) {
         return {
             type: REMOVE_FROM_CART,
-            payload: payload,
+            payload: idproduct,
         };
     }
 
     export function changeQty(payload) {
         return {
             type: CHANGE_QTY,
-            payload: payload,
+            payload
+        };
+    }
+
+    export function update(payload) {
+        return {
+            type: UPDATE,
+            payload
         };
     }
     
-
-
     export function clearCart(payload){
         return {
             type: CLEAR_CART,
@@ -395,42 +423,7 @@ const SERVER = 'http://localhost:3001';
     // }
 
     // //para boton de carro y cantidades seleccionadas
-    // export function addToCart(product, userId){ //product es el nuevo q voy incorporando al cart
-    //     return async (dispatch) =>{
-    //         try{
-    //             if(!userId){
-    //                 const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    //                 const itemFind = false;
-    //                 cart = cart.map((p) => {
-    //                     if(p.id === product.id){
-    //                         itemFind = true;
-    //                         return {
-    //                             ...p,
-    //                             quantity: Number(p.quantity) +1
-    //                         }
-    //                     }
-    //                     return p;
-    //                 });
-    //                     if(!itemFind) cart.push(product);
-    //                     localStorage.setItem("cart", JSON.strigify(cart)); //falta autencicacion
-    //                     return dispatch({
-    //                         type: ADD_TO_CART,
-    //                         payload: cart
-    //                     })
-                        
-    //             }else if(userId){
-    //                 const body = {id: product.idProduct, quantity: 1};
-    //                 const cart = await axios.post(`${SERVER}/user/cart/${userId}`,body)
-    //                 return dispatch ({
-    //                     type: ADD_TO_CART,
-    //                     payload: cart
-    //                 })
-    //             }
-    //         }catch(err){
-    //                 console.log({msg: 'Item is not Found'}, err)
-    //         }
-    //     }
-    // }
+    
 
     // export function removeOneFromCart(userId, idProduct){
     //     return async (dispatch) =>{

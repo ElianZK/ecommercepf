@@ -3,8 +3,8 @@ import s from '../assets/styles/Details.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faHeart as Heartwhite } from '@fortawesome/free-regular-svg-icons'
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { getProductId } from '../actions/index.js'
+import { useNavigate, useParams } from 'react-router-dom';
+import { getProductId, addToCart, update} from '../actions/index.js'
 import { Slide } from 'react-slideshow-image'
 import DataTable from 'react-data-table-component';
 import {formatMoney} from 'accounting'
@@ -13,6 +13,8 @@ const Details = () => {
     const dispatch = useDispatch();
     const {idproduct} = useParams();
     const product = useSelector(state => state.productsReducer.productDetail[0])
+    const [qty, setQty]  = useState(1)
+    const navigate = useNavigate()
     const columns = [
     {
         name: 'Title',
@@ -25,10 +27,22 @@ const Details = () => {
         sortable: true,
     },
 ];
+
+function handleAddToCart(e){
+    e.preventDefault();
+        dispatch(addToCart(idproduct));
+        dispatch(update(qty))
+}
+
+function handleChangeQty(e){
+    e.preventDefault();
+    setQty(e.target.value)
+}
+
     
     useEffect(() => {
        dispatch(getProductId(idproduct));
-    }, [dispatch])
+    }, [dispatch, idproduct])
 
     return (
         <>
@@ -52,7 +66,8 @@ const Details = () => {
                     </div>:<div></div>}
                     <p className={s.salesnum}><strong>130 </strong>Ventas realizadas</p>
                     <button className={`${s.btn}`}>Comprar ahora</button>
-                    <button className={`${s.btn}`}>Agregar al carrito</button>
+                    <button 
+                        className={`${s.btn}`} onClick={handleAddToCart}>Agregar al carrito</button>
 
                     <h3 className={s.titlepay}>Medios de pago</h3>
                     <img className={s.payment} src="https://http2.mlstatic.com/secure/payment-logos/v2/payment-logo-mlm-consumer_credits-medium_v_ddbb2eb147.png" alt="Logo medio de pago mercado pago" />

@@ -21,12 +21,14 @@ export const REMOVE_PRODUCT = 'REMOVE_PRODUCT';
 export const EDIT_PRODUCT = 'EDIT_PRODUCT';
 
 export const ADD_TO_CART = 'ADD_TO_CART';
+export const SEE_CART = 'SEE_CART';
 export const POST_CART_IN_DB = 'POST_CART_IN_DB';
 export const REMOVE_FROM_CART = 'REMOVE_FROM_CART';
 export const CLEAR_CART = 'CLEAR_CART';
 //export const GET_PRODUCTS_CART='GET_PRODUCTS_CART';
 export const CHANGE_QTY = 'CHANGE_QTY';
 export const OPEN_MODAL= 'OPEN_MODAL';
+export const UPDATE= 'UPDATE';
 
 export const CREATE_USER = 'CREATE_USER';
 

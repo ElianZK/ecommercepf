@@ -8,7 +8,7 @@ import Nav from './components/Nav'
 import Register from './components/Register'
 import CatForm from './components/Admin/CategoryForm'
 import BrandForm from './components/Admin/BrandForm'
-import Cart from './components/Shops.jsx/Cart';
+import Cart from './components/Shops/Cart';
 
 function App() {
   return (
