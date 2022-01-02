@@ -373,6 +373,7 @@ const SERVER = 'http://localhost:3001';
               products.push(product);
               console.log(products)
           }
+          products= products.filter(p=>p.qty>0)
           localStorage.setItem("cart", JSON.stringify(products));
           return dispatch({ 
               type: ADD_TO_CART,
@@ -409,6 +410,7 @@ const SERVER = 'http://localhost:3001';
                             }
                             return p;
                         });
+                        cart = cart.filter(p=>p.qty>0)
                         localStorage.setItem("cart", JSON.stringify(cart));
                         return dispatch({
                             type: DELETE_ITEM_FROM_CART_LOCALSTORAGE,
