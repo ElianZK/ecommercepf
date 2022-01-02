@@ -194,22 +194,24 @@ const SERVER = 'http://localhost:3001';
         }
     }
 
-    export function login(payload){
-        return async (dispatch) => {
-            //console.log(`http://localhost/login?name=${payload.user.name}&email=${payload.user.email}&password=${payload.user.password}`);
-            //let res = await axios(`${SERVER}/${dispatch}`);      
-            dispatch({
-                isVerified: payload.isVerified,
-                user: {
-                    token: payload.token,
-                    name: payload.name,
-                    email: payload.email,  
-                    image: payload.image,
-                    lastUpdate: 0
-                }
-            })
+     export function login(payload){
+        let data={
+            isVerified: payload.isVerified,
+            user: {
+                token: payload.id,
+                name: payload.name,
+                email: payload.email,  
+                image: payload.photo,
+                lastUpdate: 0
+            }
         }
-    };
+        console.log(data)
+        return {
+            type: LOGIN,
+            payload:data
+        } 
+        //}
+    }; /*/**/
 
     export function logOut(){
         return {
@@ -351,26 +353,32 @@ const SERVER = 'http://localhost:3001';
     //para boton de carro y cantidades seleccionadas
     
     export const addToCart = (product, userId) => (dispatch) => {
+        console.log(product)
         if (!userId) {
             let products = JSON.parse(localStorage.getItem("cart")) || [];
           let productFind = false;
           products = products.map((p) => {
-              if (p.id === product.id) {
+              
+            if (p.idProduct === product.idProduct) {
                   productFind = true;
               return {
-                ...p,
-                qty: Number(p.qty) + 1,
-            };
+                    ...p,
+                    //qty: Number(p.qty) + 1,
+                    qty: Number(p.qty) + product.qty,
+                }; 
             }
             return p;
           });
-          if (!productFind) products.push(product);
+           if (productFind===false){ 
+              products.push(product);
+              console.log(products)
+          }
           localStorage.setItem("cart", JSON.stringify(products));
           return dispatch({ 
               type: ADD_TO_CART,
-              payload: products });
+              payload: products });/* */
         }
-        if (userId) {
+       /* if (userId) {
           const body = { id: product.id, qty: 1 };
           return axios
             .post(`${SERVER}/user/cart/${userId}`, body) //fatlta autenci usuario
@@ -381,7 +389,7 @@ const SERVER = 'http://localhost:3001';
                 });
             })
             .catch((error) => console.error(error));
-        }
+        } */
     };
       
     

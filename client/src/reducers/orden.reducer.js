@@ -63,6 +63,7 @@ export function ordenReducer(state = initialState, action){
     
 
         case CLEAR_CART:
+            
         return {
             ...state,
             cart: [],

@@ -7,6 +7,7 @@ import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons'
 import s from "../assets/styles/login.module.css";
 import googleIcon from "../assets/img/google.png";
 import githubIcon from "../assets/img/github.png";
+import facebookIcon from "../assets/img/facebook.png";
 import { getAuth, 
     signInWithPopup, 
     GoogleAuthProvider,
@@ -22,7 +23,7 @@ const Login = () => {
     const auth = getAuth();
     const dispatch = useDispatch();
     const navigate = useNavigate()
-    const login = useSelector(state=>state.usersReducer.loginInfo)
+    const loginuser = useSelector(state=>state.usersReducer.loginInfo)
     
     const [inputs, setInputs] = useState({
         email: "",
@@ -39,13 +40,22 @@ const Login = () => {
         .then(()=>{
             return signInWithPopup(auth, provider).then(res=>{
                 console.log(res.user);
-                //dispatch()
-                //setUser(res.user)
+                let data={
+                    isVerified: res.user.emailVerified,
+                    id: res.user.uid,
+                    name: res.user.displayName,
+                    photo: res.user.photoURL,
+                }
+                dispatch(login(data))
             })
         }).catch((error) => {
             console.log('error '+error)
+            Swal.fire({
+                title:'Error al iniciar sesión',
+                text: error.message,
+                icon: 'error'
+            })
         });
-        //let 
         //if(type==='email')
           /*await signInWithPopup(auth, provider)
            .then((userCredential) => {
@@ -61,15 +71,15 @@ const Login = () => {
       }
     useEffect(() => {
         console.log(login)
-        if(login.user.token){
+        if(loginuser.user.token){
             navigate('/')
         }
-    }, [])
+    }, [loginuser])
     return (
         <div className={s.container}>
             <div className={s.wrapLogin}>
                 <form className={s.form} >
-                    {/* <h2 className={s.title}>Login</h2> */}
+                    <h2 className={s.title}>Login</h2>
                     <div className={s.formGroup}>
                         <input 
                             onChange={e => setInputs(prev => {
@@ -104,19 +114,23 @@ const Login = () => {
                         
                     </div>
                     <Link className={s.link} to="/reset_pass">¿Olvidaste tu contraseña?</Link>
-                <div className={s.containerbuttons}>
-                    <button name="loginWithGoogle" className={`${s.firstbtn} ${s.alternativeSubmit}`} onClick={(e)=>mkLogin(e,'google')}>
-                        <img className={s.icon} src={googleIcon} alt="icono"/>
-                    </button>
+                    <div className={s.containerbuttons}>
+                        <button name="loginWithGoogle" className={`${s.firstbtn} ${s.alternativeSubmit}`} onClick={(e)=>mkLogin(e,'google')}>
+                            <img className={s.icon} src={googleIcon} alt="icono"/>
+                        </button>
 
-                    
-                    {/* <button name="loginWithGithub" className={s.alternativeSubmit} type="submit">
-                        <img className={s.icon} src={githubIcon} alt="icono"/>
-                    </button> */}
+                        
+                        <button name="loginWithGithub" className={s.alternativeSubmit} type="submit">
+                            <img className={s.icon} src={githubIcon} alt="icono"/>
+                        </button>
+
+                        <button name="loginWithFB" className={s.alternativeSubmit} type="submit">
+                            <img className={s.icon} src={facebookIcon} alt="icono"/>
+                        </button>
                     </div>
-                    {/* <button name="login" className={`${s.normalSubmit} ${s.btnText}`} type="submit">Ingresar</button> */}
+                    <button name="login" className={`${s.normalSubmit} ${s.btnText}`} type="submit">Ingresar</button>
 
-                    <Link className={s.link} to="/register">Si no tenes cuenta, create una aquí</Link>
+                    <p>Si no tenes cuenta,<Link className={s.link} to="/register"> create una aquí</Link></p>
                 </form>
             </div>
         </div>

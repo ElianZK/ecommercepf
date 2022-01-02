@@ -2,7 +2,7 @@ import React from 'react'
 import s from '../assets/styles/Nav.module.css'
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { useEffect, useState } from 'react';
+//import { useEffect, useState } from 'react';
 import { useGoogleLogout } from 'react-google-login'; 
 import { logOut, addToCart } from '../actions';
 import Swal from 'sweetalert2';
@@ -16,7 +16,8 @@ const Nav = () => {
     const session = useSelector(state => state.productsReducer.loginInfo);
     const dispatch = useDispatch();
     const cart = useSelector(state => state.ordenReducer.cart)
-    let totalItems = cart[0] && [].concat(cart).reduce((accumulator, currentValue) => accumulator + currentValue.qty, 0)
+    let totalItems = cart && [].concat(cart).reduce((accumulator, currentValue) => accumulator + currentValue.qty, 0)
+    //let totalItems = cart.lenght
 
     const {signOut} = useGoogleLogout({
         clientId: "855728735481-riucm0j1968aq5bec0cp3qligm443549.apps.googleusercontent.com",

@@ -35,5 +35,6 @@ export const GO_TO_CHECKOUT ='GO_TO_CHECKOUT'
 export const UPDATE= 'UPDATE';
 
 export const CREATE_USER = 'CREATE_USER';
+export const ERROR_LOGIN='ERROR_LOGIN';
 
 

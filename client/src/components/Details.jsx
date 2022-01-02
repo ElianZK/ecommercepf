@@ -15,7 +15,8 @@ const Details = () => {
     const {idproduct} = useParams();
     const product = useSelector(state => state.productsReducer.productDetail[0])
     const prod = JSON.parse(localStorage.getItem('cart')) || [].find(element => element.id === idproduct);
-    const [qty, setQty] = useState(prod ?.qty||1); 
+    //const [qty, setQty] = useState(prod ?.qty||1); 
+    const [qty, setQty] = useState(1); 
 
 
 
@@ -37,7 +38,7 @@ function handleAddToCart(e){
         //dispatch(addToCart(product));
         dispatch(update(Number(qty)))
         if ((Number(qty)) <= product.stock) {
-            setQty(Number(qty) + 1);
+            setQty(Number(qty));
             dispatch(addToCart({ ...product, qty})) //falta usuario 
             Swal.fire({
                 icon: 'success',
@@ -76,7 +77,7 @@ function handleChangeQty(e){
                     <p className={s.prodprice}>{` ${formatMoney(product.price)}`}<span > ARS</span></p>
                     {product.stock>0?<div className={s.grupcount}>
                         <label>Cantidad</label>
-                        <input type="number" min="1" max={product.stock} onCange={handleChangeQty}/>
+                        <input type="number" min="1" max={product.stock} onChange={handleChangeQty} value={qty}/>
                     </div>:<div></div>}
                     <p className={s.salesnum}><strong>130 </strong>Ventas realizadas</p>
                     <button className={`${s.btn}`}>Comprar ahora</button>

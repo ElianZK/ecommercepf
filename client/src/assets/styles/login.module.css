@@ -2,7 +2,6 @@
 
 
 .container{
-    /* padding-top: 150px; */
     width: 100%;
     display: flex;
     justify-content: center;
@@ -93,32 +92,23 @@
     transition: background-color .3s;
 }
 
-/* .container{
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-} */
-
 .icon{
     width: 35px;
 }
 
 .btnText{
-    font-size: 1.4em;
-    font-weight: bolder;
+    font-size: 1.3em;
+    font-weight: 600;
 }
 
 .normalSubmit{
-    width: 40%;
-    height: 10%;
+    width: 60%;
+    height: 8%;
     border-radius: 10px;
     border: 0;
     background-color: #FFD803;
     transition: background-color .3s;
-    box-shadow: 0px 3px 7px 1px rgba(0, 0, 0, 0.4);
+    box-shadow: 0px 3px 5px 1px rgba(0, 0, 0, 0.4);
 }
 
 .normalSubmit:hover{

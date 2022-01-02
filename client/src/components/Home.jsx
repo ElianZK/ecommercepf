@@ -11,7 +11,6 @@ import Filters from "./Filters.jsx";
 import Pagination from "./Pagination.jsx";
 import imgnotfound from "../assets/img/notfound.gif";
 
-import {formatMoney} from 'accounting'
 
 
 const Home = () => {
@@ -62,7 +61,11 @@ const Home = () => {
     useEffect(()=>{
         const offset=(page-1)*limit;
         console.log('category: '+category)
-        if(!search)dispatch(getAllProducts({limit: limit,offset: offset,category:category,brand:brand}))
+        if(!search){
+            dispatch(getAllProducts({limit: limit,offset: offset,category:category,brand:brand}))
+            dispatch(sortProducts(sort))
+            console.log(sort)
+        }
         else{
             dispatch(getProductByName(search))
         }
