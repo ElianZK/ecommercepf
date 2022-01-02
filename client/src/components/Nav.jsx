@@ -2,7 +2,7 @@ import React from 'react'
 import s from '../assets/styles/Nav.module.css'
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { useEffect, useState } from 'react';
+//import { useEffect, useState } from 'react';
 import { useGoogleLogout } from 'react-google-login'; 
 import { logOut } from '../actions';
 import Swal from 'sweetalert2';

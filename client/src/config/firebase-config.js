@@ -11,11 +11,6 @@ const firebaseconf={
     measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENTID
 } 
 const app = initializeApp(firebaseconf);  
-/*//export default data
-exports = {
-    firebaseconf: firebaseconf,
-    app: app
-} */
 export {
     firebaseconf,
     app

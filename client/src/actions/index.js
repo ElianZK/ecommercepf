@@ -175,22 +175,24 @@ const SERVER = 'http://localhost:3001';
         }
     }
 
-    export function login(payload){
-        return async (dispatch) => {
-            //console.log(`http://localhost/login?name=${payload.user.name}&email=${payload.user.email}&password=${payload.user.password}`);
-            //let res = await axios(`${SERVER}/${dispatch}`);      
-            dispatch({
-                isVerified: payload.isVerified,
-                user: {
-                    token: payload.token,
-                    name: payload.name,
-                    email: payload.email,  
-                    image: payload.image,
-                    lastUpdate: 0
-                }
-            })
+     export function login(payload){
+        let data={
+            isVerified: payload.isVerified,
+            user: {
+                token: payload.id,
+                name: payload.name,
+                email: payload.email,  
+                image: payload.photo,
+                lastUpdate: 0
+            }
         }
-    };
+        console.log(data)
+        return {
+            type: LOGIN,
+            payload:data
+        } 
+        //}
+    }; /*/**/
 
     export function logOut(){
         return {
