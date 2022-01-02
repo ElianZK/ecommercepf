@@ -76,7 +76,7 @@ function handleChangeQty(e){
                     <p className={s.prodprice}>{` ${formatMoney(product.price)}`}<span > ARS</span></p>
                     {product.stock>0?<div className={s.grupcount}>
                         <label>Cantidad</label>
-                        <input type="number" min="1" max={product.stock}/>
+                        <input type="number" min="1" max={product.stock} onCange={handleChangeQty}/>
                     </div>:<div></div>}
                     <p className={s.salesnum}><strong>130 </strong>Ventas realizadas</p>
                     <button className={`${s.btn}`}>Comprar ahora</button>

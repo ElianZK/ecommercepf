@@ -10,8 +10,8 @@
  .container .data{
     display: flex;
     flex-direction: row;
-    justify-content: space-around; 
-    height: 700px;
+    justify-content: space-between; 
+    height: auto;
     padding: 2%;
  }
  
