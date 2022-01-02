@@ -160,7 +160,7 @@ import DataTable from 'react-data-table-component';
             title ="My Shopping Cart"
             columns = {columns}
             data = {products}
-            selectableRows
+            //selectableRows
             // onSelectedRowsChange={handleRowSelected}
 			// clearSelectedRows={toggleCleared}
         
