@@ -1,77 +1,163 @@
+
 import{ ADD_TO_CART,
-        REMOVE_ALL_FROM_CART,
-        REMOVE_ONE_FROM_CART,
-        CLEAR_CART
-    
+        ADD_TO_CART_FROM_DB,
+        DELETE_ITEM_FROM_CART,
+        DELETE_ITEM_FROM_CART_LOCALSTORAGE,
+        CART_FROM_LOCALSTORAGE_TO_DB,
+        CART_FROM_DB_TO_LOCALSTORAGE,
+        GET_PRODUCTS_CART,
+        CHANGE_QTY,
+        CLEAR_CART,
+      
+        UPDATE,
+        
 } from '../actions/actionsTypes'
 
 
+
 const initialState ={
-    // products: [
-    //     {id:1, name:tv, price: 100},
-    //     {id:2, name:celu, price: 200},
-    //     {id:3, name:compu, price: 300},
-    //     {id:4, name:teclados, price: 400},
-    //     {id:5, name:impresoras, price: 500}
-    // ]
-
-    cart:[]
+    cart: JSON.parse(localStorage.getItem("cart")) || [],
+    
+   
 }
-
-    export function cartStorage(item, action){    //Storage es objeto
-        let itemCart =JSON.parse(window.localStorage.getItem("cart")) // se codifica pq solo maneja cadena
-        
-        if(itemCart === null) return itemCart = {};
-
-        if(action === 'Add To Cart'){
-            itemCart[item.id].count += 1
-        }
-            itemCart[item.id] = {...item, id: item.id, count:1}
-        if(action === 'Substarct Item'){
-            itemCart[item.id].count -1 === 0 ? delete itemCart[item] : itemCart[item.id].count -= 1
-        }
-        if(action === 'Delete Item'){
-            delete itemCart[item]
-        }
-        if(action === 'Clear Cart'){
-            itemCart={}
-        }
-        window.localStorage.setItem("cart", JSON.stringify(itemCart))
-        return itemCart
-    };
 
 
 export function ordenReducer(state = initialState, action){
     switch(action.type){
+        case GET_PRODUCTS_CART:
+      return {
+        ...state,
+        cart: action.payload,
+      };
         case ADD_TO_CART:
-            const addCart = cartStorage(action.payload, 'Add To Cart')
-            return {
-                ...state,
-                cart: addCart
-            }
+        return {
+            ...state,
+            cart: action.payload,
+        };
 
-        case REMOVE_ALL_FROM_CART:
-            const removeAllCart = cartStorage(action.payload, 'Delete Item') 
-            return {
-                ...state,
-                cart: removeAllCart
-            }  
-        
-        case REMOVE_ONE_FROM_CART:
-            const removeOneCart = cartStorage(action.payload, 'Substarct Item') 
-            return {
-                ...state,
-                cart: removeOneCart
-            }
-            
+        case ADD_TO_CART_FROM_DB:
+        return {
+            ...state,
+            cart: action.payload,
+        };
+
+        case DELETE_ITEM_FROM_CART:
+        return {
+            ...state,
+            cart: state.cart.filter(el => el.id !== action.payload),
+        };
+
+        case  DELETE_ITEM_FROM_CART_LOCALSTORAGE:
+       
+            state.cart.map(item => {
+                		if (item.idproduct === action.payload.idproduct) {
+                			return {...item.qty = item.qty - 1};
+                		} else {
+                			return item;
+                		}
+                	})
+                    return {
+                        ...state,
+                        cart: state.cart.filter(item =>item.qty > 0)
+        };
+    
+
         case CLEAR_CART:
-            const cleCart = cartStorage(action.payload, 'Clear Cart') 
-            return {
-                ...state,
-                cart: cleCart
-            }
             
-        default:
-            return state    
-    }
+        return {
+            ...state,
+            cart: [],
+        };
+
+        case CHANGE_QTY:
+        return {
+            ...state,
+            cart: action.payload,
+        };
+
+        case CART_FROM_LOCALSTORAGE_TO_DB:
+        return {
+            ...state,
+            cart: action.payload.cart,
+            orderId: action.payload.orderId
+        }
+
+        case UPDATE: {
+        	if (state.cart) {
+        		return {
+        			...state,
+        			cart: [...state.cart]
+        		};
+        	}
+        }
+        
+        case CART_FROM_DB_TO_LOCALSTORAGE:
+        return {
+            ...state,
+            cart: [...action.payload.products],
+            orderId: action.payload.orderId
+        }
+            default:
+                return state    
+            }
 }
+        // case ADD_TO_CART:
+        //     let addItem = true;
+
+        // 	state.cart &&
+        // 		state.cart.map(item => {
+        // 			if (item.idproduct === action.payload.idproduct ) {
+        // 				addItem = false;
+        // 				return (item.qty = item.qty + 1 || 1);
+        // 			}
+        // 		});
+
+        // 	addItem === true &&
+        // 		state.cart.push({
+        // 			id: action.payload.id,
+        // 			stock: action.payload.stock,
+        // 			image: action.payload.thumbnail,
+        // 			name: action.payload.name,
+        // 			qty: action.payload.qty,
+        // 			price: action.payload.price,
+                    
+        // 			//	subtotal: action.payload.price * action.payload.cuantity,
+        // 		});
+
+        // 	return {
+        // 		...state,
+        // 	};
+                
+        // case REMOVE_FROM_CART:
+        //     state.cart.map(item => {
+        // 		if (item.idproduct === action.payload.idproduct) {
+        // 			return {...item.qty = item.qty - 1};
+        // 		} else {
+        // 			return item;
+        // 		}
+        // 	}); 
+        //     return {
+        //         ...state,
+        //         cart: state.cart.filter(item =>item.qty > 0)
+        //     }
+
+        // case CHANGE_QTY:
+        //     return{
+        //         ...state,
+        //         cart: action.payload
+        //     }  
+            
+        // case OPEN_MODAL:
+        // return {
+        //     ...state,
+        //     modal: action.payload,
+        // };
+
+
+            
+        // case CLEAR_CART:
+        //     return {
+        //         ...state,
+        //         cart: []
+        //      }
+            
