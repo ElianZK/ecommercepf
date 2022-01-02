@@ -3,18 +3,22 @@ import s from '../assets/styles/Details.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faHeart as Heartwhite } from '@fortawesome/free-regular-svg-icons'
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { getProductId, addToCart, update} from '../actions/index.js'
 import { Slide } from 'react-slideshow-image'
 import DataTable from 'react-data-table-component';
 import {formatMoney} from 'accounting'
+import Swal from 'sweetalert2';
 
 const Details = () => {
     const dispatch = useDispatch();
     const {idproduct} = useParams();
     const product = useSelector(state => state.productsReducer.productDetail[0])
-    const [qty, setQty]  = useState(1)
-    const navigate = useNavigate()
+    const prod = JSON.parse(localStorage.getItem('cart')) || [].find(element => element.id === idproduct);
+    const [qty, setQty] = useState(prod ?.qty||1); 
+
+
+
     const columns = [
     {
         name: 'Title',
@@ -30,8 +34,18 @@ const Details = () => {
 
 function handleAddToCart(e){
     e.preventDefault();
-        dispatch(addToCart(idproduct));
-        dispatch(update(qty))
+        //dispatch(addToCart(product));
+        dispatch(update(Number(qty)))
+        if ((Number(qty)) <= product.stock) {
+            setQty(Number(qty) + 1);
+            dispatch(addToCart({ ...product, qty})) //falta usuario 
+            Swal.fire({
+                icon: 'success',
+                text: 'Producto agregado exitosamente!',
+                showConfirmButton: false,
+                timer: 2000
+              })
+        };
 }
 
 function handleChangeQty(e){

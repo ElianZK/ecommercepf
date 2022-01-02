@@ -1,73 +1,85 @@
-import React, { useState } from 'react'
+import React, {  useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import s from '../../assets/styles/Cart.module.css'
-import {removeFromCart, changeQty, addToCart, clearCart,update} from '../../actions/index'
+import {getProductsCartUser, deleteAllCart, changeQty, deleteItemFromCart, clearCart} from '../../actions/index'
 import Swal from 'sweetalert2';
-import { Link, useHistory, useParams } from 'react-router-dom';
+import { Link, useParams} from 'react-router-dom';
 import DataTable from 'react-data-table-component';
-import { useEffect } from 'react';
 
 
 
 
-export default function Cart() {
-    const {idproduct} = useParams();
+
+ function Cart() {
     const dispatch = useDispatch();
-    const cart = useSelector((state) => state.ordenReducer.cart);
-    const product = useSelector(state => state.productsReducer.productDetail[0])
-    const [selectedRows, setSelectedRows] = useState([]);
-    //const user = useSelector((state) => state.userReducer.users)
-    const qty = window.location.search? Number(window.location.search.split('=') [1]) : 1;
+    const products = useSelector(state => state.ordenReducer.cart);
+    const[qty, setQty] = useState(products.qty);
+    const userId = useParams()
+    //const userId = Cookies.get('id');
 
     useEffect(() => {
-        if(idproduct) {
-          dispatch(addToCart(idproduct, qty));
-        }
-      }, [dispatch, idproduct, qty]);
+        dispatch(getProductsCartUser(userId)); 
+    }, [dispatch, userId]); 
 
-
-
-
-    function handleRemoveFromCart(e){
-        e.preventDefault();
-        let action = window.confirm('Are you sure you want to remove item?')
-        if(action){
-            dispatch(removeFromCart(e))
-        }
-    }
-
-    function handleChangeQty(e, item){
+    const handleDeleteItem = (e) => {
         e.preventDefault()
-        dispatch(changeQty({id:item.idproduct, qty:Number(e.target.value)}))
-        dispatch(update())
+        dispatch(deleteItemFromCart((userId, products.idproduct ? products.idproduct : products.id)))
     }
 
-    const handleChange = () =>(state => {
-		setSelectedRows(state.selectedRows);
-	}, []);
-
-   
-
-    const cartList=[]
-    let totalAmount = 0;  
-    for (const i in cart) {
-        cartList.push(cart[i]);
-        totalAmount += cart[i].price*cart[i].qty 
+    const handleChangeQty = (e) => {
+        e.preventDefault()
+        const { value } = e.target;
+        if (value <= products.stock && value >= 1) {
+            setQty(value);
+            dispatch(changeQty(products, e.target.value, userId));
+        };
     }
 
+
+    function handleDeleteAll(e){
+        e.preventDefault()
+         dispatch(deleteAllCart(userId))   
+    }
+
+    function handleClearCart(e){
+        e.preventDefault()
+        dispatch(clearCart())
+    }
+
+    // const handleGoToCheckout= () => {
+    //     dispatch(goToCheckout(products, userId ))
+    // }
+
+    const totalIncludeDesc = () => {
+        products.length && products.reduce((totalWithoutDesc, { price, qty }) => 
+        totalWithoutDesc + (price * qty), 0);
+    }
+
+    const total = products.length && products.reduce((total, { price, qty, perc_desc }) => 
+        total + price * qty * (100 - perc_desc) / 100, 0);
+
+    const desc = () => {
+        products.length && products.reduce((desc, { price, qty, perc_desc }) => 
+        desc + perc_desc * price * qty / 100, 0);
+    }
+
+
+    // const cartList=[]
+    // let amount = 0;  
+    // for (const i in products) {
+    //  cartList.push(products[i]);
+    //  amount += products[i].price*products[i].qty 
+    // }
 
 
     const columns=[
-        {
-            name: "Id",
-            selector: row => row.id,
-            sortable: true
-        },
+       
 
         {
-            name: "Image",
-            selector: row=>row.image,
-            sortable: true
+            name: "Image",   
+            grow: 0,
+            sortable: true,
+            cell: row => <img height="84px" width="56px" alt={row.name} src={row.image} />
         },
         {
             name: "Name",
@@ -89,7 +101,7 @@ export default function Cart() {
 
         {
             name:"Total Amount",
-            selector:row=> row.totalAmount,
+            selector:row => row.amount,
             sortable: true
         },
 
@@ -102,7 +114,7 @@ export default function Cart() {
         },
 
         {
-            cell: () => <button onClick={handleChangeQty}>-</button>,
+            cell: () => <button onClick={ handleDeleteItem}>-</button>,
             ignoreRowClick: true,
             allowFlow: true,
             button: true
@@ -110,7 +122,7 @@ export default function Cart() {
         },
 
         {
-            cell: () => <button onClick={handleRemoveFromCart}>REMOVE</button>,
+            cell: () => <button onClick={handleDeleteAll}>REMOVE</button>,
             ignoreRowClick: true,
             allowFlow: true,
             button: true
@@ -129,35 +141,37 @@ export default function Cart() {
     return (
         <>
     
-        {cart.length >0?cart.map((p) => {
+        {/* {cartList.length >0 ? cartList.map((p) => {
                     return (
                         <><div key={p.id}>
-                            <img src={p.thumbnail} alt={p.name} />
+                            <img src={p.image} alt={p.name} />
 
                             <p> {p.name}</p>
                         </div><div>
                                 <p><span>$</span>{p.price}</p>
-                            </div><div> {p.qty}  </div><div><span>$</span>{totalAmount}</div></>
+                            </div><div> {p.qty}  </div><div>{p.amount}</div></>
                                    
                     )}):<span>Cart is Empty</span>
-                }
+                } */}
 
 
         <div className={s.container}>
         <DataTable
             title ="My Shopping Cart"
             columns = {columns}
-            data = {cartList}
+            data = {products}
             selectableRows
-            onSelectedRowsChange={handleChange}
+            // onSelectedRowsChange={handleRowSelected}
+			// clearSelectedRows={toggleCleared}
         
             pagination
             paginationComponentOptions = {optionPagination}
             actions
             > </DataTable>
 
-<Link to='/'><span>Go More Shopp</span></Link>
-<Link to='/checkout'><span>Confirm Your Purchase</span></Link>
+<button><Link to='/'><span>Go More Shopp</span></Link></button>
+<button><Link to='/checkout'><span>Confirm Your Purchase</span></Link></button>
+<button onClick={handleClearCart}>CLEAR CART</button>
 
 
 
@@ -204,7 +218,9 @@ export default function Cart() {
             
         
           */}
+         
           </div>
         </>
     )
 }
+export default Cart
