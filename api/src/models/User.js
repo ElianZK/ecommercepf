@@ -11,16 +11,23 @@ module.exports = (sequelize) => {
             primaryKey:true,
             allowNull: false,
             // defaultValue:DataTypes.UUIDV4
+            allowNull: true,
+            defaultValue: DataTypes.UUIDV4
         },
         type: {
             type: DataTypes.ENUM("admin","user"),
             required: true,
             allowNull: false,
         },
-        name:{
-            type:DataTypes.STRING,
-            allowNull:false
+
+        name: {
+            type: DataTypes.STRING
         },
+
+        lastname: {
+            type: DataTypes.STRING
+        },
+
         email: {
             type: DataTypes.STRING,
             allowNull: false,

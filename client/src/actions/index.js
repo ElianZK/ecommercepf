@@ -19,7 +19,7 @@ import { GET_ALL_PRODUCTS,
     EDIT_BRANDS,
     LOGIN,
     LOGOUT,
-    CREATE_USER,
+    //CREATE_USER,
     ADD_TO_CART,
     ADD_TO_CART_FROM_DB,
     DELETE_ITEM_FROM_CART,
@@ -31,6 +31,9 @@ import { GET_ALL_PRODUCTS,
     CHANGE_QTY,
     CLEAR_CART,
     UPDATE,
+    CREATE_USER,
+    GET_USERS,
+    UPDATE_USER
 } from "./actionsTypes";
 import axios from 'axios';
 
@@ -317,14 +320,17 @@ const SERVER = 'http://localhost:3001';
     export function createUser(body) {
         return async function(dispatch){
             try{
-                const res = await axios.post(`${SERVER}/user/`, body)
+                const res = await axios.post(`${SERVER}/users/create`, body)
+
+                console.log("tengo", res);
+
                 return dispatch({
                     type: CREATE_USER,
-                    payload: res
+                    payload: res.data
                 })     
-            }catch(err){
-                console.log(err)
-            }   
+            }catch(e){
+                console.log("hubo un error", e);
+            }
         }
     };
 
@@ -508,14 +514,13 @@ const SERVER = 'http://localhost:3001';
         }
     };
       
-      export const DBcartToLocalStorage = ({userId: userId}) => async (dispatch) => {
+    /*   export const DBcartToLocalStorage = ({userId: userId}) => async (dispatch) => {
           try {
             const { data } = await axios.get(`${SERVER}/user/cart/${userId}`); //falta aut para usuario
             console.log(data);
 
           localStorage.setItem("cart", JSON.stringify(data.products));
-          localStorage.setItem("orderId", data.orderId);
-
+          localStorage.setItem("orderId", data.orderId); 
           dispatch({ 
               type: CART_FROM_DB_TO_LOCALSTORAGE,
                payload: data });
@@ -524,6 +529,44 @@ const SERVER = 'http://localhost:3001';
             console.error(error);
         }
     };
+          */
+    export function getUsers(){
+        return async function(dispatch){
+            try{
+                const res = await axios.get(`${SERVER}/users`);
+
+                const users = res.data.userinfo;
+
+                return dispatch({
+                    type: GET_USERS,
+                    payload: users
+                })     
+            }catch(e){
+                
+            }
+        }
+    }
+
+    export function updateUser(id, user){
+        return async function(dispatch){
+            try{
+                console.log("voy a updatear el user " + id)
+
+                const res = await axios.put(`${SERVER}/users/${id}`, user)
+
+                console.log("se actualizó el user",res);
+
+                return dispatch({
+                    type: UPDATE_USER,
+                    payload: id
+                })
+            }catch(e){
+                console.log("no se pudo actualizar el user", e)
+            }
+        }
+    }
+
+          
 
     export function update(payload) {
         return {
