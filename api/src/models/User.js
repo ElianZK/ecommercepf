@@ -49,7 +49,7 @@ module.exports = (sequelize) => {
                 cp:{type:DataTypes.STRING},
                 domicilio:{type:DataTypes.STRING}
             }),
-            allowNull:false
+            allowNull:true
         }
     },{
         timestamps:false
