@@ -9,10 +9,10 @@ export const SORT_PRODUCTS = 'SORT_PRODUCTS';
 export const CREATE_CATEGORY = 'CREATE_CATEGORY';
 export const CREATE_PRODUCT = 'CREATE_PRODUCT';
 export const FILTERS_CLEAR = 'FILTERS_CLEAR ';
+
 export const LOGIN = "LOGIN";
 export const LOGOUT = "LOGOUT";
-<<<<<<< Updated upstream
-=======
+
 export const REMOVE_CATEGORY ='REMOVE_CATEGORY';
 export const REMOVE_BRANDS ='REMOVE_BRANDS';
 export const EDIT_CATEGORY = 'EDIT_CATEGORY';
@@ -34,5 +34,4 @@ export const GO_TO_CHECKOUT = 'GO_TO_CHECKOUT';
 
 export const CREATE_USER = 'CREATE_USER';
 
->>>>>>> Stashed changes
 

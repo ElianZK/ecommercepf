@@ -6,6 +6,7 @@ import{
     GET_PRODUCTS_CART, 
     REMOVE_ITEM_FROM_CART, 
     REMOVE_ITEM_FROM_CART_LOCALSTORAGE,
+    GO_TO_CHECKOUT
     
 } from '../actions/actionsTypes'
 
