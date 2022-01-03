@@ -7,7 +7,8 @@ const GetUsers = async(req, res, next) =>{
 
         if(limit>6) next({message:"no superar el limit, el maximo permitido es 10"})
         
-        let {count, rows} = await User.findAndCountAll({ offset, limit });
+        // let {count, rows} = await User.findAndCountAll({ offset, limit });
+        let {count, rows} = await User.findAndCountAll();
 
         if (rows.length===0) {
             return res.status(404).json({message:"DB no contiene Usuario"})

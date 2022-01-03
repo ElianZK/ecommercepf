@@ -9,6 +9,7 @@ import Register from './components/Register'
 import CatForm from './components/Admin/CategoryForm'
 import BrandForm from './components/Admin/BrandForm'
 import Cart from './components/Shops.jsx/Cart';
+import UsersForm from './components/Admin/usersForm';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route exact path="/addCategory" element={<CatForm/>} />
         <Route exact path="/addBrand" element={<BrandForm/>} />
         <Route exact path="/addToCart" element={<Cart />} />
+        <Route exact path="/userForm" element={<UsersForm/>} />
       </Routes>
     </div>
   );

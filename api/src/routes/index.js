@@ -12,7 +12,7 @@ router.use('/categories', CategoryRouter);
 router.use('/products', ProductRoutes);
 router.use('/brands', BrandsRouter);
 
-router.use('/auth',AuthRouter);
+router.use('/auth',AuthRouter); 
 router.use('/users', UserRoutes);
 
 module.exports = router;

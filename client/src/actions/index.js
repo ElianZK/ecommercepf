@@ -23,7 +23,9 @@ import { GET_ALL_PRODUCTS,
     REMOVE_ALL_FROM_CART,
     REMOVE_ONE_FROM_CART,
     CLEAR_CART,
-    CREATE_USER
+    CREATE_USER,
+    GET_USERS,
+    UPDATE_USER
 } from "./actionsTypes";
 import axios from 'axios';
 import Swal from 'sweetalert2';
@@ -326,19 +328,55 @@ const SERVER = 'http://localhost:3001';
     export function createUser(body) {
         return async function(dispatch){
             try{
-                const res = await axios.post(`${SERVER}/user/`, body)
+                const res = await axios.post(`${SERVER}/users/create`, body)
+
+                console.log("tengo", res);
+
                 return dispatch({
                     type: CREATE_USER,
-                    payload: res
+                    payload: res.data
                 })     
-            }catch(err){
-                console.log(err)
-            }   
+            }catch(e){
+                console.log("hubo un error", e);
+            }
         }
     };
 
-   
+    export function getUsers(){
+        return async function(dispatch){
+            try{
+                const res = await axios.get(`${SERVER}/users`);
 
+                const users = res.data.userinfo;
+
+                return dispatch({
+                    type: GET_USERS,
+                    payload: users
+                })     
+            }catch(e){
+                
+            }
+        }
+    }
+
+    export function updateUser(id, user){
+        return async function(dispatch){
+            try{
+                console.log("voy a updatear el user " + id)
+
+                const res = await axios.put(`${SERVER}/users/${id}`, user)
+
+                console.log("se actualizó el user",res);
+
+                return dispatch({
+                    type: UPDATE_USER,
+                    payload: id
+                })
+            }catch(e){
+                console.log("no se pudo actualizar el user", e)
+            }
+        }
+    }
 
 
     
