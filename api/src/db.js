@@ -29,7 +29,7 @@ sequelize.models = Object.fromEntries(capsEntries);
 
 // En sequelize.models están todos los modelos importados como propiedades
 // Para relacionarlos hacemos un destructuring
-const { Category, Order, Product, User, Cart, Details, Brand, CategoryBrand} = sequelize.models;
+const { Category, Order, Product, User, Cart, Details, Brand, CategoryBrand, Reviews} = sequelize.models;
 
 // Aca vendrian las relaciones
 
@@ -49,6 +49,9 @@ Brand.belongsToMany(Category, { through: "categoryBrand", foreignKey:"BrandId"})
 CategoryBrand.hasMany(Product, {as:"relation", foreignKey:{name:"idRelation",type: DataTypes.UUID,}}); //relation
 Product.belongsTo(CategoryBrand, {foreignKey:{ name:"idRelation", type: DataTypes.UUID, },as:"relation"}); //categoryBrand
 
+//puntuacion y comentarios del usuario a un producto
+Product.belongsToMany(User, {through:"reviews"});
+User.belongsToMany(Product, {through:"reviews"});
 
 
 module.exports = {
