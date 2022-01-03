@@ -2,7 +2,7 @@ const server = require('./src/app.js');
 const { conn } = require('./src/db.js');
 const { getProducts} =require('./src/Controllers/DbLoading/getProds');
 const {Product, CategoryBrand, Brand, Category} =require('./src/db');
-var start = false;
+var start = true;
 
 
 
@@ -16,7 +16,7 @@ conn.sync({ force: false }).then(async () => {
     try{
     //[si ya hay elementos en la base de datos no hago fetch a la api
     let aux = await Product.count();
-    //! console.log(aux)
+     console.log(aux)
     if(!aux){
 
       //[Busco los productos al endpoint de internet

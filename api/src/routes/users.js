@@ -5,7 +5,7 @@ const { GetUsersId } = require('../Controllers/RouterFunctions/Users/GetUsersId'
 const { EditUsers } = require('../Controllers/RouterFunctions/Users/EditUsers');
 const { DeleteUsers } = require('../Controllers/RouterFunctions/Users/DeleteUsers')
 const {putUserCart, getUserCart, deleteUserCart} = require('../Controllers/RouterFunctions/Users/Cart/');
-//const {getUserOrders} = require('../Controllers/RouterFunctions/Users/Orders/');
+const {getUserOrders, postUserOrder} = require('../Controllers/RouterFunctions/Users/Orders/');
 const router = Router();
 
 router.get('/', GetUsers);
@@ -20,6 +20,7 @@ router.get('/cart/:UserId', getUserCart);
 router.delete('/cart/:UserId', deleteUserCart);
  
 //Orders Routes
-//router.get('/orders/:UserId', getUserOrders);
+router.get('/orders/:UserId', getUserOrders);
+router.post('/order/:UserId', postUserOrder)
 
 module.exports= router
