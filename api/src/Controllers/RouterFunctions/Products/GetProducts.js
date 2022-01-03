@@ -11,9 +11,14 @@ const getProducts= async (req, res, next)=>{
       category, 
       brand,
       condition, 
-      stock=true
+      stock=true,
+      all=false
     } = req.query;
 
+    if(all){
+      let products= await Product.findAndCountAll()
+      return res.json(products).status(200)
+    }
     if(limit>50) next({message: "The requested limit is higher than the allowed. Maximum allowed is 50", status:400})
     
     const options = {product:[], through:[]}; 
