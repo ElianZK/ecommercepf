@@ -17,16 +17,18 @@ import { formatMoney } from 'accounting';
     const dispatch = useDispatch();
     const products = useSelector(state => state.ordenReducer.cart);
     const[qty, setQty] = useState(products.qty);
-    const userId = useParams()
+    const {userId=null} = useParams()
     //const userId = Cookies.get('id');
+    console.log("iduser",userId)
 
     useEffect(() => {
         dispatch(getProductsCartUser(userId)); 
-    }, [dispatch, userId]); 
+    }, [dispatch, userId,products]); 
 
-    const handleDeleteItem = (e) => {
-        e.preventDefault()
-        dispatch(deleteItemFromCart((userId, products.idproduct ? products.idproduct : products.id)))
+    const handleDeleteItem = (idproduct) => {
+        //e.preventDefault()
+        
+        dispatch(deleteItemFromCart(userId, idproduct))
     }
 
     const handleChangeQty = (e) => {
@@ -69,7 +71,6 @@ import { formatMoney } from 'accounting';
 
    
     const columns=[
-        
         {
             name: "Image",   
             grow: 0,
@@ -101,11 +102,12 @@ import { formatMoney } from 'accounting';
         },
 
         {
-            cell: () => <abbr title="Delete Item" ><button className={s.btnDel} onClick={handleDeleteItem}><FontAwesomeIcon icon={faTrashAlt}/></button></abbr>,
+            cell: row => {
+            console.log("table data",row.idProduct)
+            return <abbr title="Delete Item"><button className={s.btnDel} onClick={()=>handleDeleteItem(row.idProduct)}><FontAwesomeIcon icon={faTrashAlt}/></button></abbr>},
             ignoreRowClick: true,
             allowFlow: true,
-            button: true
-            
+            button: true 
         },
     ]
     

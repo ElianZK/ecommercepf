@@ -50,7 +50,7 @@ export function ordenReducer(state = initialState, action){
         case  DELETE_ITEM_FROM_CART_LOCALSTORAGE:
        
             state.cart.map(item => {
-                		if (item.idproduct === action.payload.idproduct) {
+                		if (item.idproduct === action.payload.idProduct) {
                 			return {...item.qty = item.qty - 1};
                 		} else {
                 			return item;

@@ -16,7 +16,7 @@ const Nav = () => {
     const session = useSelector(state => state.productsReducer.loginInfo);
     const dispatch = useDispatch();
     const cart = useSelector(state => state.ordenReducer.cart)
-    let totalItems = cart && [].concat(cart).reduce((accumulator, currentValue) => accumulator + currentValue.qty, 0)
+    let totalItems = cart && [].concat(cart).reduce((accumulator, currentValue) => Number(accumulator) + Number(currentValue.qty), 0)
     //let totalItems = cart.lenght
 
     const {signOut} = useGoogleLogout({

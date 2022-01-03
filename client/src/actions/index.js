@@ -408,13 +408,17 @@ const SERVER = 'http://localhost:3001';
       
     
     export function deleteItemFromCart(userId, idProduct){
+        console.log("Id a eliminar", idProduct)
         return async (dispatch) =>{
             try{
                 if(!userId){
+                    console.log("user null")
                         let cart = JSON.parse(localStorage.getItem("cart")) || [];
                         let itemFind = false;
                         cart = cart.map((p) => {
-                            if(p.id === idProduct){
+                            console.log("map",p)
+                            if(p.idProduct === idProduct){
+                                console.log("item coincidente")
                                 itemFind = true;
                                 return {
                                     ...p,
@@ -427,7 +431,7 @@ const SERVER = 'http://localhost:3001';
                         localStorage.setItem("cart", JSON.stringify(cart));
                         return dispatch({
                             type: DELETE_ITEM_FROM_CART_LOCALSTORAGE,
-                            payload: cart
+                            payload: {idProduct}
                         })
                     }
                     if(userId){

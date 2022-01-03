@@ -51,7 +51,7 @@ function handleAddToCart(e){
 
 function handleChangeQty(e){
     e.preventDefault();
-    setQty(e.target.value)
+    setQty(Number(e.target.value))
 }
 
     

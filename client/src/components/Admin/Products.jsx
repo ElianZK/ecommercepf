@@ -34,7 +34,7 @@ const Products = () => {
         },
         {
             name: 'ACCIONES',
-            selector: row => [<abbr title="Editar categoria" key={0}><button className={s2.btnEdit} onClick={()=>editProduct(row)} ><FontAwesomeIcon icon={faEdit}/></button></abbr>/* ,
+            selector: row => [<abbr title="Editar categoria" key={0}><button className={s2.btnEdit} onClick={()=>editProduct(row.idProduct)} ><FontAwesomeIcon icon={faEdit}/></button></abbr>/* ,
             <abbr title="Eliminar categoria" key={1}><button className={s2.btnDel}><FontAwesomeIcon icon={faTrashAlt}/></button></abbr> */],
             sortable: false,
         },
