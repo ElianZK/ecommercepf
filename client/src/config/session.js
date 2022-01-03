@@ -1,0 +1,10 @@
+{
+    admin:[
+        'users',
+        'products'
+    ]
+    user:[
+        'home',
+        'detalle'
+    ]
+}

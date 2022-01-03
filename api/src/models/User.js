@@ -7,35 +7,24 @@ module.exports = (sequelize) => {
   // defino el modelo
     sequelize.define('user', {
         idUser:{
-            type: DataTypes.UUID,
+            type: DataTypes.STRING,
             primaryKey:true,
             allowNull: false,
-            defaultValue: DataTypes.UUIDV4
+            // defaultValue:DataTypes.UUIDV4
         },
         type: {
             type: DataTypes.ENUM("admin","user"),
             required: true,
             allowNull: false,
         },
-        DNI: {
-            type: DataTypes.INTEGER,
-            required: true,
-            allowNull: false,
-            unique:true
-        },
-        name: {
-            type: DataTypes.STRING,
-            required: true,
-            allowNull: false
-        },
-        lastName: {
-            type: DataTypes.STRING,
-            required: true,
-            allowNull: false
+        name:{
+            type:DataTypes.STRING,
+            allowNull:false
         },
         email: {
             type: DataTypes.STRING,
             allowNull: false,
+            required:true,
             unique:true,
             validate:{
                 isEmail: true
@@ -44,20 +33,26 @@ module.exports = (sequelize) => {
         password: {
             type: DataTypes.STRING,
             required: true,
-            allowNull: false,
-            // set(value){
-            //     this.setDataValue('password', bcrypt.hashSync(value,10))
-            // }
-        },        
-        phone: {
+            allowNull: false
+        },
+        phone:{
             type: DataTypes.STRING,
-            allowNull: false,
-            unique:true,
-            validate:{
-                len:[1,13]
-            }
+            allowNull:false
+        },
+        image:{
+            type:DataTypes.TEXT,
+            allowNull:false
+        },
+        address:{
+            type:DataTypes.JSON({
+                calle:{type:DataTypes.STRING},
+                cp:{type:DataTypes.STRING},
+                domicilio:{type:DataTypes.STRING}
+            }),
+            allowNull:false
         }
     },{
         timestamps:false
     });
 };
+//type, name, email, password, phone, image, address
