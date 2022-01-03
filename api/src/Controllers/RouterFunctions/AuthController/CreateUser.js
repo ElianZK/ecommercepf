@@ -1,12 +1,12 @@
 const { User } = require('../../../db');
 const bcrypt = require('bcrypt');
-const { generarJWT } = require('../../../helpers/jwt');
+//const { generarJWT } = require('../../../helpers/jwt');
 
 const CreateUser = async (req, res, next)=>{
     try {
         //type, name, email, password, phone, image, address
-        let { type, name, email, password, phone, image, address } = req.body;
-        if (!name || !email || !password ) {
+        let {idUser, type, name, email, password, phone, image, address } = req.body;
+        if (!idUser|| !name || !email || !password ) {
             return res.json("faltan datos para completar")
         }
         //encriptar el password
@@ -17,6 +17,7 @@ const CreateUser = async (req, res, next)=>{
         let [newUser, created] = await User.findOrCreate({
             where:{ email },
             defaults:{
+                idUser,
                 type,
                 name,
                 password,
@@ -26,12 +27,12 @@ const CreateUser = async (req, res, next)=>{
             }
         });
         //compruebo si es true o false mi created
-    if (!created) {
-        return res.json({
-            ok:false,
-            message: 'Este email ya existe'
-        })
-    }
+        if (!created) {
+            return res.json({
+                ok:false,
+                message: 'Este email ya existe'
+            })
+        }
         //genero mi JWT
     let token = await generarJWT( newUser );
 

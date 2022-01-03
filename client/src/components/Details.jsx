@@ -4,15 +4,22 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faHeart as Heartwhite } from '@fortawesome/free-regular-svg-icons'
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { getProductId } from '../actions/index.js'
+import { getProductId, addToCart, update} from '../actions/index.js'
 import { Slide } from 'react-slideshow-image'
 import DataTable from 'react-data-table-component';
 import {formatMoney} from 'accounting'
+import Swal from 'sweetalert2';
 
 const Details = () => {
     const dispatch = useDispatch();
     const {idproduct} = useParams();
     const product = useSelector(state => state.productsReducer.productDetail[0])
+    const prod = JSON.parse(localStorage.getItem('cart')) || [].find(element => element.id === idproduct);
+    //const [qty, setQty] = useState(prod ?.qty||1); 
+    const [qty, setQty] = useState(1); 
+
+
+
     const columns = [
     {
         name: 'Title',
@@ -25,10 +32,32 @@ const Details = () => {
         sortable: true,
     },
 ];
+
+function handleAddToCart(e){
+    e.preventDefault();
+        //dispatch(addToCart(product));
+        dispatch(update(Number(qty)))
+        if ((Number(qty)) <= product.stock) {
+            setQty(Number(qty));
+            dispatch(addToCart({ ...product, qty})) //falta usuario 
+            Swal.fire({
+                icon: 'success',
+                text: 'Producto agregado exitosamente!',
+                showConfirmButton: false,
+                timer: 2000
+              })
+        };
+}
+
+function handleChangeQty(e){
+    e.preventDefault();
+    setQty(Number(e.target.value))
+}
+
     
     useEffect(() => {
        dispatch(getProductId(idproduct));
-    }, [dispatch])
+    }, [dispatch, idproduct])
 
     return (
         <>
@@ -48,11 +77,12 @@ const Details = () => {
                     <p className={s.prodprice}>{` ${formatMoney(product.price)}`}<span > ARS</span></p>
                     {product.stock>0?<div className={s.grupcount}>
                         <label>Cantidad</label>
-                        <input type="number" min="1" max={product.stock}/>
+                        <input type="number" min="1" max={product.stock} onChange={handleChangeQty} value={qty}/>
                     </div>:<div></div>}
                     <p className={s.salesnum}><strong>130 </strong>Ventas realizadas</p>
                     <button className={`${s.btn}`}>Comprar ahora</button>
-                    <button className={`${s.btn}`}>Agregar al carrito</button>
+                    <button 
+                        className={`${s.btn}`} onClick={handleAddToCart}>Agregar al carrito</button>
 
                     <h3 className={s.titlepay}>Medios de pago</h3>
                     <img className={s.payment} src="https://http2.mlstatic.com/secure/payment-logos/v2/payment-logo-mlm-consumer_credits-medium_v_ddbb2eb147.png" alt="Logo medio de pago mercado pago" />
