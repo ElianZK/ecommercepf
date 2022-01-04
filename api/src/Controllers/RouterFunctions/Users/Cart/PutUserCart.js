@@ -38,8 +38,8 @@ const putUserCart = async (req,res,next)=>{
 
     //[Actualizo a la cantidad correspondiente de cada producto del carrito
     for(let i=0;i<productsInfo.length;i++){
-      let algo = cart.find(el=>el.ProductId===productsInfo[i].idProduct);
-      await algo.update({amount:productsInfo[i].amount})
+      let product = cart.find(el=>el.ProductId===productsInfo[i].idProduct);
+      await product.update({amount:productsInfo[i].amount})
     }
 
     //[Los vuelvo a pedir para enviar los datos correctamente
@@ -48,7 +48,7 @@ const putUserCart = async (req,res,next)=>{
     });
     products = products.map(el=>{
       const{idProduct, name, price, stock, cart:{amount}} = el.toJSON()
-      return {idProduct, name, price, stock, amount}
+      return {idProduct, name, price, stock, amount, totalPrice:amount*price}
     })
 
     return res.status(200).json({user, cart: products});
