@@ -9,10 +9,6 @@ import {faTrashAlt} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { formatMoney } from 'accounting';
 
-
-
-
-
  function Cart() {
     const dispatch = useDispatch();
     const products = useSelector(state => state.ordenReducer.cart);
@@ -22,8 +18,9 @@ import { formatMoney } from 'accounting';
     console.log("iduser",userId)
 
     useEffect(() => {
-        dispatch(getProductsCartUser(userId)); 
-    }, [dispatch, userId,products]); 
+        dispatch(getProductsCartUser(userId));
+        
+    }, [dispatch, userId]); 
 
     const handleDeleteItem = (idproduct) => {
         //e.preventDefault()
@@ -39,7 +36,6 @@ import { formatMoney } from 'accounting';
             dispatch(changeQty(products, e.target.value, userId));
         };
     }
-
 
     function handleDeleteAll(e){
         e.preventDefault()
@@ -68,8 +64,6 @@ import { formatMoney } from 'accounting';
     //     desc + perc_desc * price * qty / 100, 0);
     // }
 
-
-   
     const columns=[
         {
             name: "Image",   

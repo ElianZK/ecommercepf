@@ -7,7 +7,7 @@ const { LoginUser } = require('../Controllers/RouterFunctions/AuthController/Log
 const router = Router();
 
 
-router.post('/new', CreateUser);
+router.post('/users', CreateUser);
 router.post('/login', LoginUser);
 
 

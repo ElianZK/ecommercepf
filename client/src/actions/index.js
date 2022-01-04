@@ -204,7 +204,8 @@ const SERVER = 'http://localhost:3001';
         }
     }
 
-     export function login(payload){
+    // Login del usuario
+    export function login(payload){
         let data={
             isVerified: payload.isVerified,
             user: {
@@ -317,10 +318,11 @@ const SERVER = 'http://localhost:3001';
         }   
     };
 
+    //crea un usuario 'admin' o 'user'
     export function createUser(body) {
         return async function(dispatch){
             try{
-                const res = await axios.post(`${SERVER}/users/create`, body)
+                const res = await axios.post(`${SERVER}/auth/users`, body)
 
                 console.log("tengo", res);
 
@@ -337,30 +339,30 @@ const SERVER = 'http://localhost:3001';
     
    // me traigo el carro de productos tanto de usuarios como de invitados
 
-     export function getProductsCartUser(userId){
-         return async function (dispatch){
-                 try{
-                 if(!userId){
-                     const itemsCart = JSON.parse(localStorage.getItem("cart")) || [];
-                     return dispatch({
-                         type: GET_PRODUCTS_CART,
-                         payload: itemsCart
-                     })
-                 
-                 }else{
-                         const {itemsCart}= await axios.get(`${SERVER}/user/cart/${userId}`)
-                     //me creo el elemento order en base a lo que tenia en carrito para ese usuario
-                     localStorage.setItem("orderId", itemsCart.orderId) //orderId es el estado para la orden de ese usuario
-                     return dispatch ({
-                             type: ADD_TO_CART,
-                         payload: itemsCart
-                     })
-                  }
-             }catch(err){
-                 console.log(err)
-             }
-         }
-     }
+    export function getProductsCartUser(userId){
+        return async function (dispatch){
+                try{
+                if(!userId){
+                    const itemsCart = JSON.parse(localStorage.getItem("cart")) || [];
+                    return dispatch({
+                        type: GET_PRODUCTS_CART,
+                        payload: itemsCart
+                    })
+                
+                }else{
+                        const {itemsCart}= await axios.get(`${SERVER}/user/cart/${userId}`)
+                    //me creo el elemento order en base a lo que tenia en carrito para ese usuario
+                    localStorage.setItem("orderId", itemsCart.orderId) //orderId es el estado para la orden de ese usuario
+                    return dispatch ({
+                            type: ADD_TO_CART,
+                        payload: itemsCart
+                    })
+                }
+            }catch(err){
+                console.log(err)
+            }
+        }
+    }
     
     
     //para boton de carro y cantidades seleccionadas

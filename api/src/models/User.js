@@ -47,16 +47,14 @@ module.exports = (sequelize) => {
             allowNull:false
         },
         image:{
-            type:DataTypes.TEXT,
-            allowNull:false
+            type:DataTypes.TEXT
         },
         address:{
             type:DataTypes.JSON({
                 calle:{type:DataTypes.STRING},
                 cp:{type:DataTypes.STRING},
                 domicilio:{type:DataTypes.STRING}
-            }),
-            allowNull:true
+            })
         }
     },{
         timestamps:false

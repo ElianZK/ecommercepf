@@ -57,24 +57,32 @@ const Login = () => {
             })
         });
         //if(type==='email')
-          /*await signInWithPopup(auth, provider)
-           .then((userCredential) => {
-            const userdat = userCredential.user;
-            console.log(userdat)
-            //setUser({...userdat,account:'google'})
-            setLogin(true)
-          })
-          .catch((error) => {
-            console.log('error '+error)
-          }); */
-        
-      }
+        /*await signInWithPopup(auth, provider)
+        .then((userCredential) => {
+        const userdat = userCredential.user;
+        console.log(userdat)
+        //setUser({...userdat,account:'google'})
+        setLogin(true)
+        })
+        .catch((error) => {
+        console.log('error '+error)
+        }); */
+    
+    }
     useEffect(() => {
         console.log(login)
         if(loginuser.user.token){
             navigate('/')
         }
     }, [loginuser])
+
+const handleOnChange = e => {
+    setInputs({
+        ...inputs,
+        [e.target.name]: e.target.value
+    })
+}
+
     return (
         <div className={s.container}>
             <div className={s.wrapLogin}>
@@ -82,12 +90,7 @@ const Login = () => {
                     <h2 className={s.title}>Login</h2>
                     <div className={s.formGroup}>
                         <input 
-                            onChange={e => setInputs(prev => {
-                                return{
-                                    ...prev,
-                                    [e.target.name]: e.target.value
-                                }
-                            })} 
+                            onChange={handleOnChange} 
                             className={s.input} 
                             name="email" 
                             value={inputs.email}
@@ -98,12 +101,7 @@ const Login = () => {
                     </div>
                     <div className={s.formGroup}>
                         <input 
-                            onChange={e => setInputs(prev => {
-                                return{
-                                    ...prev,
-                                    [e.target.name]: e.target.value
-                                }
-                            })} 
+                            onChange={handleOnChange} 
                             className={s.input} 
                             name="password"
                             value={inputs.password} 
@@ -113,24 +111,45 @@ const Login = () => {
                         <FontAwesomeIcon className={s.iconInput} icon={faLock}/>
                         
                     </div>
-                    <Link className={s.link} to="/reset_pass">¿Olvidaste tu contraseña?</Link>
+
+                    <Link
+                    className={s.link}
+                    to="/reset_pass"
+                    >¿Olvidaste tu contraseña?</Link>
+
                     <div className={s.containerbuttons}>
-                        <button name="loginWithGoogle" className={`${s.firstbtn} ${s.alternativeSubmit}`} onClick={(e)=>mkLogin(e,'google')}>
-                            <img className={s.icon} src={googleIcon} alt="icono"/>
+                        <button
+                        name="loginWithGoogle"
+                        className={`${s.firstbtn} ${s.alternativeSubmit}`}
+                        onClick={(e)=>mkLogin(e,'google')}
+                        >
+                        <img className={s.icon} src={googleIcon} alt="icono"/>
                         </button>
 
-                        
-                        <button name="loginWithGithub" className={s.alternativeSubmit} type="submit">
-                            <img className={s.icon} src={githubIcon} alt="icono"/>
+                        <button
+                        name="loginWithGithub"
+                        className={s.alternativeSubmit}
+                        type="submit"
+                        >
+                        <img className={s.icon} src={githubIcon} alt="icono"/>
                         </button>
 
-                        <button name="loginWithFB" className={s.alternativeSubmit} type="submit">
-                            <img className={s.icon} src={facebookIcon} alt="icono"/>
+                        <button
+                        name="loginWithFB"
+                        className={s.alternativeSubmit}
+                        type="submit"
+                        >
+                        <img className={s.icon} src={facebookIcon} alt="icono"/>
                         </button>
                     </div>
-                    <button name="login" className={`${s.normalSubmit} ${s.btnText}`} type="submit">Ingresar</button>
 
-                    <p>Si no tenes cuenta,<Link className={s.link} to="/register"> create una aquí</Link></p>
+                    <button
+                    name="login"
+                    className={`${s.normalSubmit} ${s.btnText}`}
+                    type="submit"
+                    >Ingresar</button>
+
+                    <p>Si no tenes cuenta,<Link className={s.link} to="/auth/users"> create una aquí</Link></p>
                 </form>
             </div>
         </div>

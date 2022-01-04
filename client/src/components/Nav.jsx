@@ -43,8 +43,8 @@ const Nav = () => {
                         <h1>{session.user.name}</h1>
                         <button className={s.btn} onClick={() => signOut()}>cerrar sesión</button>
                     </> : <>
-                        <Link to="/login"><button className={s.btn}>Log In</button></Link>
-                        <Link to="/register"><button className={s.btn}>Registrarse</button></Link>
+                        <Link to="/auth/login"><button className={s.btn}>Log In</button></Link>
+                        <Link to="/auth/users"><button className={s.btn}>Registrarse</button></Link>
                     </>}
                     <Link to='/cart' className='nav_links' >
                         <Badge badgeContent={totalItems} color='secondary'>
