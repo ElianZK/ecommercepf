@@ -16,7 +16,7 @@ import { getAuth,
     setPersistence, 
     browserSessionPersistence,
 } from 'firebase/auth';
-import { login } from '../actions/index'
+import { login, loginWithNormalAccount } from '../actions/index'
 
 
 const Login = () => {
@@ -29,27 +29,39 @@ const Login = () => {
         email: "",
         password: ""
     });
+    
     const mkLogin= async (e,type)=>{
         e.preventDefault();
-        console.log(type)
+                
         let provider;
+        
         if(type==='google') provider = new GoogleAuthProvider();
         else if(type==='github') provider = new GithubAuthProvider();
         else if(type==='facebook') provider = new FacebookAuthProvider();
+        
+        console.log("la sesión es de " + type)
+
         setPersistence(auth, browserSessionPersistence)
-        .then(()=>{
+        .then(async ()=>{
             return signInWithPopup(auth, provider).then(res=>{
-                console.log(res.user);
-                let data={
+                let data = {
+                    token: res.user.accessToken,
+                    stsTokenManager: res.user.stsTokenManager,
+                    uid: res.user.uid,
                     isVerified: res.user.emailVerified,
                     id: res.user.uid,
-                    name: res.user.displayName,
+                    name: res.user.displayName || "unknown " + type + " user",
                     photo: res.user.photoURL,
-                }
-                dispatch(login(data))
+                };
+
+                console.log(res);
+
+                localStorage.setItem("user", JSON.stringify(data));
+
+                dispatch(login(data));
             })
         }).catch((error) => {
-            console.log('error '+error)
+            console.log(error)
             Swal.fire({
                 title:'Error al iniciar sesión',
                 text: error.message,
@@ -68,17 +80,22 @@ const Login = () => {
             console.log('error '+error)
           }); */
         
-      }
+    }
+
     useEffect(() => {
-        console.log(login)
         if(loginuser.user.token){
             navigate('/')
         }
     }, [loginuser])
+
     return (
         <div className={s.container}>
             <div className={s.wrapLogin}>
-                <form className={s.form} >
+                <form className={s.form} onSubmit={e => {
+                    e.preventDefault();
+
+                    dispatch(loginWithNormalAccount(inputs))
+                }}>
                     <h2 className={s.title}>Login</h2>
                     <div className={s.formGroup}>
                         <input 
@@ -120,11 +137,11 @@ const Login = () => {
                         </button>
 
                         
-                        <button name="loginWithGithub" className={s.alternativeSubmit} type="submit">
+                        <button name="loginWithGithub" className={s.alternativeSubmit} onClick={(e)=>mkLogin(e,'github')}>
                             <img className={s.icon} src={githubIcon} alt="icono"/>
                         </button>
 
-                        <button name="loginWithFB" className={s.alternativeSubmit} type="submit">
+                        <button name="loginWithFB" className={s.alternativeSubmit} onClick={(e)=>mkLogin(e,'facebook')}>
                             <img className={s.icon} src={facebookIcon} alt="icono"/>
                         </button>
                     </div>

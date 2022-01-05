@@ -93,7 +93,7 @@ const SERVER = 'http://localhost:3001';
                     payload: categories.data
                 })
             }catch(err){
-                console.log(err)
+                console.log("no hay cateegorías", err)
             }
         }
     };
@@ -204,24 +204,32 @@ const SERVER = 'http://localhost:3001';
         }
     }
 
-     export function login(payload){
+    export function login(payload){
         let data={
             isVerified: payload.isVerified,
             user: {
-                token: payload.id,
-                name: payload.name,
-                email: payload.email,  
-                image: payload.photo,
-                lastUpdate: 0
+                ...payload
             }
         }
-        console.log(data)
+
         return {
             type: LOGIN,
             payload:data
-        } 
-        //}
-    }; /*/**/
+        }
+    }; 
+
+    export function loginWithNormalAccount(payload){
+        return async function(dispatch){
+            try{
+                console.log(`${SERVER}/user/login`)
+                const res = await axios.post(`${SERVER}/user/login`, payload);
+
+                console.log(res);
+            }catch(e){
+                console.log("error al loguearse ", e);
+            }
+        }
+    }
 
     export function logOut(){
         return {
