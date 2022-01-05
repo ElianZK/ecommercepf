@@ -6,9 +6,9 @@ let { Category, Order, Product, User, Cart, Details, Brand, CategoryBrand} = req
 const startServer= async()=>{
   try {
     
-    await Brand.sync({force:true});
-    await Category.sync({force:true});
-    await CategoryBrand.sync({force:true});
+    await Brand.sync({force:false});
+    await Category.sync({force:false});
+    await CategoryBrand.sync({force:false});
     await Product.sync({force:false});
     await User.sync({force:true});
     await Order.sync({force:true});
