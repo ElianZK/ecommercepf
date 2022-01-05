@@ -42,7 +42,7 @@ import { formatMoney } from 'accounting';
 
     function handleGoToCheckOut() {
         if (users && users.email?.length > 0) {
-            dispatch(gotToCheckout(userId, products))
+            dispatch(goToCheckout(userId, products))
            navigate('/checkout')
         } else {
             navigate('/register');
