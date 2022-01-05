@@ -32,6 +32,19 @@ h1{
     border: 1px solid black;
 }
 
+.btnEdit{
+    width: 30px;
+    height: 30px;
+    background-color: rgb(64, 207, 28);
+    color: white;
+    border: 1px solid black;
+}
+
+.btnEdit:hover{
+    background-color: black;
+    border: solid 2px rgb(64, 207, 28);
+}
+
 .btnDel:hover{
     background-color: black;
     border: solid 2px rgb(236, 47, 47);

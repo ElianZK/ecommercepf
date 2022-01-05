@@ -16,7 +16,7 @@ const Nav = () => {
     const session = useSelector(state => state.productsReducer.loginInfo);
     const dispatch = useDispatch();
     const cart = useSelector(state => state.ordenReducer.cart)
-    let totalItems = cart && [].concat(cart).reduce((accumulator, currentValue) => accumulator + currentValue.qty, 0)
+    let totalItems = cart && [].concat(cart).reduce((accumulator, currentValue) => Number(accumulator) + Number(currentValue.qty), 0)
     //let totalItems = cart.lenght
 
     const {signOut} = useGoogleLogout({
@@ -47,7 +47,7 @@ const Nav = () => {
                         <Link to="/register"><button className={s.btn}>Registrarse</button></Link>
                     </>}
                     <Link to='/cart' className='nav_links' >
-                        <Badge badgeContent={totalItems} color='secondary'>
+                        <Badge badgeContent={Number(totalItems)} color='secondary'>
                         <ShoppingCart fontSize='large' color='primary' />
                         </Badge>
                     </Link>
