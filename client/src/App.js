@@ -12,6 +12,8 @@ import Products from './components/Admin/Products'
 import Cart from './components/Shops/Cart';
 //import Cart from './components/Shops.jsx/Cart';
 import UsersForm from './components/Admin/usersForm';
+import BuyHistory from './components/Shops/BuyHistory';
+import BuyDetail from './components/Shops/BuyDetail';
 
 function App() {
   
@@ -30,6 +32,8 @@ function App() {
         <Route exact path="/products" element={<Products />} />
         <Route exact path="/cart" element={<Cart />} />
         <Route exact path="/userForm" element={<UsersForm/>} />
+        <Route exact path="/buyHistory" element={<BuyHistory/>} />
+        <Route exact path="/buyDetail" element={<BuyDetail/>} />
       </Routes>
     </div>
   );
