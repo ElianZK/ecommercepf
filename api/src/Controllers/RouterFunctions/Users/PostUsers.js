@@ -5,14 +5,17 @@ const PostUsers = async(req, res, next) =>{
     try {
         let { name, lastname, type , email, password, phone} = req.body;
         
+        console.log("voy a crear un user", req.body);
+
         if (!email || !password ) {
             return res.json({created:false, message: "faltan datos para completar"})
         }
 
         //encriptar el password
-        let salt = bcrypt.genSaltSync();
-        password = bcrypt.hashSync(password, salt);
-        
+        // TODO: antes de implementar hasheo, hay que averiguar como deshashear
+        // let salt = bcrypt.genSaltSync();
+        // password = bcrypt.hashSync(password, salt);
+
         //guardar en la base da datos
         let [newUser, created] = await User.findOrCreate({
             where:{ email },

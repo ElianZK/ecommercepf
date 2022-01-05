@@ -12,7 +12,6 @@ import Pagination from "./Pagination.jsx";
 import imgnotfound from "../assets/img/notfound.gif";
 
 
-
 const Home = () => {
     const dispatch = useDispatch();
     const {search=null} = useParams();
@@ -25,7 +24,6 @@ const Home = () => {
             return state.productsReducer.allProducts.productsInfo
     }) 
     const total = useSelector((state) => {
-        console.log(state)
         return state.productsReducer.allProducts.total || 0
     }) 
     const [page, setPage] = useState(1);
@@ -60,16 +58,13 @@ const Home = () => {
 
     useEffect(()=>{
         const offset=(page-1)*limit;
-        console.log('category: '+category)
         if(!search){
             dispatch(getAllProducts({limit: limit,offset: offset,category:category,brand:brand}))
             dispatch(sortProducts(sort))
-            console.log(sort)
         }
         else{
             dispatch(getProductByName(search))
         }
-        console.log(products)
     }, [dispatch,page,category,brand,limit])
   
 
