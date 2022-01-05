@@ -94,7 +94,9 @@ const Login = () => {
                 <form className={s.form} onSubmit={e => {
                     e.preventDefault();
 
-                    dispatch(loginWithNormalAccount(inputs))
+                    dispatch(loginWithNormalAccount(inputs));
+
+                    navigate("/");
                 }}>
                     <h2 className={s.title}>Login</h2>
                     <div className={s.formGroup}>
@@ -128,9 +130,10 @@ const Login = () => {
                             placeholder="Contraseña"
                         />
                         <FontAwesomeIcon className={s.iconInput} icon={faLock}/>
-                        
                     </div>
+
                     <Link className={s.link} to="/reset_pass">¿Olvidaste tu contraseña?</Link>
+                    
                     <div className={s.containerbuttons}>
                         <button name="loginWithGoogle" className={`${s.firstbtn} ${s.alternativeSubmit}`} onClick={(e)=>mkLogin(e,'google')}>
                             <img className={s.icon} src={googleIcon} alt="icono"/>

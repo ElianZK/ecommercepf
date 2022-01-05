@@ -11,9 +11,11 @@ import logo from '../assets/img/logo-ecommerce.png'
 import {ShoppingCart} from '@material-ui/icons';
 import {Badge} from '@material-ui/core';
 
-
 const Nav = () => {
-    const user = useSelector(state => state.usersReducer.loginInfo.user);
+    const user = useSelector(state => {
+        console.log(state.usersReducer)
+        return state.usersReducer.loginInfo.user;
+    });
     const navigate = useNavigate();
     
     const dispatch = useDispatch();
@@ -27,21 +29,22 @@ const Nav = () => {
                 <img className={s.logo} src={logo} onClick={()=>{window.location='/'}} alt="logo ecommerce"/> 
                 <SearchBar />
                 <div className={s.buttons}>
-                    {user.token ? <>
+                    {user.token || user.idUser ? <>
                         <h1>{user.name}</h1>
                         <button className={s.btn} onClick={() => {
                             localStorage.setItem("user", JSON.stringify({token: null}));
                             dispatch(login({token: null}));
                         }}>cerrar sesión</button>
+                        
+                        <Link to='/cart' className='nav_links' >
+                            <Badge badgeContent={totalItems} color='secondary'>
+                            <ShoppingCart fontSize='large' color='primary' />
+                            </Badge>
+                        </Link>
                     </> : <>
                         <Link to="/login"><button className={s.btn}>Log In</button></Link>
                         <Link to="/register"><button className={s.btn}>Registrarse</button></Link>
                     </>}
-                    <Link to='/cart' className='nav_links' >
-                        <Badge badgeContent={totalItems} color='secondary'>
-                        <ShoppingCart fontSize='large' color='primary' />
-                        </Badge>
-                    </Link>
                 </div>
             </nav>
             

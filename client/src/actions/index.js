@@ -221,10 +221,20 @@ const SERVER = 'http://localhost:3001';
     export function loginWithNormalAccount(payload){
         return async function(dispatch){
             try{
-                console.log(`${SERVER}/user/login`)
                 const res = await axios.post(`${SERVER}/user/login`, payload);
 
-                console.log(res);
+                let data = {
+                    user: {
+                        ...res.data
+                    }
+                }
+
+                localStorage.setItem("user", JSON.stringify(data.user));
+
+                return dispatch({
+                    type: LOGIN,
+                    payload: data
+                });
             }catch(e){
                 console.log("error al loguearse ", e);
             }
