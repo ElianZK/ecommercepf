@@ -7,11 +7,9 @@ module.exports = (sequelize) => {
   // defino el modelo
     sequelize.define('user', {
         idUser:{
-            type: DataTypes.UUID,
+            type: DataTypes.STRING,
             primaryKey:true,
             allowNull: false,
-            // defaultValue:DataTypes.UUIDV4
-            allowNull: true,
             defaultValue: DataTypes.UUIDV4
         },
         type: {
@@ -48,7 +46,8 @@ module.exports = (sequelize) => {
         },
         image:{
             type:DataTypes.TEXT,
-            allowNull:false
+            allowNull:false,
+            defaultValue: "https://icon-library.com/images/no-user-image-icon/no-user-image-icon-3.jpg"
         },
         address:{
             type:DataTypes.JSON({
@@ -56,7 +55,12 @@ module.exports = (sequelize) => {
                 cp:{type:DataTypes.STRING},
                 domicilio:{type:DataTypes.STRING}
             }),
-            allowNull:false
+            allowNull:true,
+            defaultValue: {
+                calle: "",
+                cp: "",
+                domicilio: ""
+            }
         }
     },{
         timestamps:false

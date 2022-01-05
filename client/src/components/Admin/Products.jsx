@@ -34,7 +34,7 @@ const Products = () => {
         },
         {
             name: 'ACCIONES',
-            selector: row => [<abbr title="Editar categoria" key={0}><button className={s2.btnEdit} onClick={()=>editProduct(row.idProduct)} ><FontAwesomeIcon icon={faEdit}/></button></abbr>/* ,
+            selector: row => [<abbr title="Editar categoria" key={0}><button className={s2.btnEdit} onClick={()=>editProduct(row)} ><FontAwesomeIcon icon={faEdit}/></button></abbr>/* ,
             <abbr title="Eliminar categoria" key={1}><button className={s2.btnDel}><FontAwesomeIcon icon={faTrashAlt}/></button></abbr> */],
             sortable: false,
         },
@@ -47,21 +47,36 @@ const Products = () => {
     }, [dispatch])
     return (
         <div className={s.Container}>
-            <div className={s.modal}>
+            {/* <div className={s.modal}>
                 <form className={s.editProd}>
                     <div>
-                        <div className={s.formGroup}></div>
-                        <div className={s.formGroup}></div>
-                        <div className={s.formGroup}></div>
-                        <div className={s.formGroup}></div>
-                        <div className={s.formGroup}></div>
-                        <div className={s.formGroup}></div>
-                        <div className={s.formGroup}></div>
+                        <div className={s.formGroup}>
+
+
+                        </div>
+                        <div className={s.formGroup}>
+
+                        </div>
+                        <div className={s.formGroup}>
+
+                        </div>
+                        <div className={s.formGroup}>
+
+                        </div>
+                        <div className={s.formGroup}>
+
+                        </div>
+                        <div className={s.formGroup}>
+
+                        </div>
+                        <div className={s.formGroup}>
+
+                        </div>
                     </div>
 
                 </form>
 
-            </div>
+            </div> */}
             <form className={s.Form}>
                 <h2 className={s.Title}>Registro de Productos</h2>
                 <div className={s.formGroup}>
@@ -76,10 +91,10 @@ const Products = () => {
                 <div className={s.formGroup}>
                     <input id="image" name="image" type="text" placeholder="Ingrese la imagen"></input>
                 </div>
-                <div className={s.formGroup}>
+                <div className={s.formDetail}>
                     <input id="att" name="att" type="text" placeholder="Ingrese el atributo"></input>
                     <input id="desc" name="desc" type="text" placeholder="Ingrese la descripcion"></input>
-                    <button>Agregar</button>
+                    <button>ADD</button>
                 </div>
                 <div className={s.formGroup}>
                     <button className={s.button}>Registrar</button>
