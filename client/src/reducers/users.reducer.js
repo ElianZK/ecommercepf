@@ -1,8 +1,12 @@
 import{
+    CREATE_USER,
+    GET_USERS,
     LOGIN,
     LOGOUT,
     ERROR_LOGIN,
     //RESET,
+    RESET,
+    UPDATE_USER,
 } from '../actions/actionsTypes'
 
 const initialState = {
@@ -13,10 +17,12 @@ const initialState = {
         },
         lastUpdate: 0
     },
-    error:null
+    error:null,
+
+    registerInfo: null
 }
 
-export function usersReducer(state = initialState, action){   
+export function usersReducer(state = initialState, action){ 
     switch(action.type){
         case LOGIN:
             return{
@@ -32,6 +38,26 @@ export function usersReducer(state = initialState, action){
                 ...state,
                 error:action.payload
             }
+
+        case CREATE_USER:
+            return{
+                ...state,
+                registerInfo: action.payload
+            }
+
+        case GET_USERS:
+                return{
+                    ...state,
+                    users: action.payload
+                }
+
+        case UPDATE_USER:{
+            console.log("user en reducer " + action.payload)
+            return{
+                ...state
+            }
+        }
+
         default:
             return state;
     }

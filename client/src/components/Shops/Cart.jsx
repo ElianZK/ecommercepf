@@ -18,17 +18,18 @@ import { formatMoney } from 'accounting';
     const products = useSelector(state => state.ordenReducer.cart);
     const users = useSelector(state => state.usersReducer.users)
     const[qty, setQty] = useState(products.qty);
-    const userId = useParams()
-    const navigate = useNavigate()
+    const {userId=null} = useParams()
     //const userId = Cookies.get('id');
+    console.log("iduser",userId)
 
     useEffect(() => {
         dispatch(getProductsCartUser(userId)); 
-    }, [dispatch, userId]); 
+    }, [dispatch, userId,products]); 
 
-    const handleDeleteItem = (e) => {
-        e.preventDefault()
-        dispatch(deleteItemFromCart(e))
+    const handleDeleteItem = (idproduct) => {
+        //e.preventDefault()
+        
+        dispatch(deleteItemFromCart(userId, idproduct))
     }
 
     const handleChangeQty = (e) => {
@@ -41,13 +42,13 @@ import { formatMoney } from 'accounting';
     }
 
     function handleGoToCheckOut() {
-        if (users && users.email?.length > 0) {
-            dispatch(goToCheckout(userId, products))
-           navigate('/checkout')
-        } else {
-            navigate('/register');
-        }
-    }
+        // if (users && users.email?.length > 0) {
+        //     dispatch(goToCheckout(userId, products))
+        //    navigate('/checkout')
+        // } else {
+        //     navigate('/register');
+        // }
+    } 
 
 
     function handleClearCart(e){
@@ -71,7 +72,6 @@ import { formatMoney } from 'accounting';
 
    
     const columns=[
-        
         {
             name: "Image",   
             grow: 0,
@@ -110,11 +110,12 @@ import { formatMoney } from 'accounting';
         },
 
         {
-            cell: () => <abbr title="Delete Item" ><button className={s.btnDel} value={qty}onClick={handleDeleteItem}><FontAwesomeIcon icon={faTrashAlt}/></button></abbr>,
+            cell: row => {
+            console.log("table data",row.idProduct)
+            return <abbr title="Delete Item"><button className={s.btnDel} onClick={()=>handleDeleteItem(row.idProduct)}><FontAwesomeIcon icon={faTrashAlt}/></button></abbr>},
             ignoreRowClick: true,
             allowFlow: true,
-            button: true
-            
+            button: true 
         },
     ]
     

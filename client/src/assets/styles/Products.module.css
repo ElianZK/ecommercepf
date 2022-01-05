@@ -14,14 +14,14 @@
 .Form{
    /*  margin-top:120px; */
     width: 500px;
-    height: 300px; /**/
+    min-height: 300px; /**/
     background-color: #2D334A;
     border-radius: 5px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding-top: 50px;
+    padding: 50px 0;
     margin-bottom: 60px;
 }
 
@@ -54,6 +54,28 @@
     padding: 0 20px;
     text-align: center;
 }
+.formDetail{
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+    width: 70%;
+    flex-wrap: wrap;
+}
+.formDetail input{
+    width: 37%;
+    height: 40px;
+    border-radius: 3px;
+    padding: 0 20px;
+    text-align: center;
+}
+.formDetail button{
+    width: 30%;
+    height: 40px;
+    margin-top: 10px;
+    border-radius: 3px;
+    padding: 0 20px;
+    text-align: center;
+}
 
 .button{
     background-color: #ffd803;
@@ -61,4 +83,18 @@
     /* width: 100px; */
     border-radius: 3px;
     
+}
+.containerSearch{
+    display: flex;
+    width: 100%;
+    height: 90px;
+    align-items: center;
+    justify-content: flex-end;
+    
+}
+
+.containerSearch input{
+    width: 250px;
+    height: 40px;
+    padding: 0 10px;
 }
