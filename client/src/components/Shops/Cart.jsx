@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import s from '../../assets/styles/Cart.module.css'
 import {getProductsCartUser, deleteAllCart, changeQty, deleteItemFromCart, clearCart} from '../../actions/index'
 import Swal from 'sweetalert2';
-import { Link, useParams} from 'react-router-dom';
+import { Link, useNavigate, useParams} from 'react-router-dom';
 import DataTable from 'react-data-table-component';
 import {faTrashAlt} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -16,6 +16,7 @@ import { formatMoney } from 'accounting';
  function Cart() {
     const dispatch = useDispatch();
     const products = useSelector(state => state.ordenReducer.cart);
+    const users = useSelector(state => state.usersReducer.users)
     const[qty, setQty] = useState(products.qty);
     const {userId=null} = useParams()
     //const userId = Cookies.get('id');
@@ -40,28 +41,28 @@ import { formatMoney } from 'accounting';
         };
     }
 
+     function handleGoToCheckOut() {
+        /*if (users && users.email?.length > 0) {
+            dispatch(gotToCheckout(userId, products))
+           navigate('/checkout')
+        } else {
+            navigate('/register');
+        }*/
+    } 
 
-    function handleDeleteAll(e){
-        e.preventDefault()
-         dispatch(deleteAllCart(userId))   
-    }
 
     function handleClearCart(e){
         e.preventDefault()
         dispatch(clearCart())
     }
 
-    // const handleGoToCheckout= () => {
-    //     dispatch(goToCheckout(products, userId ))
-    // }
-
     // const totalIncludeDesc = () => {
     //     products.length && products.reduce((totalWithoutDesc, { price, qty }) => 
     //     totalWithoutDesc + (price * qty), 0);
     // }
 
-   const total = products.length && products.reduce((total, { price, qty, perc_desc }) => 
-    total + price * qty * (100 - perc_desc) / 100, 0);
+//    const total = products.length && products.reduce((total, { price, qty, perc_desc }) => 
+//     total + price * qty * (100 - perc_desc) / 100, 0);
 
     // const desc = () => {
     //     products.length && products.reduce((desc, { price, qty, perc_desc }) => 
@@ -100,6 +101,13 @@ import { formatMoney } from 'accounting';
             selector:row => formatMoney(row.price * row.qty),
             sortable: true
         },
+        {
+            cell: () => <abbr title="Add Item" ><button className={s.btnDel}value={qty} onClick= {handleChangeQty }><FontAwesomeIcon icon={faTrashAlt}/></button></abbr>,
+            ignoreRowClick: true,
+            allowFlow: true,
+            button: true
+            
+        },
 
         {
             cell: row => {
@@ -130,9 +138,7 @@ import { formatMoney } from 'accounting';
                 actions
                 > </DataTable>
             </div>
-
                 <div>
-                   
                         <div className={s.amount}>
                            Total Amount: {formatMoney(products.reduce((a, c) => a + c.price*c.qty,0))}
                             
@@ -142,15 +148,11 @@ import { formatMoney } from 'accounting';
                 <div className={s.btn_container}>
                     <button className={s.btn}><Link to='/'><span>GO MORE SHOP</span></Link></button>
                     
-                    <button className={s.btn}><Link to='/checkout'><span>GO TO CHECKOUT</span></Link></button>
+                    <button className={s.btn}><Link to='/checkout' onClick={handleGoToCheckOut}><span>GO TO CHECKOUT</span></Link></button>
                  
-                    {/* <button className={s.btn} onClick={handleClearCart}>CLEAR ALL CART</button>  */}
+                    <button className={s.btn} onClick={handleClearCart}>CLEAR ALL CART</button>  
 
-                </div>
-
-            
-                                
-          
+                </div>                         
         </>
     )
 }

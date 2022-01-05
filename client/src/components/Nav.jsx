@@ -47,7 +47,7 @@ const Nav = () => {
                         <Link to="/register"><button className={s.btn}>Registrarse</button></Link>
                     </>}
                     <Link to='/cart' className='nav_links' >
-                        <Badge badgeContent={totalItems} color='secondary'>
+                        <Badge badgeContent={Number(totalItems)} color='secondary'>
                         <ShoppingCart fontSize='large' color='primary' />
                         </Badge>
                     </Link>
