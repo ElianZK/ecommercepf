@@ -46,24 +46,24 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
             allowNull:false
         },
-        // image:{
-        //     type:DataTypes.TEXT,
-        //     allowNull:false,
-        //     defaultValue: ""
-        // },
-        // address:{
-        //     type:DataTypes.JSON({
-        //         calle:{type:DataTypes.STRING},
-        //         cp:{type:DataTypes.STRING},
-        //         domicilio:{type:DataTypes.STRING}
-        //     }),
-        //     allowNull:false,
-        //     defaultValue: {
-        //         calle: "",
-        //         cp: "",
-        //         domicilio: ""
-        //     }
-        // }
+        image:{
+            type:DataTypes.TEXT,
+            allowNull:false,
+            defaultValue: "https://icon-library.com/images/no-user-image-icon/no-user-image-icon-3.jpg"
+        },
+        address:{
+            type:DataTypes.JSON({
+                calle:{type:DataTypes.STRING},
+                cp:{type:DataTypes.STRING},
+                domicilio:{type:DataTypes.STRING}
+            }),
+            allowNull:true,
+            defaultValue: {
+                calle: "",
+                cp: "",
+                domicilio: ""
+            }
+        }
     },{
         timestamps:false
     });
