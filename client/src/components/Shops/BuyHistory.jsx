@@ -3,9 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from 'react-router-dom';
 import {info} from './info';
 import s from '../../assets/styles/BuyHistory.module.css'
+import { formatMoney } from 'accounting';
 
-
- function BuyHistory() {
+ 
+export default function BuyHistory() {
 
     const dispatch = useDispatch()
     const orders = info
@@ -42,24 +43,33 @@ import s from '../../assets/styles/BuyHistory.module.css'
                     <div className={s.cardContainer}>
 
                         <ul className={s.stateAmount}>
-                            <li className={s.status}>{e.status[0]}</li>
+                            <li className={s.status}>{e.status[3].toUpperCase()}</li>
                             <li className={s.amount}>
-                                Monto: ${e.cart.map(e=>{
+                                Total: ${e.cart.map(e=>{
                                     let t = 0;
-                                    let a = parseInt(e.price,10)
-                                    let b = parseInt(e.qty,10)
-                                    t=(t+(a*b))
+                                    t+=(e.price*e.qty)
                                     return t
                                 })}
                             </li>
                         </ul>
 
-                        <div className={s.buttons}>
+                        <div className={s.detail}>       
+                            {e.cart.map(p=>{
+                                return(
+                                    <ul className={s.detailContainer}>
+                                        <li className={s.productName}>{p.name}</li><br></br>
+                                        <li className={s.productQty}>units: {p.qty}</li><br></br>
+                                        <li className={s.productPrice}>price: {formatMoney(p.price*p.qty)}</li>
+                                    </ul>
+                                )
+                            })}
+                        </div>
+                        {/* <div className={s.buttons}>
                             <Link to="/buyDetail"><button value={e.idOrder}>Detalle de compra</button></Link>
                             <button
                             onClick={handleBuy}
                             >Volver a comprar</button>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             )})}
@@ -67,5 +77,3 @@ import s from '../../assets/styles/BuyHistory.module.css'
     </div>
     )
 }
-
-export default BuyHistory

@@ -32,7 +32,7 @@ export const info = [
         cart: [{
                 idProduct: '990c91fe-8aeb-4f09-aeef-de9fcd6fb079',
                 name: 'Smartwatch Imilab Kw66 Smart Watch 1.28  Caja 45.3mm De  Aleación De Zinc  Black Malla  Black De  Silicona',
-                price: 455924,
+                price: 4559,
                 qty: 3
             },
             {

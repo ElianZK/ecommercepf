@@ -23,7 +23,7 @@
     justify-content: space-between;
     background-color: #bae8e8;
     width: 600px;
-    height: 170px;
+    height: 250px;
     border-radius: 7px;
     margin: 20px;
     border-style: solid;
@@ -42,7 +42,7 @@
 
 .cardContainer{
     display: flex;
-    height: 140px;
+    height: 220px;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
@@ -52,23 +52,23 @@
 .stateAmount{
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     height: 170px;
-    padding-left: 10px;
+    /* padding-left: 10px; */
 }
 
 .status{
     color: rgb(53, 196, 45);
-    font-size:40px;
-    padding-left: 30px;
+    font-size:30px;
+    padding-left: 20px;
     margin-bottom: 10px;
 }
 
 .amount{
     color:#272343;
-    font-size: x-large;
+    font-size: large;
     padding-bottom: 10px;
-    padding-left: 30px;
+    padding-left: 20px;
     margin-top: 10px;
 }
 
@@ -85,4 +85,32 @@
     width: 150px;
     border-radius: 5px;
     margin: 10px;
+}
+
+.detail{
+    width: 250px;
+    height: 220px;
+    overflow-y: auto;
+    border-left:2px solid #272343;
+    border-bottom-right-radius: 5px;
+}
+
+.detailContainer{
+    border-top:2px solid #272343;
+    margin-bottom: 10px;
+}
+
+.productName{
+    font-size: 11px;
+    padding-left: 25px;
+}
+.productQty{
+    font-size: 11px;
+    padding-left: 25px;
+
+}
+.productPrice{
+    font-size: 11px;
+    padding-left: 25px;
+
 }
