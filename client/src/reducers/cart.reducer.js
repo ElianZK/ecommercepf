@@ -46,7 +46,7 @@ export function cartReducer(state = initialState, action){
                 ...state,
                 cart: [...state.cart.map(p => {
                     if(p.id === action.payload){
-                        p.quantity = 0;
+                        p.qty = 0;
                         return p;
                     }return p
                 })]

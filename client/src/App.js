@@ -28,7 +28,7 @@ function App() {
     }else{
       dispatch(login({token: null}));
     }
-  }, [])
+  }, [dispatch])
 
   return (
     <div className="App">
