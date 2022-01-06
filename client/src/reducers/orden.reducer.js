@@ -50,7 +50,7 @@ export function ordenReducer(state = initialState, action){
         case  DELETE_ITEM_FROM_CART_LOCALSTORAGE:
        
             state.cart.map(item => {
-                		if (item.idproduct === action.payload.idproduct) {
+                		if (item.idproduct === action.payload.idProduct) {
                 			return {...item.qty = item.qty - 1};
                 		} else {
                 			return item;
@@ -83,12 +83,12 @@ export function ordenReducer(state = initialState, action){
         }
 
         case UPDATE: {
-        	if (state.cart) {
+        
         		return {
         			...state,
         			cart: [...state.cart]
         		};
-        	}
+        	
         }
         
         case CART_FROM_DB_TO_LOCALSTORAGE:
@@ -101,63 +101,4 @@ export function ordenReducer(state = initialState, action){
                 return state    
             }
 }
-        // case ADD_TO_CART:
-        //     let addItem = true;
-
-        // 	state.cart &&
-        // 		state.cart.map(item => {
-        // 			if (item.idproduct === action.payload.idproduct ) {
-        // 				addItem = false;
-        // 				return (item.qty = item.qty + 1 || 1);
-        // 			}
-        // 		});
-
-        // 	addItem === true &&
-        // 		state.cart.push({
-        // 			id: action.payload.id,
-        // 			stock: action.payload.stock,
-        // 			image: action.payload.thumbnail,
-        // 			name: action.payload.name,
-        // 			qty: action.payload.qty,
-        // 			price: action.payload.price,
-                    
-        // 			//	subtotal: action.payload.price * action.payload.cuantity,
-        // 		});
-
-        // 	return {
-        // 		...state,
-        // 	};
-                
-        // case REMOVE_FROM_CART:
-        //     state.cart.map(item => {
-        // 		if (item.idproduct === action.payload.idproduct) {
-        // 			return {...item.qty = item.qty - 1};
-        // 		} else {
-        // 			return item;
-        // 		}
-        // 	}); 
-        //     return {
-        //         ...state,
-        //         cart: state.cart.filter(item =>item.qty > 0)
-        //     }
-
-        // case CHANGE_QTY:
-        //     return{
-        //         ...state,
-        //         cart: action.payload
-        //     }  
-            
-        // case OPEN_MODAL:
-        // return {
-        //     ...state,
-        //     modal: action.payload,
-        // };
-
-
-            
-        // case CLEAR_CART:
-        //     return {
-        //         ...state,
-        //         cart: []
-        //      }
-            
+       

@@ -1,4 +1,6 @@
 import { initializeApp } from "firebase/app";
+import {getAuth, GoogleAuthProvider, signInWithPopup} from "firebase/auth";
+
 require('dotenv').config();
 
 const firebaseconf={
@@ -11,7 +13,23 @@ const firebaseconf={
     measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENTID
 } 
 const app = initializeApp(firebaseconf);  
+
+const provider = new GoogleAuthProvider();
+
+const signInWithGoogle = () => {
+    signInWithPopup(auth, provider)
+    .then(res => {
+        console.log(res);
+    }).catch(e => {
+        console.log(e);
+    })
+}
+
+const auth = getAuth(app);
+
 export {
     firebaseconf,
-    app
+    app,
+    auth,
+    signInWithGoogle
 };

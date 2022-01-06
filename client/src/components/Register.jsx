@@ -1,11 +1,15 @@
 import React,{useState, useEffect}  from 'react';
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { createUser } from '../actions';
+
+import { signInWithGoogle } from '../config/firebase-config';
+
 import Swal from 'sweetalert2';
 
 import s from '../assets/styles/Register.module.css'
+import { createUserWithEmailAndPassword, getAuth, GoogleAuthProvider } from 'firebase/auth';
 
 // localhost:3001/users/CreateUser
 
@@ -24,8 +28,8 @@ function Register() {
         name: '',
         lastname:'',
         email:'',
-        pass:'',
-        tel:'',
+        password:'',
+        phone:'',
         chterm:false,
     })
 
@@ -33,6 +37,28 @@ function Register() {
 
     // define que tipo de error hay al autenticarse
     const [AuthError, setAuthError] = useState("");
+
+    const registerInfo = useSelector(state => state.usersReducer.registerInfo);
+
+    useEffect(() => {
+        if(registerInfo !== null){
+            if(typeof registerInfo === "string"){
+                Swal.fire({
+                    title: "ERROR",
+                    text: registerInfo,
+                    icon: "error"
+                })
+            }else{
+                Swal.fire({
+                    title: "Registro exitoso",
+                    text: "se redirigirá",
+                    icon: "success"
+                })
+                
+                navigate("/");
+            }
+        }
+    }, [registerInfo])
 
     // mensajes de alerta al autenticarse
     const errorMessages={
@@ -67,9 +93,9 @@ function Register() {
         
         if((name==='name' || name==='lastname') && value && !/[a-zA-Záéíóú ]+$/.test(value)){
             errort='Solo se admiten letras.'
-        }else if(name==='email' && value && /\S+@\S+\.\S+/.test(value)){
+        }/*else if(name==='email' && value && /\S+@\S+\.\S+/.test(value)){
             errort='Correo no válido';
-        }else if(name==='chterm' && data.chterm){
+        }*/else if(name==='chterm' && data.chterm){
             value=!data.chterm;
             errort='Debe aceptar los terminos y condiciones para continuar'
         } else if(value==='' && name!=='chterm'){
@@ -91,29 +117,34 @@ function Register() {
             <form className={s.form} onSubmit={e => {
                 e.preventDefault();
 
-                console.log("voy a registrarme")
-
-                const auth = getAuth();
+                //const auth = getAuth();
                 
-                const {name, lastname, email, pass, tel} = data;
+                const {name, lastname, email, password, phone} = data;
 
-                //dispatch(createUser({name, lastname, email, pass, tel}));
+                dispatch(createUser({
+                    type:"user", 
+                    email, 
+                    password, 
+                    phone,
+                    name,
+                    lastname
+                }));
 
-                createUserWithEmailAndPassword(auth, email, pass)
-                .then((userCredential) => {
-                    // Signed in
-                    // const user = userCredential.user;
-                    console.log(userCredential);
-                    navigate("/")
-                })
-                .catch((error) => {
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
+                // createUserWithEmailAndPassword(auth, email, pass)
+                // .then((userCredential) => {
+                //     // Signed in
+                //     // const user = userCredential.user;
+                //     console.log(userCredential);
+                //     navigate("/")
+                // })
+                // .catch((error) => {
+                //     const errorCode = error.code;
+                //     const errorMessage = error.message;
                 
-                    console.log(errorCode);
+                //     console.log(errorCode);
 
-                    setAuthError(errorCode.split("/")[1]);
-                });
+                //     setAuthError(errorCode.split("/")[1]);
+                // });
             }}>
                 <div className={s.formGroup}>
                     <label htmlFor="name">Nombre</label>
@@ -132,12 +163,12 @@ function Register() {
                 </div>
                 <div className={s.formGroup}>
                     <label htmlFor="pass">Contraseña</label>
-                    <input type="password" id="pass" name="pass" value={data.pass} onChange={(e) => validate(e)} placeholder="Contraseña"/>
+                    <input type="password" id="pass" name="password" value={data.pass} onChange={(e) => validate(e)} placeholder="Contraseña"/>
                     {error.pass?<span className={s.error}>{error.pass}</span>:null}
                 </div>
                 <div className={s.formGroup}>
                     <label htmlFor="tel">Telefono</label>
-                    <input type="tel" id="tel" name="tel" value={data.tel} onChange={(e) => validate(e)}  placeholder="Telefono"/>
+                    <input type="tel" id="tel" name="phone" value={data.tel} onChange={(e) => validate(e)}  placeholder="Telefono"/>
                     {error.tel?<span className={s.error}>{error.tel}</span>:null}
                 </div>
                 <div className={s.formGroup}>
