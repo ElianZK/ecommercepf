@@ -48,7 +48,7 @@ export default function BuyHistory() {
                                 Total: ${e.cart.map(e=>{
                                     let t = 0;
                                     t+=(e.price*e.qty)
-                                    return t
+                                    return formatMoney(t)
                                 })}
                             </li>
                         </ul>
