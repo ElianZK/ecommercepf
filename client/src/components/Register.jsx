@@ -2,18 +2,32 @@ import React,{useState, useEffect}  from 'react';
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { createUser } from '../actions';
+import { clearRegisterInfo, createUser, login, loginWithNormalAccount } from '../actions';
 
 import { signInWithGoogle } from '../config/firebase-config';
 
 import Swal from 'sweetalert2';
 
 import s from '../assets/styles/Register.module.css'
-import { createUserWithEmailAndPassword, getAuth, GoogleAuthProvider } from 'firebase/auth';
+// import { createUserWithEmailAndPassword, getAuth, GoogleAuthProvider } from 'firebase/auth';
+import AccountsButtons from './AccountsButtons';
+
+import { getAuth, 
+    signInWithPopup, 
+    GoogleAuthProvider,
+    GithubAuthProvider, 
+    FacebookAuthProvider, 
+    setPersistence, 
+    browserSessionPersistence,
+} from 'firebase/auth';
 
 // localhost:3001/users/CreateUser
 
 function Register() {    
+    const auth = getAuth();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     // mensajitos al faltar un dato al autenticarse
     let initialError={
         name:'Ingresa un nombre',
@@ -41,20 +55,29 @@ function Register() {
     const registerInfo = useSelector(state => state.usersReducer.registerInfo);
 
     useEffect(() => {
+        console.log(registerInfo);
+
         if(registerInfo !== null){
-            if(typeof registerInfo === "string"){
+            if(registerInfo.error === true){
                 Swal.fire({
-                    title: "ERROR",
-                    text: registerInfo,
+                    title: "error",
+                    text: "Revise los datos",
                     icon: "error"
+                })
+            }else if(registerInfo.created === false){
+                Swal.fire({
+                    title: registerInfo.message,
+                    text: "Cree una cuenta con otro email",
+                    icon: "info"
                 })
             }else{
                 Swal.fire({
                     title: "Registro exitoso",
-                    text: "se redirigirá",
+                    text: "Ahora inicie sesión",
                     icon: "success"
-                })
-                
+                });
+
+                dispatch(clearRegisterInfo());
                 navigate("/");
             }
         }
@@ -68,10 +91,6 @@ function Register() {
         "weak-password": {title: "Contraseña debil", text: "Ingrese otra contraseña"},
         "email-already-in-use": {title: "Email en Uso", text:"Ingrese un nuevo Email"}
     }
-
-    const navigate = useNavigate();
-
-    const dispatch = useDispatch();
 
     useEffect(() => {
         if(AuthError){
@@ -110,15 +129,63 @@ function Register() {
         setError({...error, [name]: errort});
     }
 
+    const mkLogin= async (e,type)=>{
+        e.preventDefault();
+                
+        let provider;
+        
+        if(type==='google') provider = new GoogleAuthProvider();
+        else if(type==='github') provider = new GithubAuthProvider();
+        else if(type==='facebook') provider = new FacebookAuthProvider();
+        
+        console.log("la sesión es de " + type)
+
+        setPersistence(auth, browserSessionPersistence)
+        .then(async ()=>{
+            return signInWithPopup(auth, provider).then(res=>{
+                let data = {
+                    token: res.user.accessToken,
+                    stsTokenManager: res.user.stsTokenManager,
+                    uid: res.user.uid,
+                    isVerified: res.user.emailVerified,
+                    idUser: res.user.uid,
+                    name: res.user.displayName || "unknown " + type + " user",
+                    photo: res.user.photoURL,
+                    email: res.user.email
+                };
+
+                console.log(res);
+
+                localStorage.setItem("user", JSON.stringify(data));
+
+                dispatch(createUser({
+                    idUser: data.idUser,
+                    type:"user", 
+                    email: data.email, 
+                    password: "-", 
+                    phone: "-",
+                    name: data.name,
+                    lastname: "-"
+                }));
+
+
+            })
+        }).catch((error) => {
+            console.log(error)
+            Swal.fire({
+                title:'Error al iniciar sesión',
+                text: error.message,
+                icon: 'error'
+            })
+        });
+    }
+
     return (
         <div className={s.container}>
             <h2 className={s.title}>Formulario de registro</h2>
             <p><strong><i>Registrate y disfrutarás de una gran experiencia de compra</i></strong></p>
             <form className={s.form} onSubmit={e => {
                 e.preventDefault();
-
-                //const auth = getAuth();
-                
                 const {name, lastname, email, password, phone} = data;
 
                 dispatch(createUser({
@@ -130,21 +197,7 @@ function Register() {
                     lastname
                 }));
 
-                // createUserWithEmailAndPassword(auth, email, pass)
-                // .then((userCredential) => {
-                //     // Signed in
-                //     // const user = userCredential.user;
-                //     console.log(userCredential);
-                //     navigate("/")
-                // })
-                // .catch((error) => {
-                //     const errorCode = error.code;
-                //     const errorMessage = error.message;
-                
-                //     console.log(errorCode);
-
-                //     setAuthError(errorCode.split("/")[1]);
-                // });
+                // navigate("/");
             }}>
                 <div className={s.formGroup}>
                     <label htmlFor="name">Nombre</label>
@@ -178,7 +231,9 @@ function Register() {
                     </div>
                     {error.chterm?<span className={s.error}>{error.chterm}</span>:null}
                 </div>
-                
+
+                <AccountsButtons access={mkLogin}/>
+
                 <div className={s.formGroup}>
                     <button className={s.btn} type="submit" >Registrarse</button>
                 </div>

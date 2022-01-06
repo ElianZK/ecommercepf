@@ -209,7 +209,8 @@ const SERVER = 'http://localhost:3001';
             isVerified: payload.isVerified,
             user: {
                 ...payload
-            }
+            },
+            error: false
         }
 
         return {
@@ -221,6 +222,7 @@ const SERVER = 'http://localhost:3001';
     export function loginWithNormalAccount(payload){
         return async function(dispatch){
             try{
+                console.log(payload)
                 const res = await axios.post(`${SERVER}/user/login`, payload);
 
                 let data = {
@@ -231,12 +233,23 @@ const SERVER = 'http://localhost:3001';
 
                 localStorage.setItem("user", JSON.stringify(data.user));
 
+                console.log("voy a hacer un dispatch")
                 return dispatch({
                     type: LOGIN,
-                    payload: data
+                    payload: {
+                        ...data,
+                        error: false
+                    }
                 });
             }catch(e){
-                console.log("error al loguearse ", e);
+                console.log("voy a retornar un dispatch con error")
+                return dispatch({
+                    type: LOGIN,
+                    payload: {
+                        user: {idUser: null},
+                        error: true
+                    }
+                });
             }
         }
     }
@@ -348,10 +361,20 @@ const SERVER = 'http://localhost:3001';
                     payload: res.data
                 })     
             }catch(e){
-                console.log("hubo un error", e);
+                return dispatch({
+                    type: CREATE_USER,
+                    payload: {error: true, message: "No se pudo crear la cuenta, revise los datos"}
+                }) 
             }
         }
     };
+
+    export function clearRegisterInfo(){
+        return{
+            type: CREATE_USER,
+            payload: null
+        }
+    }
 
     
    // me traigo el carro de productos tanto de usuarios como de invitados

@@ -5,9 +5,7 @@ import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons'
 import s from "../assets/styles/login.module.css";
-import googleIcon from "../assets/img/google.png";
-import githubIcon from "../assets/img/github.png";
-import facebookIcon from "../assets/img/facebook.png";
+
 import { getAuth, 
     signInWithPopup, 
     GoogleAuthProvider,
@@ -17,20 +15,22 @@ import { getAuth,
     browserSessionPersistence,
 } from 'firebase/auth';
 import { login, loginWithNormalAccount } from '../actions/index'
+import AccountsButtons from "./AccountsButtons.jsx";
 
+//TODO: falta hacer que al loguarse con una cuenta de alguna red social, si está registrada en la bd, que me deje entrar, de lo contrario que no me deje
 
 const Login = () => {
     const auth = getAuth();
     const dispatch = useDispatch();
-    const navigate = useNavigate()
-    const loginuser = useSelector(state=>state.usersReducer.loginInfo)
+    const navigate = useNavigate();
+    const loginuser = useSelector(state => state.usersReducer.loginInfo);
     
     const [inputs, setInputs] = useState({
         email: "",
         password: ""
     });
     
-    const mkLogin= async (e,type)=>{
+    const mkLogin = async (e,type)=>{
         e.preventDefault();
                 
         let provider;
@@ -49,7 +49,7 @@ const Login = () => {
                     stsTokenManager: res.user.stsTokenManager,
                     uid: res.user.uid,
                     isVerified: res.user.emailVerified,
-                    id: res.user.uid,
+                    idUser: res.user.uid,
                     name: res.user.displayName || "unknown " + type + " user",
                     photo: res.user.photoURL,
                 };
@@ -68,23 +68,24 @@ const Login = () => {
                 icon: 'error'
             })
         });
-        //if(type==='email')
-          /*await signInWithPopup(auth, provider)
-           .then((userCredential) => {
-            const userdat = userCredential.user;
-            console.log(userdat)
-            //setUser({...userdat,account:'google'})
-            setLogin(true)
-          })
-          .catch((error) => {
-            console.log('error '+error)
-          }); */
-        
     }
 
     useEffect(() => {
-        if(loginuser.user.token){
-            navigate('/')
+        if(!loginuser.error){
+            if(loginuser.user.idUser){
+                navigate("/");
+            }
+        }else{
+            Swal.fire({
+                title:'El usuario no existe en la base de datos',
+                text: "Asegurese de haber escrito bien los datos. O cree una cuenta si no la tiene",
+                icon: 'error'
+            });
+
+            setInputs({
+                email: "",
+                password: ""
+            })
         }
     }, [loginuser])
 
@@ -95,8 +96,6 @@ const Login = () => {
                     e.preventDefault();
 
                     dispatch(loginWithNormalAccount(inputs));
-
-                    navigate("/");
                 }}>
                     <h2 className={s.title}>Login</h2>
                     <div className={s.formGroup}>
@@ -133,21 +132,9 @@ const Login = () => {
                     </div>
 
                     <Link className={s.link} to="/reset_pass">¿Olvidaste tu contraseña?</Link>
-                    
-                    <div className={s.containerbuttons}>
-                        <button name="loginWithGoogle" className={`${s.firstbtn} ${s.alternativeSubmit}`} onClick={(e)=>mkLogin(e,'google')}>
-                            <img className={s.icon} src={googleIcon} alt="icono"/>
-                        </button>
 
-                        
-                        <button name="loginWithGithub" className={s.alternativeSubmit} onClick={(e)=>mkLogin(e,'github')}>
-                            <img className={s.icon} src={githubIcon} alt="icono"/>
-                        </button>
+                    <AccountsButtons access={mkLogin}/>
 
-                        <button name="loginWithFB" className={s.alternativeSubmit} onClick={(e)=>mkLogin(e,'facebook')}>
-                            <img className={s.icon} src={facebookIcon} alt="icono"/>
-                        </button>
-                    </div>
                     <button name="login" className={`${s.normalSubmit} ${s.btnText}`} type="submit">Ingresar</button>
 
                     <p>Si no tenes cuenta,<Link className={s.link} to="/register"> create una aquí</Link></p>

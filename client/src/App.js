@@ -26,7 +26,7 @@ function App() {
     if(data){
       dispatch(login(data))
     }else{
-      dispatch(login({token: null}));
+      dispatch(login({idUser: null}));
     }
   }, [])
 

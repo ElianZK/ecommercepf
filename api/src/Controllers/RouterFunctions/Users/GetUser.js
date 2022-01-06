@@ -4,10 +4,14 @@ const { User } = require('../../../db');
 const GetUser = async(req, res) =>{
     const {email, password} = req.body;
 
+    console.log(email, password);
+
     const user = await User.findOne({where: {
         email,
         password
     }});
+
+    console.log(user);
 
     if(user){
         res.json({
