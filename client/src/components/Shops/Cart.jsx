@@ -1,7 +1,7 @@
 import React, {  useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import s from '../../assets/styles/Cart.module.css'
-import {getProductsCartUser, deleteAllCart, changeQty, deleteItemFromCart, clearCart} from '../../actions/index'
+import {getProductsCartUser, changeQty, deleteItemFromCart, clearCart} from '../../actions/index'
 import Swal from 'sweetalert2';
 import { Link, useNavigate, useParams} from 'react-router-dom';
 import DataTable from 'react-data-table-component';
@@ -15,21 +15,25 @@ import { formatMoney } from 'accounting';
 
  function Cart() {
     const dispatch = useDispatch();
+    const navigate = useNavigate()
     const products = useSelector(state => state.ordenReducer.cart);
-    const users = useSelector(state => state.usersReducer.users)
+    const users = useSelector(state => state.usersReducer.loginInfo.users)
     const[qty, setQty] = useState(products.qty);
     const {userId=null} = useParams()
     //const userId = Cookies.get('id');
-    console.log("iduser",userId)
+    console.log("iduser",users)
 
     useEffect(() => {
         dispatch(getProductsCartUser(userId)); 
-    }, [dispatch, userId,products]); 
+    }, [dispatch, userId]); 
+
+    useEffect(() => {
+        dispatch(getProductsCartUser(products));
+    }, [dispatch, products])
 
     const handleDeleteItem = (idproduct) => {
         //e.preventDefault()
-        
-        dispatch(deleteItemFromCart(userId, idproduct))
+        dispatch(deleteItemFromCart( idproduct, userId))
     }
 
     const handleChangeQty = (e) => {
@@ -41,13 +45,12 @@ import { formatMoney } from 'accounting';
         };
     }
 
-     function handleGoToCheckOut() {
-        /*if (users && users.email?.length > 0) {
-            dispatch(gotToCheckout(userId, products))
+    function handleGoToCheckOut() {
+        if (users && users.email?.length > 0) {
            navigate('/checkout')
         } else {
             navigate('/register');
-        }*/
+        }
     } 
 
 

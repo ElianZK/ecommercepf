@@ -367,9 +367,9 @@ const SERVER = 'http://localhost:3001';
                      })
                  
                  }else{
-                         const {itemsCart}= await axios.get(`${SERVER}/user/cart/${userId}`)
+                         const {itemsCart}= await axios.post(`${SERVER}/user/cart/${userId}`)
                      //me creo el elemento order en base a lo que tenia en carrito para ese usuario
-                     localStorage.setItem("orderId", itemsCart.orderId) //orderId es el estado para la orden de ese usuario
+                     localStorage.setItem("orderId", itemsCart) //orderId es el estado para la orden de ese usuario
                      return dispatch ({
                              type: GET_PRODUCTS_CART,
                          payload: itemsCart
@@ -385,7 +385,7 @@ const SERVER = 'http://localhost:3001';
     //para boton de carro y cantidades seleccionadas
     
     export const addToCart = (product, userId) => (dispatch) => {
-        console.log(product)
+        console.log('jo',product)
         if (!userId) {
             let products = JSON.parse(localStorage.getItem("cart")) || [];
           let productFind = false;
@@ -412,7 +412,8 @@ const SERVER = 'http://localhost:3001';
               payload: products });/* */
         }
       if (userId) {
-          const body = { id: product.id, qty: 1 };
+          const body = { id: product.idProduct, qty: 1 };
+          console.log('lo',product.idProduct)
           return axios
             .post(`${SERVER}/user/cart/${userId}`, body) //fatlta autenci usuario
             .then((response) => {
@@ -426,7 +427,7 @@ const SERVER = 'http://localhost:3001';
     };
       
     
-    export function deleteItemFromCart(userId, idProduct){
+    export function deleteItemFromCart(idProduct, userId){
         console.log("Id a eliminar", idProduct)
         return async (dispatch) =>{
             try{
@@ -453,7 +454,7 @@ const SERVER = 'http://localhost:3001';
                             payload: {idProduct}
                         })
                     }
-                    if(userId){
+                    else{
                         const cart = await axios.delete(`${SERVER}/user/cart/${userId}/${idProduct}`)
                         return dispatch({
                             type: DELETE_ITEM_FROM_CART,
@@ -519,7 +520,7 @@ const SERVER = 'http://localhost:3001';
             try {
                 let body = JSON.parse(localStorage.getItem("cart")) || [];
                 axios
-                .put(`/orders/${userId}`, {products: body})  //falta autent de usuario
+                .put(`${SERVER}/orders/${userId}`, {products: body})  //falta autent de usuario
               .then((response) => {
                   localStorage.removeItem("cart");
                   localStorage.setItem("orderId", response.data.orderId);
@@ -553,6 +554,12 @@ const SERVER = 'http://localhost:3001';
         }
     };
           */
+
+    
+
+
+
+
     export function getUsers(){
         return async function(dispatch){
             try{
