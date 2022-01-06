@@ -10,7 +10,7 @@ const startServer= async()=>{
     await Category.sync({force:false});
     await CategoryBrand.sync({force:false});
     await Product.sync({force:false});
-    await User.sync({force:true});
+    await User.sync({force:false});
     await Order.sync({force:true});
     await Cart.sync({force:true});
     await Details.sync({force:true});
