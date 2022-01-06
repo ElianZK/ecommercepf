@@ -45,7 +45,7 @@ export default function BuyHistory() {
                         <ul className={s.stateAmount}>
                             <li className={s.status}>{e.status[3].toUpperCase()}</li>
                             <li className={s.amount}>
-                                Total: ${e.cart.map(e=>{
+                                Total: {e.cart.map(e=>{
                                     let t = 0;
                                     t+=(e.price*e.qty)
                                     return formatMoney(t)
