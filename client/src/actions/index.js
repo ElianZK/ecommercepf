@@ -367,7 +367,7 @@ const SERVER = 'http://localhost:3001';
                      })
                  
                  }else{
-                         const {itemsCart}= await axios.post(`${SERVER}/user/cart/${userId}`)
+                         const {itemsCart}= await axios.post(`${SERVER}/users/cart/${userId}`)
                      //me creo el elemento order en base a lo que tenia en carrito para ese usuario
                      localStorage.setItem("orderId", itemsCart) //orderId es el estado para la orden de ese usuario
                      return dispatch ({
@@ -415,7 +415,7 @@ const SERVER = 'http://localhost:3001';
           const body = { id: product.idProduct, qty: 1 };
           console.log('lo',product.idProduct)
           return axios
-            .post(`${SERVER}/user/cart/${userId}`, body) //fatlta autenci usuario
+            .post(`${SERVER}/users/cart/${userId}`, body) //fatlta autenci usuario
             .then((response) => {
               dispatch({ 
                   type: ADD_TO_CART_FROM_DB,

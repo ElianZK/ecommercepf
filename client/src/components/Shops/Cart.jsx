@@ -23,27 +23,30 @@ import { formatMoney } from 'accounting';
     //const userId = Cookies.get('id');
     console.log("iduser",users)
 
-    useEffect(() => {
-        dispatch(getProductsCartUser(userId)); 
-    }, [dispatch, userId]); 
+    // useEffect(() => {
+    //     dispatch(getProductsCartUser(userId)); 
+    // }, [dispatch, userId]); 
 
-    useEffect(() => {
-        dispatch(getProductsCartUser(products));
-    }, [dispatch, products])
+    // useEffect(() => {
+    //     dispatch(getProductsCartUser(products));
+    // }, [dispatch, products])
 
     const handleDeleteItem = (idproduct) => {
         //e.preventDefault()
-        dispatch(deleteItemFromCart( idproduct, userId))
+        dispatch(deleteItemFromCart(idproduct))
     }
 
-    const handleChangeQty = (e) => {
+    const handleChangeQty = (e, item) => {
         e.preventDefault()
         const { value } = e.target;
         if (value <= products.stock && value >= 1) {
-            setQty(value);
-            dispatch(changeQty(products, e.target.value, userId));
-        };
+          
+            dispatch(changeQty({idProducts: item.idProducts, qty:Number(e.target.value)}
+        
+            )
+            )
     }
+}
 
     function handleGoToCheckOut() {
         if (users && users.email?.length > 0) {

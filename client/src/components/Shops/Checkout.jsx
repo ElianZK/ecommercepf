@@ -42,11 +42,14 @@ export default function Checkout(){
         const token=localStorage.getItem('token')
         
         const [state,setState]= useState({
-            email:'',
             country:'',
             city:'',
-            address:'',
-            postalCode:''
+            email:'',
+            address: {
+                street:'',
+                postalCode:'',
+            }
+        
         })
         
         const cart = useSelector((state)=>state.ordenReducer.cart)
@@ -60,7 +63,7 @@ export default function Checkout(){
                 name:cart[i].name,
                 image: cart[i].image, 
                 price: formatMoney(cart[i].price),
-                qty: Number(cart[i].qty),
+                amount: Number(cart[i].qty),
             })
             totalPrice += (cart[i].price*cart[i].qty)
             iva = (totalPrice*0.21)
@@ -92,14 +95,14 @@ export default function Checkout(){
                             product: buys,
                             email: state.email,
                             address: `${state.country}/ ${state.city}, ${state.address}, CP: ${state.postalCode}`,
-                            amount: Math.round(totalPrice)*0.1,
+                            totalPrice: Math.round(totalPrice)*0.1,
                             pay: id
                         }
                 dispatch(getProductsCartUser(pay, token)) //aca deberia ir la ruta post
                     Swal.fire({
                         icon: 'success',
                         text: "Thank you for your purchase , you will receive an email with the details,  success",
-                        showConfirmButton: false,
+                        showConfirmButton: true,
                         timer: 3000
                 })
                 navigate('/ ') //q vaya a ordenes
@@ -110,7 +113,7 @@ export default function Checkout(){
             return <form className= {s.form_compra}  
                             onSubmit={handleSubmit}>
                         <CardElement className={s.card}/>     
-                        {state.email && state.country && state.address && state.postalCode && 
+                        {state.email && state.address && state.address && state.postalCode && 
                         <button className={s.btn}>
                                 Buy
                             </button>}
@@ -199,19 +202,19 @@ export default function Checkout(){
                     <input 
                         type='text' 
                         required 
-                        autoComplete='off' 
+                        autoComplete='city' 
                         name='city' 
-                        value={state.city} 
+                        value={state.adrdress.city} 
                         onChange={(e)=>handleChange(e)}/>    
                     </div>
                     <div>
-                    <label>Address</label>  
+                    <label>Street</label>  
                     <input 
                         type='text' 
                         required 
                         autoComplete='street-address' 
                         name='address' 
-                        value={state.address} 
+                        value={state.address.street} 
                         onChange={(e)=>handleChange(e)} />     
                     </div>
                     <div>
@@ -221,7 +224,7 @@ export default function Checkout(){
                         required 
                         autoComplete='postal-code' 
                         name='postalCode' 
-                        value={state.postalCode} 
+                        value={state.address.postalCode} 
                         onChange={(e)=>handleChange(e)}/>    
                     </div>
                </div>
