@@ -16,7 +16,7 @@ const GetUser = async(req, res) =>{
         }}); 
     }
     
-    console.log(user);
+    //console.log(user);
 
     if(user){
         res.json({
