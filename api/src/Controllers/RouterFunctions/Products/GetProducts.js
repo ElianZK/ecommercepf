@@ -72,7 +72,7 @@ const getProducts= async (req, res, next)=>{
         ]
       },
       attributes:{
-        exclude: ["image","attributes","sold_quantity","stock" ]
+        exclude: ["attributes","sold_quantity","stock" ]
       },
       include:{
         model: CategoryBrand,

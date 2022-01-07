@@ -17,6 +17,8 @@ const Details = () => {
     const prod = JSON.parse(localStorage.getItem('cart')) || [].find(element => element.id === idproduct);
     //const [qty, setQty] = useState(prod ?.qty||1); 
     const [qty, setQty] = useState(1); 
+    const Users = localStorage.getItem("user")
+    const idUser= Users!=="null"?JSON.parse(localStorage.getItem("user")).idUser:null
 
 
 
@@ -39,7 +41,7 @@ function handleAddToCart(e){
         dispatch(update(Number(qty)))
         if ((Number(qty)) <= product.stock) {
             setQty(Number(qty));
-            dispatch(addToCart({ ...product, qty})) //falta usuario 
+            dispatch(addToCart({ ...product,amount: qty},idUser)) //falta usuario 
             Swal.fire({
                 icon: 'success',
                 text: 'Producto agregado exitosamente!',

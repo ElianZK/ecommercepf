@@ -367,12 +367,13 @@ const SERVER = 'http://localhost:3001';
                      })
                  
                  }else{
-                         const {itemsCart}= await axios.post(`${SERVER}/user/cart/${userId}`)
-                     //me creo el elemento order en base a lo que tenia en carrito para ese usuario
-                     localStorage.setItem("orderId", itemsCart) //orderId es el estado para la orden de ese usuario
+                    const {data}= await axios.get(`${SERVER}/users/cart/${userId}`)
+                    console.log("items getusercart",data.cart)
+                    //me creo el elemento order en base a lo que tenia en carrito para ese usuario
+                     localStorage.setItem("orderId", data.cart) //orderId es el estado para la orden de ese usuario
                      return dispatch ({
-                             type: GET_PRODUCTS_CART,
-                         payload: itemsCart
+                         type: GET_PRODUCTS_CART,
+                         payload: data.cart.cart
                      })
                   }
              }catch(err){
@@ -412,11 +413,12 @@ const SERVER = 'http://localhost:3001';
               payload: products });/* */
         }
       if (userId) {
-          const body = { id: product.idProduct, qty: 1 };
+          const body = {productsInfo: [{...product}/* id: product.idProduct, qty: 1  */]};
           console.log('lo',product.idProduct)
           return axios
-            .post(`${SERVER}/user/cart/${userId}`, body) //fatlta autenci usuario
+            .put(`${SERVER}/users/cart/${userId}`, body) //fatlta autenci usuario
             .then((response) => {
+                console.log("putproductadd",response)
               dispatch({ 
                   type: ADD_TO_CART_FROM_DB,
                   payload: response.data 
@@ -429,6 +431,7 @@ const SERVER = 'http://localhost:3001';
     
     export function deleteItemFromCart(idProduct, userId){
         console.log("Id a eliminar", idProduct)
+        console.log("Id usuariocart a eliminar", userId)
         return async (dispatch) =>{
             try{
                 if(!userId){
@@ -455,7 +458,7 @@ const SERVER = 'http://localhost:3001';
                         })
                     }
                     else{
-                        const cart = await axios.delete(`${SERVER}/user/cart/${userId}/${idProduct}`)
+                        const cart = await axios.delete(`${SERVER}/users/cart/${userId}/${idProduct}`)
                         return dispatch({
                             type: DELETE_ITEM_FROM_CART,
                             payload: cart

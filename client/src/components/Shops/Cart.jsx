@@ -18,22 +18,21 @@ import { formatMoney } from 'accounting';
     const navigate = useNavigate()
     const products = useSelector(state => state.ordenReducer.cart);
     const users = useSelector(state => state.usersReducer.loginInfo.users)
-    const[qty, setQty] = useState(products.qty);
-    const {userId=null} = useParams()
-    //const userId = Cookies.get('id');
-    console.log("iduser",users)
+    const[qty, setQty] = useState(/* products.qty */1);
+    const {idUser=null} = JSON.parse(localStorage.getItem("user"))
+    //console.log("idusercart",idUser)
 
     useEffect(() => {
-        dispatch(getProductsCartUser(userId)); 
-    }, [dispatch, userId]); 
+        dispatch(getProductsCartUser(idUser)); 
+    }, [dispatch, idUser]); 
 
-    useEffect(() => {
+    /* useEffect(() => {
         dispatch(getProductsCartUser(products));
-    }, [dispatch, products])
+    }, [dispatch, products]) */
 
     const handleDeleteItem = (idproduct) => {
         //e.preventDefault()
-        dispatch(deleteItemFromCart( idproduct, userId))
+        dispatch(deleteItemFromCart( idproduct, idUser))
     }
 
     const handleChangeQty = (e) => {
@@ -41,7 +40,7 @@ import { formatMoney } from 'accounting';
         const { value } = e.target;
         if (value <= products.stock && value >= 1) {
             setQty(value);
-            dispatch(changeQty(products, e.target.value, userId));
+            dispatch(changeQty(products, e.target.value, idUser));
         };
     }
 
@@ -79,7 +78,7 @@ import { formatMoney } from 'accounting';
             name: "Image",   
             grow: 0,
             sortable: true,
-            cell: row => <img height="84px" width="56px" alt={row.name} src={row.image} />
+            cell: row => <img height="84px" width="56px" alt={row.name} src={row.image[0]} />
         },
         {
             name: "Name",
@@ -95,13 +94,13 @@ import { formatMoney } from 'accounting';
 
         {
             name: "Quantity",
-            selector: row => row.qty,
+            selector: row => row.amount,
             sortable: true
         },
 
         {
             name:"Amount",
-            selector:row => formatMoney(row.price * row.qty),
+            selector:row => formatMoney(row.price * row.amount),
             sortable: true
         },
         {
@@ -143,7 +142,7 @@ import { formatMoney } from 'accounting';
             </div>
                 <div>
                         <div className={s.amount}>
-                           Total Amount: {formatMoney(products.reduce((a, c) => a + c.price*c.qty,0))}
+                           Total Amount: {formatMoney(products?.reduce((a, c) => a + c.price*c.amount,0))}
                             
                         </div>
                 </div>
