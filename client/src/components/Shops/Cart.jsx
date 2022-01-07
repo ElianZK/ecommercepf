@@ -1,7 +1,7 @@
 import React, {  useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import s from '../../assets/styles/Cart.module.css'
-import {getProductsCartUser, changeQty, deleteItemFromCart, clearCart} from '../../actions/index'
+import {getProductsCartUser, changeAmount, deleteItemFromCart, clearCart} from '../../actions/index'
 import Swal from 'sweetalert2';
 import { Link, useNavigate, useParams} from 'react-router-dom';
 import DataTable from 'react-data-table-component';
@@ -17,10 +17,8 @@ import { formatMoney } from 'accounting';
     const dispatch = useDispatch();
     const navigate = useNavigate()
     const products = useSelector(state => state.ordenReducer.cart);
-    const users = useSelector(state => state.usersReducer.loginInfo.users)
-    const[qty, setQty] = useState(/* products.qty */1);
-    const {idUser=null} = JSON.parse(localStorage.getItem("user"))
-    //console.log("idusercart",idUser)
+    const Users = useSelector(state => state.usersReducer.loginInfo.users)
+    const {idUser} = JSON.parse(localStorage.getItem("user"));
 
     useEffect(() => {
         dispatch(getProductsCartUser(idUser)); 
@@ -35,17 +33,26 @@ import { formatMoney } from 'accounting';
         dispatch(deleteItemFromCart( idproduct, idUser))
     }
 
-    const handleChangeQty = (e) => {
+    const handlerChangeAmount = (product,idUser,e) => {
         e.preventDefault()
         const { value } = e.target;
-        if (value <= products.stock && value >= 1) {
-            setQty(value);
-            dispatch(changeQty(products, e.target.value, idUser));
+        if (value <= product.stock && value >= 1) {
+            let auxProducts=products.map(p=>{
+                if(p.idProduct===product.idProduct){
+                    return {
+                        ...p,
+                        amount:value
+                    }
+                }
+                return p;
+            })
+
+            dispatch(changeAmount(auxProducts, idUser));
         };
     }
 
     function handleGoToCheckOut() {
-        if (users && users.email?.length > 0) {
+        if (Users && Users.email?.length > 0) {
            navigate('/checkout')
         } else {
             navigate('/register');
@@ -57,6 +64,7 @@ import { formatMoney } from 'accounting';
         e.preventDefault()
         dispatch(clearCart())
     }
+
 
     // const totalIncludeDesc = () => {
     //     products.length && products.reduce((totalWithoutDesc, { price, qty }) => 
@@ -94,21 +102,14 @@ import { formatMoney } from 'accounting';
 
         {
             name: "Quantity",
-            selector: row => row.amount,
-            sortable: true
+            selector: row => <input name="amount" type="number" min={1} max={row.stock} value={row.amount} onChange={(e)=>handlerChangeAmount(row,idUser,e)}></input>//row.amount,
+            //sortable: true
         },
 
         {
             name:"Amount",
             selector:row => formatMoney(row.price * row.amount),
             sortable: true
-        },
-        {
-            cell: () => <abbr title="Add Item" ><button className={s.btnDel}value={qty} onClick= {handleChangeQty }><FontAwesomeIcon icon={faTrashAlt}/></button></abbr>,
-            ignoreRowClick: true,
-            allowFlow: true,
-            button: true
-            
         },
 
         {

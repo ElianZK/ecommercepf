@@ -12,7 +12,7 @@ const startServer= async()=>{
     await Product.sync({force:false});
     await User.sync({force:false});
     await Order.sync({force:true});
-    await Cart.sync({force:true});
+    await Cart.sync({force:false});
     await Details.sync({force:true});
 
     let aux = await Product.count();

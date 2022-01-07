@@ -15,7 +15,7 @@ const putUserCart = async (req,res,next)=>{
     //! console.log(usuario.toJSON());
     
     //[Remuevo los elementos del carrito previamente asociados al usuario.
-    await user.removeProducts(await user.getProducts());
+    //await user.removeProducts(await user.getProducts());
     //! console.log("Ahora en el carrito hay : ", await usuario.countProducts(), "productos");
 
     //[Busco los productos que agregaré al carrito.
@@ -53,7 +53,7 @@ const putUserCart = async (req,res,next)=>{
       return {idProduct, name, price, stock,image, amount, totalPrice:amount*price}
     })
 
-    return res.status(200).json({/* user, cart: */ products});
+    return res.status(200).json({/* user,*/ cart:  products});
   }catch(err){
     console.log("Get users/cart/:id", err);
     next(err)
