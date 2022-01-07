@@ -9,6 +9,7 @@ import DataTable from 'react-data-table-component';
 /* import { DataGrid } from '@mui/x-data-grid'; */
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faTrashAlt, faEdit } from '@fortawesome/free-solid-svg-icons'
+import axios from "axios";
 
 export default function UsersForm (){
     const dispatch = useDispatch();
@@ -24,9 +25,13 @@ export default function UsersForm (){
         // let {idUser} = JSON.parse(localStorage.getItem("user"));
         console.log(idUser);
 
-        const res = true;
+        axios.get("http://localhost:3001/user/type/" + idUser)
+        .then(res => {
+            let { access } = res.data;
+    
+            setIsAdmin(access && !!idUser)
+        })
 
-        setIsAdmin(res && !!idUser)
     }, [idUser]);
     
     useEffect(() => {
