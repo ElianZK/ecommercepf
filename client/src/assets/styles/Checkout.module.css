@@ -1,0 +1,203 @@
+.container{
+    min-height: 25vh;
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(247, 245, 241);
+    padding: 30px;
+    margin-top: 100px;
+}
+
+ /* .container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; 
+    height: auto;
+    padding: 2%;
+ } */
+
+ 
+ 
+ .container_pasarela {
+    width: 40rem;
+    height: 25rem;
+    margin: auto;
+    overflow-y: scroll;
+    background-color: #d4cfcf50;
+    border-radius: 10px;
+    
+ }
+
+ .card {
+   border: 1px solid rgb(46, 41, 37);
+   border-radius: 5px;
+   width: 60%;
+   margin-left: 9rem;
+   margin-bottom: 2rem;
+   padding: 0.5rem;
+ }
+ 
+ /* .titulo_principal_pasarela {
+ margin-bottom: 1rem;
+ padding-top: 0.5rem;
+ color: #e72424;
+ } */
+
+ .pasarela_card {
+    display:flex;
+    flex-direction: column; 
+   text-align: left;
+   justify-content: space-between;
+   margin-bottom: 4rem;
+ 
+ }
+ .pasarela_cdtm {
+    display:flex;
+    margin-top: 2rem;
+    margin-left: 2.5rem;
+    margin-right: 1.5rem;
+    
+ }
+ .pasarela_info {
+    margin-left: 3rem;
+ }
+ .title {
+    color: #5c5959;
+    font-weight: bold;
+    padding-bottom: 1rem;
+    margin-right: 550px;
+ }
+
+ .image_pasarela{
+   height:84px;
+    width:56px;
+ }
+
+ 
+ .unidades_pasarela {
+    color: rgb(63, 60, 60);
+    font-weight: 500;
+ }
+ .peso_pasarela {
+    color: rgb(20, 60, 134);
+    font-weight: 500;
+ }
+ .precio_pasarela {
+    color: #5a5959;
+    font-weight: bold;
+ }
+ .datos_pasarela {
+    text-align: left;
+    margin-left: 5rem;
+    margin-bottom: 2rem;
+    font-weight: 600;
+ }
+ .datos_pasarela span {
+   float: right;
+   margin-right: 2rem;
+   font-weight: 700;
+   
+ }
+ .subtotal_pasarela {
+   font-size: 1rem;
+   color: #666666;
+ }
+ .subtotal_pasarela_descuento {
+    color: seagreen;
+ }
+ .total_pasarela {
+    margin-top: 1rem;
+    font-size: 1.3rem;
+    
+ }
+ .total_numero_pasarela {
+    color: rgb(242, 244, 96);
+    
+ }
+ .tarjeta_pasarela {
+   
+    width: 40rem;
+    height: 5rem;
+    margin: auto;
+    margin-top: 2rem;
+    
+ }
+ .tarjeta {
+     
+   border: 1px solid rgb(46, 41, 37);
+   border-radius: 5px;
+   width: 60%;
+   margin-left: 9rem;
+   margin-bottom: 2rem;
+   padding: 0.5rem;
+ }
+ .btn{
+    display:block;
+    
+    justify-content: center;
+   align-items: center;
+    justify-content: center;
+   background-color: #FFD803;
+   width: 200px;
+   height: 45px;
+   border: solid 1px gray;
+   border-radius: 15px;
+   margin-top: 20px;
+   font: black bold;
+}
+.btn:hover{
+    background-color:rgb(192, 198, 204) ;
+    border:solid 1px #2e2e2c;
+    
+}
+ 
+ .contenedor_facturacion {
+    background-color: rgba(145, 175, 214, 0.438);
+    border-radius: 5px;
+    width: 40rem;
+    margin: auto;
+    margin-top: 2rem;
+    padding: 0.2rem 0;
+    
+ }
+ .facturacion_pasarela {
+ font-size: 1.5rem;
+ font-weight: bold;
+ color: #413e3e;
+ margin-top: 3rem;
+ margin-bottom: 1rem;
+ }
+ .direccion_pasarela {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #666666;
+    margin-bottom: 1rem;
+ }
+ .datos_personales_pasarela {
+ display: flex;
+ flex-direction: column;
+ margin-bottom: 2rem;
+ align-items: center;
+ }
+ 
+ .datos_personales_pasarela div {
+    display: flex;
+    margin-top: 1rem;
+    
+ }
+ .datos_personales_pasarela label {
+    width: 10rem;
+   text-align: right;
+   margin-right: 2rem;
+   color: rgb(37, 36, 36);
+   font-weight: 600;
+ }
+ .datos_personales_pasarela input{
+    width: 15rem;
+    border:none;
+     border-radius: 3px;
+     background-color:rgb(233, 233, 233);
+     font-size: 15px;
+     background-color: white;
+     padding: 0.3rem;
+     padding-left: 0.3rem;
+ }

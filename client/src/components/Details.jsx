@@ -9,6 +9,8 @@ import { Slide } from 'react-slideshow-image'
 import DataTable from 'react-data-table-component';
 import {formatMoney} from 'accounting'
 import Swal from 'sweetalert2';
+import Reviews from './Reviews';
+import CreateReviews from './CreateReviews';
 
 const Details = () => {
     const dispatch = useDispatch();
@@ -45,7 +47,7 @@ function handleAddToCart(e){
                 text: 'Producto agregado exitosamente!',
                 showConfirmButton: false,
                 timer: 2000
-              })
+            })
         };
 }
 
@@ -77,7 +79,7 @@ function handleChangeQty(e){
                     <p className={s.prodprice}>{` ${formatMoney(product.price)}`}<span > ARS</span></p>
                     {product.stock>0?<div className={s.grupcount}>
                         <label>Cantidad</label>
-                        <input type="number" min="1" max={product.stock} onChange={handleChangeQty} value={qty}/>
+                        <input type="number" min={1} max={Number(product.stock)} onChange={handleChangeQty} value={qty}/>
                     </div>:<div></div>}
                     <p className={s.salesnum}><strong>130 </strong>Ventas realizadas</p>
                     <button className={`${s.btn}`}>Comprar ahora</button>
@@ -99,7 +101,18 @@ function handleChangeQty(e){
                 {/* <p>El Samsung Galaxy A12 llega con una pantalla HD + de 6.5 pulgadas y potenciado por un procesador de ocho núcleos, 4GB RAM con 64GB de almacenamiento expandible mediante ranura microSD. La cámara posterior del Galaxy A12 es cuádruple, con lentes de 48MP, 5MP, 2MP y 2MP, mientras que la cámara frontal para selfies es de 8 megapíxeles. Completando las características del Samsung Galaxy A12 encontramos una batería de 5000 mAh de carga rápida, lector de huellas montadas de lado, y Android 10 a bordo. 
                     Pantalla HD + de 6.5 pulgadas$$ Almacenamiento expandible mediante ranura microSD$$Cámara posterior del Galaxy A12 es cuádruple, con lentes de 48MP, 5MP, 2MP y 2MP, mientras que la cámara frontal para selfies es de 8 megapíxeles$$Sensores: Huella digital (lateral), acelerómetro, Batería: 5000 mAh, Procesador: Octa-core 2.35 GHz</p> */}
             </div>
+            <div>
+            --------------------------------
+            </div>
+            <div>
+                <CreateReviews idproduct={idproduct} />
+            </div>
+            <div>
+                <Reviews/>
+            </div>
         </div>:<div></div>}
+
+        
         </>
     )
 }

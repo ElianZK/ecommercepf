@@ -4,10 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { createUser } from '../actions';
 
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { signInWithGoogle } from '../config/firebase-config';
+
 import Swal from 'sweetalert2';
 
 import s from '../assets/styles/Register.module.css'
+import { createUserWithEmailAndPassword, getAuth, GoogleAuthProvider } from 'firebase/auth';
 
 // localhost:3001/users/CreateUser
 
@@ -142,7 +144,38 @@ function Register() {
         <div className={s.container}>
             <h2 className={s.title}>Formulario de Registro</h2>
             <p><strong><i>Registrate y disfrutarás de una gran experiencia de compra</i></strong></p>
-            <form className={s.form} onSubmit={onSubmit} >
+            <form className={s.form} onSubmit={e => {
+                e.preventDefault();
+
+                //const auth = getAuth();
+                
+                const {name, lastname, email, password, phone} = data;
+
+                dispatch(createUser({
+                    type:"user", 
+                    email, 
+                    password, 
+                    phone,
+                    name,
+                    lastname
+                }));
+
+                // createUserWithEmailAndPassword(auth, email, pass)
+                // .then((userCredential) => {
+                //     // Signed in
+                //     // const user = userCredential.user;
+                //     console.log(userCredential);
+                //     navigate("/")
+                // })
+                // .catch((error) => {
+                //     const errorCode = error.code;
+                //     const errorMessage = error.message;
+                
+                //     console.log(errorCode);
+
+                //     setAuthError(errorCode.split("/")[1]);
+                // });
+            }}>
                 <div className={s.formGroup}>
                     <label htmlFor="name">Nombre</label>
                     <input

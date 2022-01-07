@@ -93,7 +93,7 @@ const SERVER = 'http://localhost:3001';
                     payload: categories.data
                 })
             }catch(err){
-                console.log(err)
+                console.log("no hay cateegorías", err)
             }
         }
     };
@@ -204,25 +204,42 @@ const SERVER = 'http://localhost:3001';
         }
     }
 
-    // Login del usuario
     export function login(payload){
         let data={
             isVerified: payload.isVerified,
             user: {
-                token: payload.id,
-                name: payload.name,
-                email: payload.email,  
-                image: payload.photo,
-                lastUpdate: 0
+                ...payload
             }
         }
-        console.log(data)
+
         return {
             type: LOGIN,
             payload:data
-        } 
-        //}
-    }; /*/**/
+        }
+    }; 
+
+    export function loginWithNormalAccount(payload){
+        return async function(dispatch){
+            try{
+                const res = await axios.post(`${SERVER}/user/login`, payload);
+
+                let data = {
+                    user: {
+                        ...res.data
+                    }
+                }
+
+                localStorage.setItem("user", JSON.stringify(data.user));
+
+                return dispatch({
+                    type: LOGIN,
+                    payload: data
+                });
+            }catch(e){
+                console.log("error al loguearse ", e);
+            }
+        }
+    }
 
     export function logOut(){
         return {
@@ -320,6 +337,7 @@ const SERVER = 'http://localhost:3001';
 
     //crea un usuario 'admin' o 'user'
     export function createUser(body) {
+        console.log(body)
         return async function(dispatch){
             try{
                 const res = await axios.post(`${SERVER}/auth/users`, body)
@@ -339,30 +357,30 @@ const SERVER = 'http://localhost:3001';
     
    // me traigo el carro de productos tanto de usuarios como de invitados
 
-    export function getProductsCartUser(userId){
-        return async function (dispatch){
-                try{
-                if(!userId){
-                    const itemsCart = JSON.parse(localStorage.getItem("cart")) || [];
-                    return dispatch({
-                        type: GET_PRODUCTS_CART,
-                        payload: itemsCart
-                    })
-                
-                }else{
-                        const {itemsCart}= await axios.get(`${SERVER}/user/cart/${userId}`)
-                    //me creo el elemento order en base a lo que tenia en carrito para ese usuario
-                    localStorage.setItem("orderId", itemsCart.orderId) //orderId es el estado para la orden de ese usuario
-                    return dispatch ({
-                            type: ADD_TO_CART,
-                        payload: itemsCart
-                    })
-                }
-            }catch(err){
-                console.log(err)
-            }
-        }
-    }
+     export function getProductsCartUser(userId){
+         return async function (dispatch){
+                 try{
+                 if(!userId){
+                     const itemsCart = JSON.parse(localStorage.getItem("cart")) || [];
+                     return dispatch({
+                         type: GET_PRODUCTS_CART,
+                         payload: itemsCart
+                     })
+                 
+                 }else{
+                         const {itemsCart}= await axios.get(`${SERVER}/user/cart/${userId}`)
+                     //me creo el elemento order en base a lo que tenia en carrito para ese usuario
+                     localStorage.setItem("orderId", itemsCart.orderId) //orderId es el estado para la orden de ese usuario
+                     return dispatch ({
+                             type: GET_PRODUCTS_CART,
+                         payload: itemsCart
+                     })
+                  }
+             }catch(err){
+                 console.log(err)
+             }
+         }
+     }
     
     
     //para boton de carro y cantidades seleccionadas
@@ -394,7 +412,7 @@ const SERVER = 'http://localhost:3001';
               type: ADD_TO_CART,
               payload: products });/* */
         }
-       /* if (userId) {
+      if (userId) {
           const body = { id: product.id, qty: 1 };
           return axios
             .post(`${SERVER}/user/cart/${userId}`, body) //fatlta autenci usuario
@@ -405,7 +423,7 @@ const SERVER = 'http://localhost:3001';
                 });
             })
             .catch((error) => console.error(error));
-        } */
+        } 
     };
       
     
@@ -588,36 +606,7 @@ const SERVER = 'http://localhost:3001';
         }
     } 
     
-    // export function openModal(payload) {
-    //     return { 
-    //         type: OPEN_MODAL, 
-    //         payload 
-    //     };
-    // }
     
-    // export function postCartInDB(userId) {
-    //     return async function (dispatch) {
-        //         try {
-    //             const cartInDB=await axios.post(`${SERVER}/user/cart/${userId}`, payload);
-    //             return dispatch({
-    //                 type: POST_CART_IN_DB,
-    //                 payload: cartInDB
-    //             })
-    //         } catch (error) {
-        //             console.log(error);
-    //         }
-    //     };
-    // }
-    
-    //   export const goToCheckout = (products, userId) => async (dispatch) => {
-    //     return axios
-    //       .post(`/checkout`, { products }, { headers })
-    //       .then((res) => {
-    //         window.location = res.data.init_point;
-    //         dispatch({ type: GO_TO_CHECKOUT, payload: res.data.init_point });
-    //       })
-    //       .catch((err) => console.error(err));
-    //   };
     
     
     //   export const getAllFavourites = () => async (dispatch) => {
@@ -631,37 +620,4 @@ const SERVER = 'http://localhost:3001';
     
     ///////////////////////////////////////////////////////////////////////////////////////////
     
-    // export function addToCart(idproduct, qty) {
-        //     return async function(dispatch){
-    //         try {
-    //             const {data} =await axios.get(`${SERVER}/products/${idproduct}`,qty)
-    //             dispatch({
-    //                 type: ADD_TO_CART,
-    //                 payload: data
-    //             }) 
-    //         } catch (error) {
-    //             console.error(error)
-    //         }
-    //     }      
-    // }
-
-    // export function seeCart(){
-    //     return{
-    //         type: SEE_CART
-    //     }
-    // }
-    
-    // export function removeFromCart(idproduct) {
-    //     return {
-    //         type: REMOVE_FROM_CART,
-    //         payload: idproduct,
-    //     };
-    // }
-    
-    // export function changeQty(payload) {
-    //     return {
-    //         type: CHANGE_QTY,
-    //         payload
-    //     };
-    // }
-    
+   

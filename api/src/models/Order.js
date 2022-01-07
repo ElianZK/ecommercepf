@@ -10,11 +10,11 @@ module.exports = (sequelize) => {
             allowNull: false,
             defaultValue: DataTypes.UUIDV4
         },
-        date: {
-            type: DataTypes.DATE,
-            allowNull: false,
-            // unique:true
-        },
+        // date: {
+        //     type: DataTypes.DATE,
+        //     allowNull: false,
+        //     // unique:true
+        // },
         address: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -27,5 +27,8 @@ module.exports = (sequelize) => {
             type: DataTypes.ENUM("created","processing","canceled","completed"),
             allowNull: false,
         }
+    },{
+      createdAt: 'creationDate',
+      updatedAt: 'confirmationDate',
     });
 };
