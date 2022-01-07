@@ -24,10 +24,6 @@ import { formatMoney } from 'accounting';
         dispatch(getProductsCartUser(idUser)); 
     }, [dispatch, idUser]); 
 
-    /* useEffect(() => {
-        dispatch(getProductsCartUser(products));
-    }, [dispatch, products]) */
-
     const handleDeleteItem = (idproduct) => {
         //e.preventDefault()
         dispatch(deleteItemFromCart( idproduct, idUser))
@@ -63,7 +59,7 @@ import { formatMoney } from 'accounting';
 
     function handleClearCart(e){
         e.preventDefault()
-        dispatch(clearCart())
+        dispatch(clearCart(idUser))
     }
 
 

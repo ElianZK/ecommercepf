@@ -5,8 +5,8 @@ const putUserCart = async (req,res,next)=>{
   try{
     const {UserId} = req.params;
     const { productsInfo} = req.body;
-    console.log("userid",UserId)
-    console.log("productsInfo",productsInfo)
+    //console.log("userid",UserId)
+    //console.log("productsInfo",productsInfo)
     //[ Me dejo un arreglo con los ids de los productos que componen el nuevo carrito
     let idProduct = productsInfo.map(el=>el.idProduct)
 
