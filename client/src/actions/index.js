@@ -204,23 +204,81 @@ const SERVER = 'http://localhost:3001';
         }
     }
 
-    export function login(payload){
-        let data={
-            isVerified: payload.isVerified,
-            user: {
-                ...payload
+    export function createUser(body) {
+        console.log(body)
+        return async function(dispatch){
+            try{
+                const res = await axios.post(`${SERVER}/users/create`, body)
+
+                return dispatch({
+                    type: CREATE_USER,
+                    payload: res.data
+                })     
+            }catch(e){
+                return dispatch({
+                    type: CREATE_USER,
+                    payload: {error: true, message: "No se pudo crear la cuenta, revise los datos"}
+                }) 
             }
         }
+    };
 
-        return {
-            type: LOGIN,
-            payload:data
+    export function clearRegisterInfo(){
+        return{
+            type: CREATE_USER,
+            payload: null
+        }
+    }
+
+    export function login(payload){
+        if(payload.idUser){
+            return async function(dispatch){
+                try{
+                    payload["accountType"] = "external";
+    
+                    const res = await axios.post(`${SERVER}/user/login`, payload);
+
+                    let data = {
+                        user: {
+                            ...res.data
+                        }
+                    }
+    
+                    localStorage.setItem("user", JSON.stringify(data.user));
+
+                    return dispatch({
+                        type: LOGIN,
+                        payload: {
+                            ...data,
+                            error: false
+                        }
+                    });
+                }catch(e){
+                    return dispatch({
+                        type: LOGIN,
+                        payload: {
+                            user: {idUser: null},
+                            error: true
+                        }
+                    });
+                }
+            }
+        }else{
+            return {
+                type: LOGIN,
+                payload: {
+                    user: {idUser: null},
+                    error: null
+                }
+            }
         }
     }; 
 
     export function loginWithNormalAccount(payload){
         return async function(dispatch){
             try{
+                payload["accountType"] = "internal";
+
                 const res = await axios.post(`${SERVER}/user/login`, payload);
 
                 let data = {
@@ -233,10 +291,19 @@ const SERVER = 'http://localhost:3001';
 
                 return dispatch({
                     type: LOGIN,
-                    payload: data
+                    payload: {
+                        ...data,
+                        error: false
+                    }
                 });
             }catch(e){
-                console.log("error al loguearse ", e);
+                return dispatch({
+                    type: LOGIN,
+                    payload: {
+                        user: {idUser: null},
+                        error: true
+                    }
+                });
             }
         }
     }
@@ -335,23 +402,7 @@ const SERVER = 'http://localhost:3001';
         }   
     };
 
-    export function createUser(body) {
-        console.log(body)
-        return async function(dispatch){
-            try{
-                const res = await axios.post(`${SERVER}/users/create`, body)
-
-                console.log("tengo", res);
-
-                return dispatch({
-                    type: CREATE_USER,
-                    payload: res.data
-                })     
-            }catch(e){
-                console.log("hubo un error", e);
-            }
-        }
-    };
+    
 
     
    // me traigo el carro de productos tanto de usuarios como de invitados

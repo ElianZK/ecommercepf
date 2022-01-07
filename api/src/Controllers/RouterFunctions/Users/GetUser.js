@@ -2,17 +2,25 @@ const { User } = require('../../../db');
 
 
 const GetUser = async(req, res) =>{
-    const {email, password} = req.body;
+    const {email, password, accountType} = req.body;
+    let user = {};
 
-    const user = await User.findOne({where: {
-        email,
-        password
-    }});
+    if(accountType === "internal"){
+        user = await User.findOne({where: {
+            email,
+            password
+        }});    
+    }else{
+        user = await User.findOne({where: {
+            email
+        }}); 
+    }
+    
+    console.log(user);
 
     if(user){
         res.json({
             idUser: user.idUser,
-            type: user.type,
             name: user.name + " " + user.lastname,
             email: user.email,
             phone: user.phone

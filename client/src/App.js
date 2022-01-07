@@ -21,12 +21,14 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("user"));
+    const user = JSON.parse(localStorage.getItem("user"));
 
-    if(data){
-      dispatch(login(data))
+    if(user){
+      console.log("hay un user conectado");
+      dispatch(login(user))
     }else{
-      dispatch(login({token: null}));
+      console.log("no hay nadie conectado")
+      dispatch(login({idUser: null}));
     }
   }, [dispatch])
 
