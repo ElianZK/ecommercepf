@@ -1,12 +1,10 @@
-import { getBrands, createBrands, removeBrands, getUsers, createUser, updateUser } from "../../actions/index";
+import { getUsers, createUser, updateUser } from "../../actions/index";
 import React,{useEffect, useState} from "react";
 import {useDispatch, useSelector} from 'react-redux';
-import {Link} from 'react-router-dom';
 import s from '../../assets/styles/BrandForm.module.css';
 import s2 from '../../assets/styles/CategoryForm.module.css';
 import Swal from 'sweetalert2';
 import DataTable from 'react-data-table-component';
-/* import { DataGrid } from '@mui/x-data-grid'; */
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faTrashAlt, faEdit } from '@fortawesome/free-solid-svg-icons'
 import axios from "axios";
@@ -17,26 +15,17 @@ export default function UsersForm (){
     const registerInfo = useSelector(state => state.usersReducer.registerInfo);
 
     const [isAdmin, setIsAdmin] = useState(false);
-    // const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
 
     const idUser = useSelector(state => state.usersReducer.loginInfo.user.idUser);
 
     useEffect(() => {
-        // let {idUser} = JSON.parse(localStorage.getItem("user"));
-        console.log(idUser);
-
         axios.get("http://localhost:3001/user/type/" + idUser)
         .then(res => {
             let { access } = res.data;
     
             setIsAdmin(access && !!idUser)
         })
-
     }, [idUser]);
-    
-    useEffect(() => {
-        console.log(isAdmin ? "tienes permisos" : "no tienes permisos");
-    }, [isAdmin]);
 
     useEffect(() => {
         if(registerInfo !== null){
@@ -74,7 +63,6 @@ export default function UsersForm (){
     
                 buttons: [
                     <abbr title="Editar user" key={0}><button className={s2.btnEdit} onClick={(e) => {
-                        //dispatch(updateUser(user.idUser))
                         setEdit({id: user.idUser, on: true})
                         setNewUser({
                             name: user.name,

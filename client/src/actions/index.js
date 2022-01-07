@@ -645,11 +645,7 @@ const SERVER = 'http://localhost:3001';
     export function updateUser(id, user){
         return async function(dispatch){
             try{
-                console.log("voy a updatear el user " + id)
-
                 const res = await axios.put(`${SERVER}/users/${id}`, user)
-
-                console.log("se actualizó el user",res);
 
                 return dispatch({
                     type: UPDATE_USER,

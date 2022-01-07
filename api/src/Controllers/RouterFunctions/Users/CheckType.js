@@ -3,8 +3,6 @@ const { User } = require('../../../db');
 
 const CheckType = async(req, res) =>{
     const {idUser} = req.params; 
-    
-    console.log("recibí " + idUser)
 
     if(idUser != "null"){
         console.log("entro")

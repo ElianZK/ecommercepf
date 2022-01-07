@@ -5,8 +5,6 @@ const EditUsers = async (req, res, next) =>{
         const { id } = req.params;
         const { name, type, email, password, phone } = req.body;   
 
-        console.log("recibí ", {type, email, password, phone})
-
         const usuario = await User.findByPk(id);
         if (!usuario) {
             return res.status(404).json({

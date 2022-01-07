@@ -15,8 +15,6 @@ const GetUser = async(req, res) =>{
             email
         }}); 
     }
-    
-    console.log(user);
 
     if(user){
         res.json({
