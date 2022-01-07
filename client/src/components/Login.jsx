@@ -38,8 +38,6 @@ const Login = () => {
         if(type==='google') provider = new GoogleAuthProvider();
         else if(type==='github') provider = new GithubAuthProvider();
         else if(type==='facebook') provider = new FacebookAuthProvider();
-        
-        console.log("la sesión es de " + type)
 
         setPersistence(auth, browserSessionPersistence)
         .then(async ()=>{
@@ -52,21 +50,25 @@ const Login = () => {
                     idUser: res.user.uid,
                     name: res.user.displayName || "unknown " + type + " user",
                     photo: res.user.photoURL,
+                    email: res.user.email
                 };
-
-                console.log(res);
-
-                localStorage.setItem("user", JSON.stringify(data));
 
                 dispatch(login(data));
             })
         }).catch((error) => {
-            console.log(error)
-            Swal.fire({
-                title:'Error al iniciar sesión',
-                text: error.message,
-                icon: 'error'
-            })
+            if(error.message.split("/")[1] === "account-exists-with-different-credential)."){
+                Swal.fire({
+                    title:'Ya tiene una cuenta con el mismo email',
+                    text: "no puede iniciar sesión en una cuenta no registrada en la base de datos que tenga el mismo email. Use la cuenta con la que se haya registrado",
+                    icon: 'error'
+                })
+            }else{
+                Swal.fire({
+                    title:'Error al iniciar sesión',
+                    text: error.message,
+                    icon: 'error'
+                })
+            }
         });
     }
 

@@ -55,8 +55,6 @@ function Register() {
     const registerInfo = useSelector(state => state.usersReducer.registerInfo);
 
     useEffect(() => {
-        console.log(registerInfo);
-
         if(registerInfo !== null){
             if(registerInfo.error === true){
                 Swal.fire({
@@ -154,10 +152,6 @@ function Register() {
                     email: res.user.email
                 };
 
-                console.log(res);
-
-                localStorage.setItem("user", JSON.stringify(data));
-
                 dispatch(createUser({
                     idUser: data.idUser,
                     type:"user", 
@@ -171,7 +165,6 @@ function Register() {
 
             })
         }).catch((error) => {
-            console.log(error)
             Swal.fire({
                 title:'Error al iniciar sesión',
                 text: error.message,
@@ -196,8 +189,6 @@ function Register() {
                     name,
                     lastname
                 }));
-
-                // navigate("/");
             }}>
                 <div className={s.formGroup}>
                     <label htmlFor="name">Nombre</label>

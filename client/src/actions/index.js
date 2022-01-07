@@ -204,25 +204,81 @@ const SERVER = 'http://localhost:3001';
         }
     }
 
-    export function login(payload){
-        let data={
-            isVerified: payload.isVerified,
-            user: {
-                ...payload
-            },
-            error: false
-        }
+    export function createUser(body) {
+        console.log(body)
+        return async function(dispatch){
+            try{
+                const res = await axios.post(`${SERVER}/users/create`, body)
 
-        return {
-            type: LOGIN,
-            payload:data
+                return dispatch({
+                    type: CREATE_USER,
+                    payload: res.data
+                })     
+            }catch(e){
+                return dispatch({
+                    type: CREATE_USER,
+                    payload: {error: true, message: "No se pudo crear la cuenta, revise los datos"}
+                }) 
+            }
+        }
+    };
+
+    export function clearRegisterInfo(){
+        return{
+            type: CREATE_USER,
+            payload: null
+        }
+    }
+
+    export function login(payload){
+        if(payload.idUser){
+            return async function(dispatch){
+                try{
+                    payload["accountType"] = "external";
+    
+                    const res = await axios.post(`${SERVER}/user/login`, payload);
+
+                    let data = {
+                        user: {
+                            ...res.data
+                        }
+                    }
+    
+                    localStorage.setItem("user", JSON.stringify(data.user));
+
+                    return dispatch({
+                        type: LOGIN,
+                        payload: {
+                            ...data,
+                            error: false
+                        }
+                    });
+                }catch(e){
+                    return dispatch({
+                        type: LOGIN,
+                        payload: {
+                            user: {idUser: null},
+                            error: true
+                        }
+                    });
+                }
+            }
+        }else{
+            return {
+                type: LOGIN,
+                payload: {
+                    user: {idUser: null},
+                    error: null
+                }
+            }
         }
     }; 
 
     export function loginWithNormalAccount(payload){
         return async function(dispatch){
             try{
-                console.log(payload)
+                payload["accountType"] = "internal";
+
                 const res = await axios.post(`${SERVER}/user/login`, payload);
 
                 let data = {
@@ -233,7 +289,6 @@ const SERVER = 'http://localhost:3001';
 
                 localStorage.setItem("user", JSON.stringify(data.user));
 
-                console.log("voy a hacer un dispatch")
                 return dispatch({
                     type: LOGIN,
                     payload: {
@@ -242,7 +297,6 @@ const SERVER = 'http://localhost:3001';
                     }
                 });
             }catch(e){
-                console.log("voy a retornar un dispatch con error")
                 return dispatch({
                     type: LOGIN,
                     payload: {
@@ -348,33 +402,7 @@ const SERVER = 'http://localhost:3001';
         }   
     };
 
-    export function createUser(body) {
-        console.log(body)
-        return async function(dispatch){
-            try{
-                const res = await axios.post(`${SERVER}/users/create`, body)
-
-                console.log("tengo", res);
-
-                return dispatch({
-                    type: CREATE_USER,
-                    payload: res.data
-                })     
-            }catch(e){
-                return dispatch({
-                    type: CREATE_USER,
-                    payload: {error: true, message: "No se pudo crear la cuenta, revise los datos"}
-                }) 
-            }
-        }
-    };
-
-    export function clearRegisterInfo(){
-        return{
-            type: CREATE_USER,
-            payload: null
-        }
-    }
+    
 
     
    // me traigo el carro de productos tanto de usuarios como de invitados
