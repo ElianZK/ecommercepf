@@ -15,12 +15,23 @@ module.exports = (sequelize) => {
         //     allowNull: false,
         //     // unique:true
         // },
-        address: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
+        address:{
+          type:DataTypes.JSON({
+              country:{type:DataTypes.STRING},
+              city:{type:DataTypes.STRING},
+              street:{type:DataTypes.STRING},
+              postalCode:{type:DataTypes.STRING}
+          }),
+          allowNull:false,
+          defaultValue: {
+            country:'',
+            city:'',
+            street:'',
+            postalCode:''
+          }
+      },
         totalPrice: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.FLOAT,
             allowNull: false,
         },
         status: {
