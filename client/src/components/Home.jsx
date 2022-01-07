@@ -5,14 +5,17 @@ import {useDispatch , useSelector} from 'react-redux';
 import { getAllProducts, 
     getProductByName, 
     sortProducts,
+    addToCart,
 } from '../actions/index.js'
 import { useParams } from "react-router-dom";
 import Filters from "./Filters.jsx";
 import Pagination from "./Pagination.jsx";
 import imgnotfound from "../assets/img/notfound.gif";
-
+import Swal from 'sweetalert2';
 
 const Home = () => {
+    const Users = localStorage.getItem("user")
+    const idUser= Users!=="null"?JSON.parse(localStorage.getItem("user")):null
     const dispatch = useDispatch();
     const {search=null} = useParams();
     const [sort,setSort] = useState('');
@@ -56,6 +59,17 @@ const Home = () => {
         setSort(e.target.value)
     }
 
+    function addCart(product){
+        console.log("datacard",product)
+        dispatch(addToCart({...product,amount: 1},idUser))
+        Swal.fire({
+            icon: 'success',
+            text: 'Producto agregado exitosamente!',
+            showConfirmButton: false,
+            timer: 2000
+        })
+    }
+
     useEffect(()=>{
         const offset=(page-1)*limit;
         if(!search){
@@ -77,7 +91,7 @@ const Home = () => {
 
             {search?<div className={s.search}><p>Resultados de busqueda de: <strong>{search}</strong></p></div>:null}
             <div className={s.cards}>
-                {Array.isArray(products)&&products.length>0?products.map((prod,i)=><Card key={i} id={prod.idProduct} name={prod.name} price={prod.price} image={prod.thumbnail}/>)
+                {Array.isArray(products)&&products.length>0?products.map((prod,i)=><Card key={i} id={prod.idProduct} name={prod.name} price={prod.price} image={prod.thumbnail} data={prod} add={addCart}/>)
                 :<div className={s.notfound}>
                     <img className={s.imgfound} src={imgnotfound}/>
                     <p>Products not found</p>

@@ -5,6 +5,8 @@ const putUserCart = async (req,res,next)=>{
   try{
     const {UserId} = req.params;
     const { productsInfo} = req.body;
+    console.log("userid",UserId)
+    console.log("productsInfo",productsInfo)
     //[ Me dejo un arreglo con los ids de los productos que componen el nuevo carrito
     let idProduct = productsInfo.map(el=>el.idProduct)
 
@@ -13,7 +15,7 @@ const putUserCart = async (req,res,next)=>{
     //! console.log(usuario.toJSON());
     
     //[Remuevo los elementos del carrito previamente asociados al usuario.
-    await user.removeProducts(await user.getProducts());
+    //await user.removeProducts(await user.getProducts());
     //! console.log("Ahora en el carrito hay : ", await usuario.countProducts(), "productos");
 
     //[Busco los productos que agregaré al carrito.
@@ -44,14 +46,14 @@ const putUserCart = async (req,res,next)=>{
 
     //[Los vuelvo a pedir para enviar los datos correctamente
     products = await user.getProducts({
-      attributes: ["idProduct","name", "price", "stock"]
+      attributes: ["idProduct","name", "price", "stock","image"]
     });
     products = products.map(el=>{
-      const{idProduct, name, price, stock, cart:{amount}} = el.toJSON()
-      return {idProduct, name, price, stock, amount, totalPrice:amount*price}
+      const{idProduct, name, price, stock,image, cart:{amount}} = el.toJSON()
+      return {idProduct, name, price, stock,image, amount, totalPrice:amount*price}
     })
 
-    return res.status(200).json({user, cart: products});
+    return res.status(200).json({/* user,*/ cart:  products});
   }catch(err){
     console.log("Get users/cart/:id", err);
     next(err)

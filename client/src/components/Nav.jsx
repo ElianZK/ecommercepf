@@ -19,7 +19,7 @@ const Nav = () => {
    
     const dispatch = useDispatch();
     const cart = useSelector(state => state.ordenReducer.cart)
-    let totalItems = cart && [].concat(cart).reduce((accumulator, currentValue) => Number(accumulator) + Number(currentValue.qty), 0)
+    let totalItems = cart && [].concat(cart).reduce((accumulator, currentValue) => Number(accumulator) + Number(currentValue.amount), 0)
     //let totalItems = cart.lenght
 
     return (
@@ -28,11 +28,11 @@ const Nav = () => {
                 <img className={s.logo} src={logo} onClick={()=>{window.location='/'}} alt="logo ecommerce"/> 
                 <SearchBar />
                 <div className={s.buttons}>
-                    {user.token || user.idUser ? <>
+                    {user.idUser ? <>
                         <h1>{user.name}</h1>
                         <button className={s.btn} onClick={() => {
-                            localStorage.setItem("user", JSON.stringify({token: null}));
-                            dispatch(login({token: null}));
+                            localStorage.setItem("user", JSON.stringify({idUser: null}));
+                            dispatch(login({idUser: null}));
                         }}>cerrar sesión</button>
                         
                     </> : <>
