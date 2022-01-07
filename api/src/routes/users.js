@@ -28,6 +28,7 @@ router.delete('/cart/:UserId', deleteUserCart);
  
 //Orders Routes
 router.get('/orders/:UserId', getUserOrders);
+router.get('/orders/:UserId/:OrderId', getUserOrders);
 router.post('/order/:UserId', postUserOrder)
 
 module.exports= router

@@ -13,9 +13,10 @@ const initialState = {
     loginInfo:{
         isVerified: false,
         user: {
-            token: null,
+            idUser: null,
         },
-        lastUpdate: 0
+        lastUpdate: 0,
+        error: false
     },
     error:null,
 
@@ -25,8 +26,10 @@ const initialState = {
 export function usersReducer(state = initialState, action){ 
     switch(action.type){
         case LOGIN:
+            console.log(action.payload)
             return{
-                ...state, loginInfo: action.payload
+                ...state, 
+                loginInfo: action.payload
             }
         
         case LOGOUT:

@@ -35,6 +35,7 @@ export const CHANGE_QTY = 'CHANGE_QTY';
 export const UPDATE= 'UPDATE';
 
 export const CREATE_USER = 'CREATE_USER';
+export const CLEAR_REGISTER_INFO = "CLEAR_REGISTER_INFO";
 export const ERROR_LOGIN='ERROR_LOGIN';
 
 

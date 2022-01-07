@@ -1,7 +1,7 @@
 import React, {  useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import s from '../../assets/styles/Cart.module.css'
-import {getProductsCartUser, deleteAllCart, changeQty, deleteItemFromCart, clearCart} from '../../actions/index'
+import {getProductsCartUser, changeAmount, deleteItemFromCart, clearCart} from '../../actions/index'
 import Swal from 'sweetalert2';
 import { Link, useNavigate, useParams} from 'react-router-dom';
 import DataTable from 'react-data-table-component';
@@ -15,46 +15,52 @@ import { formatMoney } from 'accounting';
 
  function Cart() {
     const dispatch = useDispatch();
+    const navigate = useNavigate()
     const products = useSelector(state => state.ordenReducer.cart);
-    const users = useSelector(state => state.usersReducer.users)
-    const[qty, setQty] = useState(products.qty);
-    const {userId=null} = useParams()
-    //const userId = Cookies.get('id');
-    console.log("iduser",userId)
+    const Users = useSelector(state => state.usersReducer.loginInfo.users)
+    const {idUser} = JSON.parse(localStorage.getItem("user"));
 
     useEffect(() => {
-        dispatch(getProductsCartUser(userId)); 
-    }, [dispatch, userId,products]); 
+        dispatch(getProductsCartUser(idUser)); 
+    }, [dispatch, idUser]); 
 
     const handleDeleteItem = (idproduct) => {
         //e.preventDefault()
-        
-        dispatch(deleteItemFromCart(userId, idproduct))
+        dispatch(deleteItemFromCart( idproduct, idUser))
     }
 
-    const handleChangeQty = (e) => {
+    const handlerChangeAmount = (product,idUser,e) => {
         e.preventDefault()
         const { value } = e.target;
-        if (value <= products.stock && value >= 1) {
-            setQty(value);
-            dispatch(changeQty(products, e.target.value, userId));
+        if (value <= product.stock && value >= 1) {
+            let auxProducts=products.map(p=>{
+                if(p.idProduct===product.idProduct){
+                    return {
+                        ...p,
+                        amount:value
+                    }
+                }
+                return p;
+            })
+
+            dispatch(changeAmount(auxProducts, idUser));
         };
     }
 
-     function handleGoToCheckOut() {
-        /*if (users && users.email?.length > 0) {
-            dispatch(gotToCheckout(userId, products))
+    function handleGoToCheckOut() {
+        if (Users && Users.email?.length > 0) {
            navigate('/checkout')
         } else {
             navigate('/register');
-        }*/
+        }
     } 
 
 
     function handleClearCart(e){
         e.preventDefault()
-        dispatch(clearCart())
+        dispatch(clearCart(idUser))
     }
+
 
     // const totalIncludeDesc = () => {
     //     products.length && products.reduce((totalWithoutDesc, { price, qty }) => 
@@ -76,7 +82,7 @@ import { formatMoney } from 'accounting';
             name: "Image",   
             grow: 0,
             sortable: true,
-            cell: row => <img height="84px" width="56px" alt={row.name} src={row.image} />
+            cell: row => <img height="84px" width="56px" alt={row.name} src={row.image[0]} />
         },
         {
             name: "Name",
@@ -92,21 +98,14 @@ import { formatMoney } from 'accounting';
 
         {
             name: "Quantity",
-            selector: row => row.qty,
-            sortable: true
+            selector: row => <input name="amount" type="number" min={1} max={row.stock} value={row.amount} onChange={(e)=>handlerChangeAmount(row,idUser,e)}></input>//row.amount,
+            //sortable: true
         },
 
         {
             name:"Amount",
-            selector:row => formatMoney(row.price * row.qty),
+            selector:row => formatMoney(row.price * row.amount),
             sortable: true
-        },
-        {
-            cell: () => <abbr title="Add Item" ><button className={s.btnDel}value={qty} onClick= {handleChangeQty }><FontAwesomeIcon icon={faTrashAlt}/></button></abbr>,
-            ignoreRowClick: true,
-            allowFlow: true,
-            button: true
-            
         },
 
         {
@@ -140,7 +139,7 @@ import { formatMoney } from 'accounting';
             </div>
                 <div>
                         <div className={s.amount}>
-                           Total Amount: {formatMoney(products.reduce((a, c) => a + c.price*c.qty,0))}
+                           Total Amount: {formatMoney(products?.reduce((a, c) => a + c.price*c.amount,0))}
                             
                         </div>
                 </div>
