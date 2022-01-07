@@ -23,7 +23,8 @@ export const info = [
                 price: 32999,
                 qty: 10
             }
-        ]
+        ],
+        amount:432983
     },
     {
         status: ["created", "processing", "canceled", "completed"],
@@ -41,7 +42,8 @@ export const info = [
                 price: 82999,
                 qty: 2
             }
-        ]
+        ],
+        amount:179675
     },
     {
         status: ["created", "processing", "canceled", "completed"],
@@ -59,7 +61,8 @@ export const info = [
                 price: 21999,
                 qty: 4
             }
-        ]
+        ],
+        amount:149995
     },
     {
         status: ["created", "processing", "canceled", "completed"],
@@ -83,7 +86,8 @@ export const info = [
                 price: 66999,
                 qty: 1
             }
-        ]
+        ],
+        amount:249996
     },
     {
         status: ["created", "processing", "canceled", "completed"],
@@ -101,7 +105,8 @@ export const info = [
                 price: 26999,
                 qty: 1
             }
-        ]
+        ],
+        amount:104998
     },
     {
         status: ["created", "processing", "canceled", "completed"],
@@ -119,8 +124,7 @@ export const info = [
                 price: 5489,
                 qty: 5
             }
-        ]
+        ],
+        amount:58444
     },
 ]
-
-export let amount = 522983

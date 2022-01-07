@@ -45,11 +45,7 @@ export default function BuyHistory() {
                         <ul className={s.stateAmount}>
                             <li className={s.status}>{e.status[3].toUpperCase()}</li>
                             <li className={s.amount}>
-                                Total: {e.cart.map(e=>{
-                                    let t = 0;
-                                    t+=(e.price*e.qty)
-                                    return formatMoney(t)
-                                })}
+                                Total: {formatMoney(e.amount)}
                             </li>
                         </ul>
 
@@ -57,9 +53,10 @@ export default function BuyHistory() {
                             {e.cart.map(p=>{
                                 return(
                                     <ul className={s.detailContainer}>
-                                        <li className={s.productName}>{p.name}</li><br></br>
-                                        <li className={s.productQty}>units: {p.qty}</li><br></br>
-                                        <li className={s.productPrice}>price: {formatMoney(p.price*p.qty)}</li>
+                                        <li className={s.productName}>{p.name}</li>
+                                        <li className={s.productQty}>Units: {p.qty}</li>
+                                        <li className={s.productPrice}>Price: {formatMoney(p.price)}</li>
+                                        <li className={s.subtotal}>Subtotal: {formatMoney(p.price*p.qty)} </li>
                                     </ul>
                                 )
                             })}

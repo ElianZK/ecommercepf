@@ -103,14 +103,19 @@
 .productName{
     font-size: 11px;
     padding-left: 25px;
+    margin-bottom: 10px;
 }
 .productQty{
     font-size: 11px;
     padding-left: 25px;
-
+    margin-bottom: 10px;
 }
 .productPrice{
     font-size: 11px;
     padding-left: 25px;
 
+}
+.subtotal{
+    font-size: 11px;
+    padding-left: 25px;
 }
