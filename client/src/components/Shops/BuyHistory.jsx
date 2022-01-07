@@ -11,66 +11,50 @@ export default function BuyHistory() {
     const dispatch = useDispatch()
     const orders = info
 
-    const handleBuy = (e)=>{
-        /* 
-        componente que te envia a hacer el 
-        chechout de un compra ya realizada,
-        utilizando el id de la compra con su 
-        respectivo detalle
-        */ 
-       alert('Compra Realizada')
-    }
-
-
-
-    let randomState =()=>{
-        let peek = Math.random(0,4)
-        return Math.trunc(peek)
-    }
-
-
     return (
-    <div className={s.container}>
-        <div className={s.background}>
+        <div className={s.container}>
+        
+            <div className={s.background}>
 
             <h2 className={s.title}>Historial de compras</h2>
 
-            {orders.map((e)=>{return(
-                <div className={s.card}>
+                {orders.map((e)=>{return(
+                    <div className={s.card}>
 
-                    <h2 className={s.cardHeader}>{e.date}</h2>
-
-                    <div className={s.cardContainer}>
-
-                        <ul className={s.stateAmount}>
-                            <li className={s.status}>{e.status[3].toUpperCase()}</li>
-                            <li className={s.amount}>
-                                Total: {formatMoney(e.amount)}
-                            </li>
-                        </ul>
-
-                        <div className={s.detail}>       
-                            {e.cart.map(p=>{
-                                return(
-                                    <ul className={s.detailContainer}>
-                                        <li className={s.productName}>{p.name}</li>
-                                        <li className={s.productQty}>Units: {p.qty}</li>
-                                        <li className={s.productPrice}>Price: {formatMoney(p.price)}</li>
-                                        <li className={s.subtotal}>Subtotal: {formatMoney(p.price*p.qty)} </li>
-                                    </ul>
-                                )
-                            })}
+                        <div className={s.headerContainer}>
+                            <h2 className={s.cardDate}>Date: {e.date}</h2>
+                            <h2 className={s.detailTitle}>Buy Detail</h2>
                         </div>
-                        {/* <div className={s.buttons}>
-                            <Link to="/buyDetail"><button value={e.idOrder}>Detalle de compra</button></Link>
-                            <button
-                            onClick={handleBuy}
-                            >Volver a comprar</button>
-                        </div> */}
+
+                        <div className={s.cardContainer}>
+
+                            <ul className={s.stateAmount}>
+                                <li className={s.status}>{e.status[3].toUpperCase()}</li>
+                                <li className={s.amount}>
+                                    Total: {formatMoney(e.amount)}
+                                </li>
+                            </ul>
+
+                            <div className={s.detail}>  
+                                {e.cart.map(p=>{
+                                    return(
+                                        <ul className={s.detailContainer}>
+                                            <li className={s.productName}>{p.name}</li>
+                                            <li className={s.productQty}>Units: {p.qty}</li>
+                                            <li className={s.productPrice}>Price: {formatMoney(p.price)}</li>
+                                            <li className={s.subtotal}>Subtotal: {formatMoney(p.price*p.qty)} </li>
+                                        </ul>
+                                    )
+                                })}
+                            </div>
+
+                        </div>
+
                     </div>
-                </div>
-            )})}
+                )})}
+
+            </div>
+
         </div>
-    </div>
     )
 }
