@@ -26,7 +26,6 @@ const initialState = {
 export function usersReducer(state = initialState, action){ 
     switch(action.type){
         case LOGIN:
-            console.log(action.payload)
             return{
                 ...state, 
                 loginInfo: action.payload
@@ -55,7 +54,6 @@ export function usersReducer(state = initialState, action){
                 }
 
         case UPDATE_USER:{
-            console.log("user en reducer " + action.payload)
             return{
                 ...state
             }

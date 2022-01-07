@@ -13,7 +13,6 @@ import {Badge} from '@material-ui/core';
 
 const Nav = () => {
     const user = useSelector(state => {
-        console.log(state.usersReducer)
         return state.usersReducer.loginInfo.user;
     });
     const navigate = useNavigate();
@@ -28,6 +27,9 @@ const Nav = () => {
             <nav className={s.options}>               
                 <img className={s.logo} src={logo} onClick={()=>{window.location='/'}} alt="logo ecommerce"/> 
                 <SearchBar />
+
+                <Link to="/userForm">ir a admin</Link>
+
                 <div className={s.buttons}>
                     {user.idUser ? <>
                         <h1>{user.name}</h1>

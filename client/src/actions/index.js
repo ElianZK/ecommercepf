@@ -33,7 +33,8 @@ import { GET_ALL_PRODUCTS,
     UPDATE,
     CREATE_USER,
     GET_USERS,
-    UPDATE_USER
+    UPDATE_USER,
+    CHECK_TYPE
 } from "./actionsTypes";
 import axios from 'axios';
 
@@ -314,6 +315,26 @@ const SERVER = 'http://localhost:3001';
             payload: {isConnected: false}
         } 
     };
+
+    export function checkType(/*id*/){
+        return{
+            type: CHECK_TYPE,
+            payload: {isAdmin: true}
+        }
+        // return async function(dispatch){
+        //     console.log("petición con el id " + id);
+
+        //     try{
+        //         return dispatch({
+        //             isAdmin: true
+        //         })
+        //     }catch(e){
+        //         return dispatch({
+        //             isAdmin: false
+        //         })
+        //     }
+        // }
+    }
 
     export function removeCategory(id){
         return async function(dispatch){

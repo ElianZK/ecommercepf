@@ -24,10 +24,10 @@ function App() {
     const user = JSON.parse(localStorage.getItem("user"));
 
     if(user){
-      console.log("hay un user conectado");
+      // console.log("hay un user conectado");
       dispatch(login(user))
     }else{
-      console.log("no hay nadie conectado")
+      // console.log("no hay nadie conectado")
       dispatch(login({idUser: null}));
     }
   }, [])

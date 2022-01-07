@@ -15,6 +15,24 @@ export default function UsersForm (){
 
     const registerInfo = useSelector(state => state.usersReducer.registerInfo);
 
+    const [isAdmin, setIsAdmin] = useState(false);
+    // const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+
+    const idUser = useSelector(state => state.usersReducer.loginInfo.user.idUser);
+
+    useEffect(() => {
+        // let {idUser} = JSON.parse(localStorage.getItem("user"));
+        console.log(idUser);
+
+        const res = true;
+
+        setIsAdmin(res && !!idUser)
+    }, [idUser]);
+    
+    useEffect(() => {
+        console.log(isAdmin ? "tienes permisos" : "no tienes permisos");
+    }, [isAdmin]);
+
     useEffect(() => {
         if(registerInfo !== null){
             if(registerInfo.created){
@@ -127,144 +145,147 @@ export default function UsersForm (){
     return(
         <>
             <div className={s.Container}>
-                {/* <!-- AÑADIR COMPONENTE NAVBAR -->
-                <!-- AÑADIR BOTON DESPLEGABLE PERFIL --> */}
-                <form className={s.Form} onSubmit={e => {
-                    e.preventDefault();
-
-                    if(newUser.name === "" || newUser.lastname === "" || newUser.email === "" || newUser.password === "" || newUser.phone === ""){
-                        Swal.fire({
-                            icon: "error",
-                            title: "campo vacío",
-                            text: "revise si hay algun campo vacío"
-                        })
-                    }else{
-                        if(!edit.on){
-                            dispatch(createUser(newUser));
-                        }else{
-                            console.log("actualizar")
-                            dispatch(updateUser(edit.id, newUser))
-                            setEdit({on: false, id: null});
-
+                {isAdmin ? (<>
+                    {/* <!-- AÑADIR COMPONENTE NAVBAR -->
+                    <!-- AÑADIR BOTON DESPLEGABLE PERFIL --> */}
+                    <form className={s.Form} onSubmit={e => {
+                        e.preventDefault();
+    
+                        if(newUser.name === "" || newUser.lastname === "" || newUser.email === "" || newUser.password === "" || newUser.phone === ""){
                             Swal.fire({
-                                icon: "success",
-                                title: "Usuario editado con éxito"
+                                icon: "error",
+                                title: "campo vacío",
+                                text: "revise si hay algun campo vacío"
                             })
+                        }else{
+                            if(!edit.on){
+                                dispatch(createUser(newUser));
+                            }else{
+                                console.log("actualizar")
+                                dispatch(updateUser(edit.id, newUser))
+                                setEdit({on: false, id: null});
+    
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "Usuario editado con éxito"
+                                })
+                            }
+    
+                            setNewUser({
+                                name: '',
+                                lastname: '',
+                                email: '',
+                                password: '',
+                                phone: '',
+                                type: "user",
+                            })
+    
+    
+                            dispatch(getUsers());
                         }
-
-                        setNewUser({
-                            name: '',
-                            lastname: '',
-                            email: '',
-                            password: '',
-                            phone: '',
-                            type: "user",
-                        })
-
-
-                        dispatch(getUsers());
-                    }
-                }}>
-                    <div className={s.Title}> 
-                        <h2>user Creation</h2>
-                    </div>
-
-                    <div className={s.InputSelect}>
-                        <div className={s.formGroup}>
-                            <input 
-                                type="text"
-                                placeholder="name"
-                                value={newUser.name}
-                                onChange={e => setNewUser(prev => {
-                                    return{
-                                        ...prev,
-                                        name: e.target.value
-                                    }
-                                })} 
-                            />
-
-                            <input 
-                                type="text"
-                                placeholder="last name"
-                                value={newUser.lastname}
-                                onChange={e => setNewUser(prev => {
-                                    return{
-                                        ...prev,
-                                        lastname: e.target.value
-                                    }
-                                })} 
-                            />
-
-                            <input 
-                                type="email"
-                                placeholder="email"
-                                value={newUser.email}
-                                onChange={e => setNewUser(prev => {
-                                    return{
-                                        ...prev,
-                                        email: e.target.value
-                                    }
-                                })} 
-                            />
-
-                            <input 
-                                type="password"
-                                placeholder="password"
-                                value={newUser.password}
-                                onChange={e => setNewUser(prev => {
-                                    return{
-                                        ...prev,
-                                        password: e.target.value
-                                    }
-                                })} 
-                            />
-
-                            <input 
-                                type="text"
-                                placeholder="phone"
-                                value={newUser.phone}
-                                onChange={e => setNewUser(prev => {
-                                    return{
-                                        ...prev,
-                                        phone: e.target.value
-                                    }
-                                })} 
-                            />
-
-                            <select onChange={e => setNewUser(prev => {
-                                return{
-                                    ...prev,
-                                    type: e.target.value
-                                }
-                            })}>
-                                <option selected={newUser.type === "user" ? true : false} value="user">normal User</option>
-                                <option selected={newUser.type === "admin" ? true : false} value="admin">admin</option>
-                            </select>
-
-                            <button type="submit">{edit.on ? "editar" : "crear"}</button>
-
+                    }}>
+                        <div className={s.Title}> 
+                            <h2>user Creation</h2>
                         </div>
-                        
-                        <br></br>
+    
+                        <div className={s.InputSelect}>
+                            <div className={s.formGroup}>
+                                <input 
+                                    type="text"
+                                    placeholder="name"
+                                    value={newUser.name}
+                                    onChange={e => setNewUser(prev => {
+                                        return{
+                                            ...prev,
+                                            name: e.target.value
+                                        }
+                                    })} 
+                                />
+    
+                                <input 
+                                    type="text"
+                                    placeholder="last name"
+                                    value={newUser.lastname}
+                                    onChange={e => setNewUser(prev => {
+                                        return{
+                                            ...prev,
+                                            lastname: e.target.value
+                                        }
+                                    })} 
+                                />
+    
+                                <input 
+                                    type="email"
+                                    placeholder="email"
+                                    value={newUser.email}
+                                    onChange={e => setNewUser(prev => {
+                                        return{
+                                            ...prev,
+                                            email: e.target.value
+                                        }
+                                    })} 
+                                />
+    
+                                <input 
+                                    type="password"
+                                    placeholder="password"
+                                    value={newUser.password}
+                                    onChange={e => setNewUser(prev => {
+                                        return{
+                                            ...prev,
+                                            password: e.target.value
+                                        }
+                                    })} 
+                                />
+    
+                                <input 
+                                    type="text"
+                                    placeholder="phone"
+                                    value={newUser.phone}
+                                    onChange={e => setNewUser(prev => {
+                                        return{
+                                            ...prev,
+                                            phone: e.target.value
+                                        }
+                                    })} 
+                                />
+    
+                                <select onChange={e => setNewUser(prev => {
+                                    return{
+                                        ...prev,
+                                        type: e.target.value
+                                    }
+                                })}>
+                                    <option selected={newUser.type === "user" ? true : false} value="user">normal User</option>
+                                    <option selected={newUser.type === "admin" ? true : false} value="admin">admin</option>
+                                </select>
+    
+                                <button type="submit">{edit.on ? "editar" : "crear"}</button>
+    
+                            </div>
+                            
+                            <br></br>
+                        </div>
+                    </form>
+    
+                    <div className={s.containerSearch}>
+                        <input name="name" placeholder="Ingrese la marca" onChange={(e)=>{
+                            let name= e.target.value;
+                            setSearch(name)
+                            setSearchres(
+                                users.filter(user=>{
+                                    return user.name.includes(name)
+                                })
+                            )
+                        }}/>
                     </div>
-                </form>
-
-                <div className={s.containerSearch}>
-                    <input name="name" placeholder="Ingrese la marca" onChange={(e)=>{
-                        let name= e.target.value;
-                        setSearch(name)
-                        setSearchres(
-                            users.filter(user=>{
-                                return user.name.includes(name)
-                            })
-                        )
-                    }}/>
-                </div>
-                <DataTable
-                    columns={columns}
-                    data={searchres ? searchres : users} 
-                    pagination
-                />
+                    <DataTable
+                        columns={columns}
+                        data={searchres ? searchres : users} 
+                        pagination
+                    />
+                </>) : <h1>no tenes acceso a esta página</h1>
+                }
             </div>
         </>
     )
