@@ -14,8 +14,8 @@ import imgnotfound from "../assets/img/notfound.gif";
 import Swal from 'sweetalert2';
 
 const Home = () => {
-    const Users = localStorage.getItem("user")
-    const idUser= Users!=="null"?JSON.parse(localStorage.getItem("user")):null
+    const Users = useSelector(state => state.usersReducer.loginInfo.users)
+    const {idUser} = JSON.parse(localStorage.getItem("user"));
     const dispatch = useDispatch();
     const {search=null} = useParams();
     const [sort,setSort] = useState('');
@@ -61,6 +61,7 @@ const Home = () => {
 
     function addCart(product){
         console.log("datacard",product)
+        console.log("usercard",idUser)
         dispatch(addToCart({...product,amount: 1},idUser))
         Swal.fire({
             icon: 'success',
