@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import {info} from './info';
 import s from '../../assets/styles/BuyHistory.module.css'
 import { formatMoney } from 'accounting';
+import { getProductsCartUser,getProductId } from '../../actions';
 
  
 export default function BuyHistory() {
