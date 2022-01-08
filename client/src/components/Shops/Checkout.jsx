@@ -4,7 +4,7 @@ import Swal from 'sweetalert2';
 import {CardElement, Elements, useElements, useStripe} from "@stripe/react-stripe-js"
 import { loadStripe } from '@stripe/stripe-js';
 import { useNavigate } from 'react-router-dom';
-import { getProductsCartUser } from '../../actions';
+import { setOrderProducts, clearCart } from '../../actions';
 import s from '../../assets/styles/Checkout.module.css'
 import { formatMoney } from 'accounting';
 
@@ -39,30 +39,39 @@ export default function Checkout(){
         const dispatch = useDispatch()
         const navigate = useNavigate()
 
+        const User = useSelector(state => state.usersReducer.loginInfo.user)
+        //const {idUser} = JSON.parse(localStorage.getItem("user"));
+
         const token=localStorage.getItem('token')
         
         const [state,setState]= useState({
-            email:'',
+            name: User.name,
+            phone: User.phone,
             country:'',
             city:'',
-            address:'',
-            postalCode:''
+            email: User.email,
+            address: {
+                street:'',
+                postalCode:'',
+            }
+        
         })
         
         const cart = useSelector((state)=>state.ordenReducer.cart)
 
+
         let totalPrice= 0 
         let iva = 0  
-        var buys=[]
+        let buys=[]
         for (const i in cart) {
-            //console.log("hola", cart)
             buys.push({
+                idProduct: cart[i].idProduct,
                 name:cart[i].name,
                 image: cart[i].image, 
                 price: formatMoney(cart[i].price),
-                qty: Number(cart[i].qty),
+                amount: Number(cart[i].amount),
             })
-            totalPrice += (cart[i].price*cart[i].qty)
+            totalPrice += (cart[i].price*cart[i].amount)
             iva = (totalPrice*0.21)
             // console.log("comp",buys)
             // console.log("iva",iva)
@@ -89,20 +98,28 @@ export default function Checkout(){
                     if(!error) {
                         const {id} = paymentMethod;
                         let pay = {
-                            product: buys,
+                            productsInfo: buys,
                             email: state.email,
-                            address: `${state.country}/ ${state.city}, ${state.address}, CP: ${state.postalCode}`,
-                            amount: Math.round(totalPrice)*0.1,
-                            pay: id
+                            //country: state.country,
+                            //phone: state.phone,
+                            address: {
+                                country: state.country,
+                                postalCode: state.postalCode,
+                                city: state.city,
+                                direction:'esto no es direccion!!!!!'
+                            },
+                            totalPrice: Math.round(totalPrice)*0.1,
+                            id: id
                         }
-                dispatch(getProductsCartUser(pay, token)) //aca deberia ir la ruta post
+                dispatch(setOrderProducts(pay, User.idUser)) //aca deberia ir la ruta post
                     Swal.fire({
                         icon: 'success',
                         text: "Thank you for your purchase , you will receive an email with the details,  success",
-                        showConfirmButton: false,
-                        timer: 3000
+                        showConfirmButton: true,
+                        
                 })
-                navigate('/ ') //q vaya a ordenes
+                dispatch(clearCart(User.idUser))
+                navigate('/order/:UserId') //q vaya a ordenes
                 } else {
                     console.log(error); 
                 }
@@ -110,7 +127,7 @@ export default function Checkout(){
             return <form className= {s.form_compra}  
                             onSubmit={handleSubmit}>
                         <CardElement className={s.card}/>     
-                        {state.email && state.country && state.address && state.postalCode && 
+                        {state.email && state.address && state.address && state.postalCode && 
                         <button className={s.btn}>
                                 Buy
                             </button>}
@@ -124,7 +141,7 @@ export default function Checkout(){
             <h1 className={s.title}>Order Summary</h1>
         <div className={s.container_pasarela}>
             <div className={s.pasarela_card}>
-            {cart.map(e=>{       /*aca va token*/ 
+            {cart?.map(e=>{       /*aca va token*/ 
                 return (<div key={e.idProduct} className={s.pasarela_cdtm}>
                         <div>
                         <img className={s.image_pasarela} alt="imagen_pasarela"src={e.image}></img>
@@ -133,7 +150,7 @@ export default function Checkout(){
                         <div><p className={s.titulo_pasarela}>{e.name}</p></div>
                         
                         
-                        <div><p className={s.unidades_pasarela}>Unidades: {e.qty}</p></div>
+                        <div><p className={s.unidades_pasarela}>Unidades: {e.amount}</p></div>
                        <div><p className={s.precio_pasarela}><span className={s.peso_pasarela}></span> {formatMoney(e.price)}</p></div>
                         </div>
                     </div>)
@@ -152,24 +169,23 @@ export default function Checkout(){
                 <p className={s.direccion_pasarela}>Dirección de envío</p>
                 <div className={s.datos_personales_pasarela}>
                 <div>
-                    <label>First Name</label>  
+                    <label>Name</label>  
                     <input 
                         type='text'
-                        pattern= '/[az-AZ]' 
                         required 
-                        autoComplete='first-name' 
-                        name='firstName' 
-                        value={state.firstName} 
+                        autoComplete='name' 
+                        name='name' 
+                        value={state.name} 
                         onChange={(e)=>handleChange(e)} />    
                     </div>
                     <div>
-                    <label>Laast Name</label>  
+                    <label>Phone</label>  
                     <input 
                         type='text' 
                         required 
-                        autoComplete='last-name' 
-                        name='lastName' 
-                        value={state.lastName} 
+                        autoComplete='phone' 
+                        name='phone' 
+                        value={state.phone} 
                         onChange={(e)=>handleChange(e)} />    
                     </div>
                     <div>
@@ -199,19 +215,19 @@ export default function Checkout(){
                     <input 
                         type='text' 
                         required 
-                        autoComplete='off' 
+                        autoComplete='city' 
                         name='city' 
                         value={state.city} 
                         onChange={(e)=>handleChange(e)}/>    
                     </div>
                     <div>
-                    <label>Address</label>  
+                    <label>Street</label>  
                     <input 
                         type='text' 
                         required 
                         autoComplete='street-address' 
                         name='address' 
-                        value={state.address} 
+                        value={state.address.street} 
                         onChange={(e)=>handleChange(e)} />     
                     </div>
                     <div>
@@ -221,7 +237,7 @@ export default function Checkout(){
                         required 
                         autoComplete='postal-code' 
                         name='postalCode' 
-                        value={state.postalCode} 
+                        value={state.address.postalCode} 
                         onChange={(e)=>handleChange(e)}/>    
                     </div>
                </div>

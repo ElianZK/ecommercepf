@@ -53,6 +53,7 @@ import { formatMoney } from 'accounting';
         };
     }
 
+
     function handleGoToCheckOut() {
         if (Users && Users.email?.length > 0) {
            navigate('/checkout')

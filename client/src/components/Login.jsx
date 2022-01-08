@@ -15,7 +15,7 @@ import { getAuth,
     browserSessionPersistence,
 } from 'firebase/auth';
 import { login, loginWithNormalAccount } from '../actions/index'
-import AccountsButtons from "./AccountsButtons.jsx";
+import AccountsButtons from "./AccountsButtons";
 
 //TODO: falta hacer que al loguarse con una cuenta de alguna red social, si está registrada en la bd, que me deje entrar, de lo contrario que no me deje
 
