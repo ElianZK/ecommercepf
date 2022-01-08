@@ -74,7 +74,7 @@ const postUserOrder = async(req, res,next)=>{
     //[Atualizo los stocks y las cantidades de productos de la orden.
     for(let i =0; i<availableProducts.length;i++){
       let {databaseProduct, product, amount } = availableProducts[i];
-      await databaseProduct.update({stock:databaseProduct.stock- amount});
+      await databaseProduct.update({stock:databaseProduct.stock- amount, sold_quantity:databaseProduct.sold_quantity+amount});
       await product.update({amount})
     }
     
