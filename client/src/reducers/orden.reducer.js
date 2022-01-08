@@ -10,6 +10,7 @@ import{ ADD_TO_CART,
         CLEAR_CART,
       
         UPDATE,
+        SET_ORDER_PRODUCTS,
         
 } from '../actions/actionsTypes'
 
@@ -17,8 +18,8 @@ import{ ADD_TO_CART,
 
 const initialState ={
     cart: JSON.parse(localStorage.getItem("cart")) || [],
-    
-   
+    orders: [],
+    orderId: []
 }
 
 
@@ -75,30 +76,23 @@ export function ordenReducer(state = initialState, action){
             cart: action.payload,
         };
 
-        case CART_FROM_LOCALSTORAGE_TO_DB:
-        return {
-            ...state,
-            cart: action.payload.cart,
-            orderId: action.payload.orderId
-        }
 
-        case UPDATE: {
-        
-        		return {
+        case UPDATE: 
+            return {
         			...state,
         			cart: [...state.cart]
         		};
+
         	
-        }
-        
-        case CART_FROM_DB_TO_LOCALSTORAGE:
-        return {
+        case SET_ORDER_PRODUCTS:
+            return {
             ...state,
-            cart: [...action.payload.products],
-            orderId: action.payload.orderId
+            orderId: action.payload.orderId,
+            orders: action.payload.orders
         }
-            default:
-                return state    
+
+        default:
+            return state    
             }
 }
        
