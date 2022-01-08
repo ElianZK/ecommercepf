@@ -7,7 +7,7 @@ const BrandsRouter = require('./brands');
 const AuthRouter = require('./auth');
 const ReviewsRouter = require('./Reviews');
 const user = require('./user');
-
+const admin = require('./admin');
 
 const router = Router();
 router.use('/categories', CategoryRouter);
@@ -17,4 +17,5 @@ router.use('/auth',AuthRouter);
 router.use('/users', UserRoutes);
 router.use('/product', ReviewsRouter)
 router.use("/user", user)
+router.use("/admin", admin)
 module.exports = router;
