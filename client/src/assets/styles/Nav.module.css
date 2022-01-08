@@ -49,3 +49,7 @@
     background-color: rgb(146, 146, 146);
     transition: background-color .3s;
 }
+
+.btnoptions {
+    cursor: pointer;
+}

@@ -607,7 +607,9 @@ const SERVER = 'http://localhost:3001';
     
     export function clearCart(idUser){
         return async function(dispatch){
-            await axios.delete(`${SERVER}/users/cart/${idUser}`);
+            if(idUser)
+                await axios.delete(`${SERVER}/users/cart/${idUser}`);
+            localStorage.removeItem("cart")
             return dispatch({
                 type: CLEAR_CART,
                 payload: []
