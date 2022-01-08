@@ -12,7 +12,8 @@ import Products from './components/Admin/Products'
 import Cart from './components/Shops/Cart';
 //import Cart from './components/Shops.jsx/Cart';
 import UsersForm from './components/Admin/usersForm';
-import Checkout from './components/Shops/Checkout'
+import BuyHistory from './components/Shops/BuyHistory';
+import Checkout from './components/Shops/Checkout';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { login } from './actions';
@@ -47,6 +48,7 @@ function App() {
         <Route exact path="/products" element={<Products />} />
         <Route exact path="/cart" element={<Cart />} />
         <Route exact path="/userForm" element={<UsersForm/>} />
+        <Route exact path="/buyHistory" element={<BuyHistory/>} />
         <Route exact path="/checkout" element={<Checkout />} />
       </Routes>
     </div>
