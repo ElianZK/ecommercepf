@@ -2,7 +2,7 @@ const {Product, Details, User, Order} = require("../../../../db");
 
 const getUserOrders = async(req, res,next)=>{
   try {
-    console.log(req.params)
+    //! console.log(req.params);
     const {UserId, OrderId=null} = req.params;
     let user = await User.findOne({
       where:{
