@@ -37,15 +37,14 @@ export default function NavMenu() {
   return (
     <React.Fragment>
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-        
+      <Typography sx={{ minWidth: 100 }} onClick={()=>navigate("/")} className={s.btnoptions}>Home</Typography>
         {user.idUser ?<>
-          <Typography sx={{ minWidth: 100 }}>Inicio</Typography>
+          <Typography sx={{ minWidth: 100 }}>Menu</Typography>
           <Typography sx={{ minWidth: 100 }}>Profile</Typography>
         </>:
         <>
-          <Typography sx={{ minWidth: 100 }} onClick={()=>navigate("/")} className={s.btnoptions}>Home</Typography>
           <Typography sx={{ minWidth: 100 }} onClick={()=>navigate("/login")} className={s.btnoptions}>Log In</Typography>
-          <Typography sx={{ minWidth: 100 }} onClick={()=>navigate("/register")} className={s.btnoptions}>Registrarme</Typography>
+          <Typography sx={{ minWidth: 100 }} onClick={()=>navigate("/register")} className={s.btnoptions}>Register</Typography>
         </>}
         {user.idUser?<Tooltip title="Account settings">
           <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>

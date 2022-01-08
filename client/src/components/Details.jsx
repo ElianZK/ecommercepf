@@ -81,7 +81,7 @@ function handleChangeamount(e){
                         <label>Cantidad</label>
                         <input type="number" min={1} max={Number(product.stock)} onChange={handleChangeamount} value={amount}/>
                         <label>Disponibles: {product.stock}</label>
-                    </div>:<div></div>}
+                    </div>:<div><span>No disponible por el momento</span></div>}
                     <p className={s.salesnum}><strong>130 </strong>Ventas realizadas</p>
                     <button className={`${s.btn}`}>Comprar ahora</button>
                     <button 
