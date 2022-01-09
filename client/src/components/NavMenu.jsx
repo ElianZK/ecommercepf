@@ -37,15 +37,14 @@ export default function NavMenu() {
   return (
     <React.Fragment>
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-        
+      <Typography sx={{ minWidth: 100 }} onClick={()=>navigate("/")} className={s.btnoptions}>Home</Typography>
         {user.idUser ?<>
-          <Typography sx={{ minWidth: 100 }}>Inicio</Typography>
-          <Typography sx={{ minWidth: 100 }}>Profile</Typography>
+          <Typography sx={{ minWidth: 100 }}>Menu</Typography>
+          {/* <Typography sx={{ minWidth: 100 }}>Profile</Typography> */}
         </>:
         <>
-          <Typography sx={{ minWidth: 100 }} onClick={()=>navigate("/")} className={s.btnoptions}>Home</Typography>
           <Typography sx={{ minWidth: 100 }} onClick={()=>navigate("/login")} className={s.btnoptions}>Log In</Typography>
-          <Typography sx={{ minWidth: 100 }} onClick={()=>navigate("/register")} className={s.btnoptions}>Registrarme</Typography>
+          <Typography sx={{ minWidth: 100 }} onClick={()=>navigate("/register")} className={s.btnoptions}>Register</Typography>
         </>}
         {user.idUser?<Tooltip title="Account settings">
           <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
@@ -90,17 +89,17 @@ export default function NavMenu() {
         <MenuItem>
           <Avatar /> {user.name}
         </MenuItem>
-        {user.type?<MenuItem>
-          <Avatar /> Mis Compras
+        {user.idUser?<MenuItem onClick={()=>navigate("/buyHistory")} className={s.btnoptions}>
+          <Avatar /> My Shops
         </MenuItem>:null}
         <MenuItem>
-          <Avatar /> Editar Perfil
+          <Avatar /> Edit Profile
         </MenuItem>
         <MenuItem onClick={() => {
                             localStorage.setItem("user", JSON.stringify({idUser: null}));
                             dispatch(login({idUser: null}));
                         }}>
-          <Logout /> Cerrar Sesion
+          <Logout /> Log out
         </MenuItem>
         <Divider />
       </Menu>:null}

@@ -630,6 +630,25 @@ const SERVER = 'http://localhost:3001';
 
     }
 
+    export function getOrderProducts(idUser){
+        return async function(dispatch){
+            console.log("getorder",idUser)
+            const {data} = await axios.get(`${SERVER}/users/orders/${idUser}`)
+            console.log(data)
+            
+            return dispatch ({
+                type: SET_ORDER_PRODUCTS,
+                payload: {
+                    orderId: [],
+                    orders: data.orders
+                }
+            }) /**/
+        }
+
+    }
+
+
+
     
 
 

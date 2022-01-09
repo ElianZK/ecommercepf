@@ -1,4 +1,4 @@
-const {Details, User, Order} = require("../../../../db");
+const {Details, User, Order, Product} = require("../../../../db");
 
 const getUserOrders = async(req, res,next)=>{
   try {
@@ -20,8 +20,11 @@ const getUserOrders = async(req, res,next)=>{
         },
         attributes:{
           exclude:["confirmationDate", "UserId"]
-        }
-      });
+        },
+        include: Product
+      
+      })
+      
       res.status(200).json({user, orders})
     }else{
       //[En caso de tener un id de Orden, muestro tanto la orden como los productos asociados a esa orden
@@ -35,6 +38,7 @@ const getUserOrders = async(req, res,next)=>{
           exclude:["confirmationDate", "UserId"]
         }
       })
+      
       res.status(200).json({user, order, orderProducts})
     }
 
