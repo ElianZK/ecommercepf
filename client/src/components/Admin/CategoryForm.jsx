@@ -10,23 +10,6 @@ import {faTrashAlt, faEdit } from '@fortawesome/free-solid-svg-icons'
 import axios from "axios";
 
 export default function CatForm (){
-    const [isAdmin, setIsAdmin] = useState(false);
-
-    const idUser = useSelector(state => state.usersReducer.loginInfo.user.idUser);
-
-    useEffect(() => {
-        axios.get("http://localhost:3001/user/type/" + idUser)
-        .then(res => {
-            let { access } = res.data;
-    
-            setIsAdmin(access && !!idUser)
-        })
-    }, [idUser]);
-
-    useEffect(() => {
-        console.log(isAdmin);
-    }, [isAdmin])
-
     const dispatch = useDispatch();
     const categories = useSelector(state=> state.productsReducer.categories);
     const [category, setCategory] = useState({
@@ -142,36 +125,34 @@ export default function CatForm (){
     return (
         <>
             <div className={s.Container}>
-                {isAdmin ? (<>
-                    <form className={s.Form} >
-                        <div className={s.Title}> 
-                            <h2>Product Category Creation</h2>
-                        </div>
+                <form className={s.Form} >
+                    <div className={s.Title}> 
+                        <h2>Product Category Creation</h2>
+                    </div>
 
 
-                        <div className={s.formGroup}>
-                            <input 
-                                onChange={handleChange}
-                                value={category.name}
-                                name='name'
-                                type="text"
-                                placeholder="Add a New Category"/>
-                            {error.name?<span>{error.name}</span>:null}
-                            <button 
-                                type="submit"
-                                onClick={handleSubmit}>
-                                    Add
-                            </button>
+                    <div className={s.formGroup}>
+                        <input 
+                            onChange={handleChange}
+                            value={category.name}
+                            name='name'
+                            type="text"
+                            placeholder="Add a New Category"/>
+                        {error.name?<span>{error.name}</span>:null}
+                        <button 
+                            type="submit"
+                            onClick={handleSubmit}>
+                                Add
+                        </button>
 
-                        </div>
+                    </div>
 
-                        
-                    </form>
-                    <DataTable
-                        columns={columns}
-                        data={tcategorys}
-                    />
-                </>) : <h1>no tenes acceso a esta página</h1>}
+                    
+                </form>
+                <DataTable
+                    columns={columns}
+                    data={tcategorys}
+                />
             </div>
         </>
     )

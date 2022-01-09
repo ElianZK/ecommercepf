@@ -14,9 +14,11 @@ import Profile from './components/Profile.jsx';
 //import Cart from './components/Shops.jsx/Cart';
 import UsersForm from './components/Admin/usersForm';
 import Checkout from './components/Shops/Checkout'
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { login } from './actions';
+import CantAccess from './components/Admin/CantAccess';
+import axios from 'axios';
 
 function App() {
   const dispatch = useDispatch();
@@ -33,6 +35,19 @@ function App() {
     }
   }, [])
 
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  const idUser = useSelector(state => state.usersReducer.loginInfo.user.idUser);
+
+  useEffect(() => {
+      axios.get("http://localhost:3001/user/type/" + idUser)
+      .then(res => {
+          let { access } = res.data;
+  
+          setIsAdmin(access && !!idUser)
+      })
+  }, [idUser]);
+
   return (
     <div className="App">
       <Nav/>
@@ -43,14 +58,16 @@ function App() {
         <Route exact path="/register" element={<Register/>} />
         <Route exact path="/search/:search" element={<Home/>} />
         
-        <Route exact path="/addCategory" element={<CatForm/>} /> {/* admin */}
-        <Route exact path="/addBrand" element={<BrandForm/>} /> {/* admin */}
         <Route exact path="/addToCart" element={<Cart />} />
-        <Route exact path="/products" element={<Products />} /> {/* admin */}
         <Route exact path="/cart" element={<Cart />} />
-        <Route exact path="/userForm" element={<UsersForm/>} /> {/* admin */}
         <Route exact path="/checkout" element={<Checkout />} />
+
         <Route exact path="/profile" element={<Profile/>} />
+        
+        <Route exact path="/addCategory" element={isAdmin? <CatForm/> : <CantAccess/>} /> {/* admin */}
+        <Route exact path="/addBrand" element={isAdmin? <BrandForm/> : <CantAccess/>} /> {/* admin */}
+        <Route exact path="/products" element={isAdmin? <Products /> : <CantAccess/>} /> {/* admin */}
+        <Route exact path="/userForm" element={isAdmin ? <UsersForm/> : <CantAccess/>} /> {/* admin */}
       </Routes>
     </div>
   );

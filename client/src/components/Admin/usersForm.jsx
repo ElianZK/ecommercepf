@@ -7,25 +7,11 @@ import Swal from 'sweetalert2';
 import DataTable from 'react-data-table-component';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faTrashAlt, faEdit } from '@fortawesome/free-solid-svg-icons'
-import axios from "axios";
 
 export default function UsersForm (){
     const dispatch = useDispatch();
 
     const registerInfo = useSelector(state => state.usersReducer.registerInfo);
-
-    const [isAdmin, setIsAdmin] = useState(false);
-
-    const idUser = useSelector(state => state.usersReducer.loginInfo.user.idUser);
-
-    useEffect(() => {
-        axios.get("http://localhost:3001/user/type/" + idUser)
-        .then(res => {
-            let { access } = res.data;
-    
-            setIsAdmin(access && !!idUser)
-        })
-    }, [idUser]);
 
     useEffect(() => {
         if(registerInfo !== null){
@@ -138,7 +124,7 @@ export default function UsersForm (){
     return(
         <>
             <div className={s.Container}>
-                {isAdmin ? (<>
+                
                     {/* <!-- AÑADIR COMPONENTE NAVBAR -->
                     <!-- AÑADIR BOTON DESPLEGABLE PERFIL --> */}
                     <form className={s.Form} onSubmit={e => {
@@ -277,8 +263,7 @@ export default function UsersForm (){
                         data={searchres ? searchres : users} 
                         pagination
                     />
-                </>) : <h1>no tenes acceso a esta página</h1>
-                }
+                
             </div>
         </>
     )
