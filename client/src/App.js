@@ -12,7 +12,8 @@ import Products from './components/Admin/Products'
 import Cart from './components/Shops/Cart';
 //import Cart from './components/Shops.jsx/Cart';
 import UsersForm from './components/Admin/usersForm';
-import Checkout from './components/Shops/Checkout'
+import BuyHistory from './components/Shops/BuyHistory';
+import Checkout from './components/Shops/Checkout';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { login } from './actions';
@@ -21,14 +22,16 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("user"));
+    const user = JSON.parse(localStorage.getItem("user"));
 
-    if(data){
-      dispatch(login(data))
+    if(user){
+      console.log("hay un user conectado");
+      dispatch(login(user))
     }else{
-      dispatch(login({token: null}));
+      console.log("no hay nadie conectado")
+      dispatch(login({idUser: null}));
     }
-  }, [])
+  }, [dispatch])
 
   return (
     <div className="App">
@@ -45,6 +48,7 @@ function App() {
         <Route exact path="/products" element={<Products />} />
         <Route exact path="/cart" element={<Cart />} />
         <Route exact path="/userForm" element={<UsersForm/>} />
+        <Route exact path="/buyHistory" element={<BuyHistory/>} />
         <Route exact path="/checkout" element={<Checkout />} />
       </Routes>
     </div>

@@ -3,7 +3,7 @@ const { User } = require('../../../db')
 
 const PostUsers = async(req, res, next) =>{
     try {
-        let { name, lastname, type , email, password, phone} = req.body;
+        let { idUser, name, lastname, type , email, password, phone} = req.body;
         
         console.log("voy a crear un user", req.body);
 
@@ -20,6 +20,7 @@ const PostUsers = async(req, res, next) =>{
         let [newUser, created] = await User.findOrCreate({
             where:{ email },
             defaults:{
+                idUser,
                 type,
                 password,
                 phone,
@@ -29,7 +30,7 @@ const PostUsers = async(req, res, next) =>{
             }
         });
 
-        console.log("estoy creando un user")
+        console.log("nuevo?", created);
 
         //compruebo si es true o false mi created
         if (!created) {
