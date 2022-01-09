@@ -503,7 +503,7 @@ const SERVER = 'http://localhost:3001';
                             itemFind = true;
                             return {
                                 ...p,
-                                qty: Number(p.qty) -1
+                                amount: 0
                             }
                         }
                         return p;

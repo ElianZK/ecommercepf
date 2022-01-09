@@ -1,7 +1,10 @@
+*{
+   box-sizing: border-box;
+}
 .container{
     min-height: 25vh;
-    display: flex;
-    flex-direction: column;
+    display: row;
+    flex-direction: row;
     background-color: rgb(247, 245, 241);
     padding: 30px;
     margin-top: 100px;
