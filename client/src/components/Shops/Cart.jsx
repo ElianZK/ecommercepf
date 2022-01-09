@@ -17,14 +17,8 @@ import { formatMoney } from 'accounting';
     const {idUser} = JSON.parse(localStorage.getItem("user"));
 
     useEffect(() => {
-<<<<<<< HEAD
-        dispatch(getProductsCartUser(userId));
-        
-    }, [dispatch, userId]); 
-=======
         dispatch(getProductsCartUser(idUser)); 
     }, [dispatch]); 
->>>>>>> origin/develop-fran
 
     const handleDeleteItem = (idproduct) => {
         //e.preventDefault()

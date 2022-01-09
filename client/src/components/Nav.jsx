@@ -46,16 +46,8 @@ const Nav = () => {
                             <ShoppingCart fontSize='large' color='primary' />
                             </Badge>
                         </Link>
-<<<<<<< HEAD
-                    </> : <>
-                        <Link to="/auth/login"><button className={s.btn}>Log In</button></Link>
-                        <Link to="/auth/users"><button className={s.btn}>Registrarse</button></Link>
-                    </>}
-=======
->>>>>>> origin/develop-fran
                 </div>
-            </nav>
-            
+            </nav> 
         </header>
     )
 }

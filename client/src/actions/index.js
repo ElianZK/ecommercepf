@@ -34,12 +34,9 @@ import { GET_ALL_PRODUCTS,
     CREATE_USER,
     GET_USERS,
     UPDATE_USER,
-<<<<<<< HEAD
     CREATE_REVIEWS,
-    GET_REVIEWS
-=======
+    GET_REVIEWS,
     SET_ORDER_PRODUCTS
->>>>>>> origin/develop-fran
 } from "./actionsTypes";
 import axios from 'axios';
 
@@ -284,17 +281,13 @@ const SERVER = 'http://localhost:3001';
         return async function(dispatch){
             try{
                 payload["accountType"] = "internal";
-
                 const res = await axios.post(`${SERVER}/user/login`, payload);
-
                 let data = {
                     user: {
                         ...res.data
                     }
                 }
-
-                localStorage.setItem("user", JSON.stringify(data.user));
-
+            localStorage.setItem("user", JSON.stringify(data.user));
                 return dispatch({
                     type: LOGIN,
                     payload: {
@@ -408,28 +401,26 @@ const SERVER = 'http://localhost:3001';
         }   
     };
 
-<<<<<<< HEAD
-    //crea un usuario 'admin' o 'user'
-    export function createUser(body) {
-        console.log(body)
-        return async function(dispatch){
-            try{
-                const res = await axios.post(`${SERVER}/auth/users`, body)
+//     //crea un usuario 'admin' o 'user'
+//     export function createUser(body) {
+//         console.log(body)
+//         return async function(dispatch){
+//             try{
+//                 const res = await axios.post(`${SERVER}/auth/users`, body)
 
-                console.log("tengo", res);
+//                 console.log("tengo", res);
 
-                return dispatch({
-                    type: CREATE_USER,
-                    payload: res.data
-                })     
-            }catch(e){
-                console.log("hubo un error", e);
-            }
-        }
-    };
-=======
-    
->>>>>>> origin/develop-fran
+//                 return dispatch({
+//                     type: CREATE_USER,
+//                     payload: res.data
+//                 })     
+//             }catch(e){
+//                 console.log("hubo un error", e);
+//             }
+//         }
+//     };
+// =======
+
 
     
    // me traigo el carro de productos tanto de usuarios como de invitados

@@ -12,7 +12,7 @@ const CreateReviews = (props) => {
         score:"",
         description:"",
         productIdProduct:props.idproduct,
-        userIdUser:'f279d816-97c9-4855-9b3c-d3998f62a7b1'
+        userIdUser:'07f646c2-9d3d-4177-aeb9-cfe06dbf9ff2'
     })
 
     // cambio de comentarios

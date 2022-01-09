@@ -127,8 +127,6 @@ function Register() {
         setError({...error, [name]: errort});
     }
 
-<<<<<<< HEAD
-
     const onSubmit = e => {
         e.preventDefault();
         //const auth = getAuth();                
@@ -156,7 +154,7 @@ function Register() {
 
             setAuthError(errorCode.split("/")[1]);
         });*/
-=======
+    }
     const mkLogin= async (e,type)=>{
         e.preventDefault();
                 
@@ -201,7 +199,6 @@ function Register() {
                 icon: 'error'
             })
         });
->>>>>>> origin/develop-fran
     }
 
     return (
