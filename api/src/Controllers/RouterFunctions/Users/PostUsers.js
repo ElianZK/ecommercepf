@@ -3,9 +3,7 @@ const { User } = require('../../../db')
 
 const PostUsers = async(req, res, next) =>{
     try {
-        let { idUser, name, lastname, type , email, password, phone} = req.body;
-        
-        console.log("voy a crear un user", req.body);
+        let { idUser, name, lastname, type , email, password, phone, photo} = req.body;
 
         if (!email || !password ) {
             return res.json({created:false, message: "faltan datos para completar"})
@@ -26,7 +24,8 @@ const PostUsers = async(req, res, next) =>{
                 phone,
                 name,
                 lastname,
-                email
+                email,
+                image: photo
             }
         });
 

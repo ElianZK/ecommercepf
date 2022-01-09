@@ -48,7 +48,8 @@ const Login = () => {
                     uid: res.user.uid,
                     isVerified: res.user.emailVerified,
                     idUser: res.user.uid,
-                    name: res.user.displayName || "unknown " + type + " user",
+                    name: res.user.displayName.split(" ")[0],
+                    lastName: res.user.displayName.split(" ")[1],
                     photo: res.user.photoURL,
                     email: res.user.email
                 };

@@ -57,9 +57,9 @@ module.exports = (sequelize) => {
             }),
             allowNull:true,
             defaultValue: {
-                calle: "",
-                cp: "",
-                domicilio: ""
+                calle: "calle",
+                cp: "cp",
+                domicilio: "domicilio"
             }
         }
     },{

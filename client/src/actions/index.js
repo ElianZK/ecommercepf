@@ -206,7 +206,6 @@ const SERVER = 'http://localhost:3001';
     }
 
     export function createUser(body) {
-        console.log(body)
         return async function(dispatch){
             try{
                 const res = await axios.post(`${SERVER}/users/create`, body)
@@ -244,6 +243,8 @@ const SERVER = 'http://localhost:3001';
                             ...res.data
                         }
                     }
+
+                    console.log(data);
     
                     localStorage.setItem("user", JSON.stringify(data.user));
 
@@ -287,6 +288,8 @@ const SERVER = 'http://localhost:3001';
                         ...res.data
                     }
                 }
+
+                console.log(data)
 
                 localStorage.setItem("user", JSON.stringify(data.user));
 
@@ -642,14 +645,19 @@ const SERVER = 'http://localhost:3001';
         }
     }
 
-    export function updateUser(id, user){
+    export function updateUser(id, user, from="admin"){
         return async function(dispatch){
             try{
-                const res = await axios.put(`${SERVER}/users/${id}`, user)
+                console.log("holaaaaaaaaaaa", id, user, from);
+                const usuario = await axios.put(`${SERVER}/users/${id}`, {...user, from});
+
+                const payload = {user: {
+                    ...usuario.data   
+                }, from}
 
                 return dispatch({
                     type: UPDATE_USER,
-                    payload: id
+                    payload
                 })
             }catch(e){
                 console.log("no se pudo actualizar el user", e)

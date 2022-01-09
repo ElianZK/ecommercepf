@@ -20,16 +20,25 @@ const initialState = {
     },
     error:null,
 
+    updateInfo: null,
+
     registerInfo: null
 }
 
 export function usersReducer(state = initialState, action){ 
     switch(action.type){
         case LOGIN:
-            return{
-                ...state, 
-                loginInfo: action.payload
+            // const {idUser, name, lastname, email, phone, image} = action.payload;
+
+            const newState = {
+                ...state,
+                loginInfo: action.payload,
+                // updateInfo: action.payload
             }
+
+            console.log(newState)
+
+            return newState;
         
         case LOGOUT:
             return{
@@ -54,8 +63,15 @@ export function usersReducer(state = initialState, action){
                 }
 
         case UPDATE_USER:{
-            return{
-                ...state
+            if(action.payload.from === "profile"){
+                return{
+                    ...state,
+                    loginInfo: action.payload
+                }
+            }else{
+                return{
+                    ...state
+                }
             }
         }
 

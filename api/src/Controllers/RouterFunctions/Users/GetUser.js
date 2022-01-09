@@ -19,9 +19,11 @@ const GetUser = async(req, res) =>{
     if(user){
         res.json({
             idUser: user.idUser,
-            name: user.name + " " + user.lastname,
+            name: user.name,
+            lastname: user.lastname,
             email: user.email,
-            phone: user.phone
+            phone: user.phone,
+            image: user.image
         });
     }else{
         res.status(404).json({message: "Usuario inexistente"});
