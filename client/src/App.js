@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { login } from './actions';
 import CantAccess from './components/Admin/CantAccess';
 import axios from 'axios';
+import Dashboard from './components/Admin/Dashboard';
 
 function App() {
   const dispatch = useDispatch();
@@ -50,7 +51,7 @@ function App() {
 
   return (
     <div className="App">
-      <Nav/>
+      <Nav isAdmin={isAdmin}/>
       <Routes>
         <Route exact path="/" element={<Home/>} />
         <Route exact path="/detail/:idproduct" element={<Details/>} />
@@ -63,7 +64,8 @@ function App() {
         <Route exact path="/checkout" element={<Checkout />} />
 
         <Route exact path="/profile" element={<Profile/>} />
-        
+
+        <Route exact path="/dashboard" element={isAdmin? <Dashboard/> : <CantAccess/>} />
         <Route exact path="/addCategory" element={isAdmin? <CatForm/> : <CantAccess/>} /> {/* admin */}
         <Route exact path="/addBrand" element={isAdmin? <BrandForm/> : <CantAccess/>} /> {/* admin */}
         <Route exact path="/products" element={isAdmin? <Products /> : <CantAccess/>} /> {/* admin */}

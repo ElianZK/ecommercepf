@@ -1,0 +1,42 @@
+.container{
+    padding-top: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.panel{
+    width: 540px;
+    height: 500px;
+
+    background-color: rgb(255, 217, 1);
+    border-radius: 40px;
+    
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.button{
+    width: 220px;
+    height: 200px;
+
+    border-radius: 40px;
+    
+    background-color: rgb(255, 153, 0);
+}
+
+.link{
+    color: black;
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+}
+
+.bold{
+    font-size: 2em;
+    font-weight: bold;
+}

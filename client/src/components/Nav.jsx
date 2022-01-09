@@ -9,7 +9,7 @@ import {ShoppingCart} from '@material-ui/icons';
 import {Badge} from '@material-ui/core';
 import { useEffect } from 'react';
 
-const Nav = () => {
+const Nav = ({isAdmin}) => {
     const user = useSelector(state => {
         return state.usersReducer.loginInfo.user;
     });
@@ -35,6 +35,8 @@ const Nav = () => {
                 <div className={s.buttons}>
                     {user.idUser ? <>
                         <div class={s.group}>
+                            {isAdmin ? <Link to="/dashboard">Dashboard</Link> : null}
+
                             <Link to="/profile">
                                 <div className={s.profile}>
                                     <img className={s.photo} src={user.image} alt="" />
