@@ -9,10 +9,17 @@ const PostReviews = async(req, res, next)=> {
 
         //busco si existe el producto por id
         let prod = await Product.findByPk(id)
+        //busco si existe el usuario por id
+        let use = await User.findByPk(userIdUser)
         //si no existe enviara un mensaje
         if (!prod) {
             res.status(404).json({
                 message:'no existe producto'
+            })
+        }
+        if (!use) {
+            res.status(404).json({
+                message:'no existe usuario'
             })
         }
         //creo un nuevo review
