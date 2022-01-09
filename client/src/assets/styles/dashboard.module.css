@@ -25,15 +25,16 @@
     border-radius: 40px;
     
     background-color: rgb(255, 153, 0);
-}
 
-.link{
-    color: black;
     display: flex;
     flex-direction: column;
 
     justify-content: center;
     align-items: center;
+}
+
+.link{
+    color: black;
 }
 
 .bold{

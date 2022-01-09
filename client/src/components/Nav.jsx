@@ -30,8 +30,6 @@ const Nav = ({isAdmin}) => {
                 <img className={s.logo} src={logo} onClick={()=>{navigate("/")}} alt="logo ecommerce"/> 
                 <SearchBar />
 
-                {/* <Link to="/userForm">ir a admin</Link> */}
-
                 <div className={s.buttons}>
                     {user.idUser ? <>
                         <div class={s.group}>

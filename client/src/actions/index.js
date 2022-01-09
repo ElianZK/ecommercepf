@@ -34,7 +34,8 @@ import { GET_ALL_PRODUCTS,
     CREATE_USER,
     GET_USERS,
     UPDATE_USER,
-    CHECK_TYPE
+    CHECK_TYPE,
+    DELETE_USER
 } from "./actionsTypes";
 import axios from 'axios';
 
@@ -205,13 +206,15 @@ const SERVER = 'http://localhost:3001';
         }
     }
 
-    export function createUser(body) {
+    export function createUser(body, from="user") {
         return async function(dispatch){
             try{
-                const res = await axios.post(`${SERVER}/users/create`, body)
+                const res = await axios.post(`${SERVER}/users/create`, {...body, from})
+
+                console.log(res.data);
 
                 return dispatch({
-                    type: CREATE_USER,
+                    type: from==="user" ? CREATE_USER : GET_USERS,
                     payload: res.data
                 })     
             }catch(e){
@@ -645,26 +648,52 @@ const SERVER = 'http://localhost:3001';
         }
     }
 
+    export function getAllUsers(){
+        return async function(dispatch){
+            try{
+                const res = await axios.get(`${SERVER}/users/all`);
+
+                const users = res.data.userinfo;
+
+                return dispatch({
+                    type: GET_USERS,
+                    payload: users
+                })         
+            }catch(e){
+                
+            }
+        }
+    }
+
     export function updateUser(id, user, from="admin"){
         return async function(dispatch){
             try{
-                console.log("holaaaaaaaaaaa", id, user, from);
-                const usuario = await axios.put(`${SERVER}/users/${id}`, {...user, from});
-
-                const payload = {user: {
-                    ...usuario.data   
-                }, from}
-
-                return dispatch({
-                    type: UPDATE_USER,
-                    payload
-                })
+                await axios.put(`${SERVER}/users/${id}`, {...user, from});  
             }catch(e){
                 console.log("no se pudo actualizar el user", e)
             }
         }
     }
 
+    export function deleteUser(id){
+        return async function(dispatch){
+            try{
+                console.log("voy a eliminar al user " + id);
+                await axios.delete(`${SERVER}/users/${id}`);
+
+                const res = await axios.get(`${SERVER}/users`);
+
+                const users = res.data.userinfo;
+
+                return dispatch({
+                    type: GET_USERS,
+                    payload: users
+                })    
+            }catch(e){
+                console.log("no se pudo eliminar el user" , e)
+            }
+        }
+    }
           
 
     export function update(payload) {

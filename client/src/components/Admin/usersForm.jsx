@@ -1,4 +1,4 @@
-import { getUsers, createUser, updateUser } from "../../actions/index";
+import { getUsers, createUser, updateUser, deleteUser } from "../../actions/index";
 import React,{useEffect, useState} from "react";
 import {useDispatch, useSelector} from 'react-redux';
 import s from '../../assets/styles/BrandForm.module.css';
@@ -34,6 +34,8 @@ export default function UsersForm (){
     }, [registerInfo])
 
     const [edit, setEdit] = useState({on: false, id: null});
+    
+    const [created, setCreated] = useState(false);
 
     const users = useSelector(state => {
         let {users} = state.usersReducer;
@@ -59,7 +61,9 @@ export default function UsersForm (){
                             type: user.type
                         })
                     }}><FontAwesomeIcon icon={faEdit}/></button></abbr>,
-                    <abbr title="Eliminar user" key={1}><button className={s2.btnDel} onClick={""}><FontAwesomeIcon icon={faTrashAlt}/></button></abbr>
+                    <abbr title="Eliminar user" key={1}><button className={s2.btnDel} onClick={() => {
+                        dispatch(deleteUser(user.idUser));
+                    }}><FontAwesomeIcon icon={faTrashAlt}/></button></abbr>
                 ]
             }
         }) : [];
@@ -119,7 +123,8 @@ export default function UsersForm (){
 
     useEffect(() => {
         dispatch(getUsers());
-    }, [dispatch]);
+        setCreated(false);
+    }, [created]);
 
     return(
         <>
@@ -138,7 +143,8 @@ export default function UsersForm (){
                             })
                         }else{
                             if(!edit.on){
-                                dispatch(createUser(newUser));
+                                dispatch(createUser(newUser, "admin"));
+                                setCreated(true)
                             }else{
                                 console.log("actualizar")
                                 dispatch(updateUser(edit.id, newUser))
