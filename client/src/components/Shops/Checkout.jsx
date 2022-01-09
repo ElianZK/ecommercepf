@@ -42,7 +42,7 @@ export default function Checkout(){
         const User = useSelector(state => state.usersReducer.loginInfo.user)
         //const {idUser} = JSON.parse(localStorage.getItem("user"));
 
-        const token=localStorage.getItem('token')
+        //const token=localStorage.getItem('token')
         
         const [state,setState]= useState({
             name: User.name,
@@ -116,10 +116,13 @@ export default function Checkout(){
                         icon: 'success',
                         text: "Thank you for your purchase , you will receive an email with the details,  success",
                         showConfirmButton: true,
-                        
-                })
+                     }).then((result)=>{
+                        if(result.value){
+                           navigate('/buyHistory') //q vaya a ordenes
+                        }
+                     });
                 dispatch(clearCart(User.idUser))
-                navigate('/order/:UserId') //q vaya a ordenes
+                
                 } else {
                     console.log(error); 
                 }

@@ -40,7 +40,7 @@ export default function NavMenu() {
       <Typography sx={{ minWidth: 100 }} onClick={()=>navigate("/")} className={s.btnoptions}>Home</Typography>
         {user.idUser ?<>
           <Typography sx={{ minWidth: 100 }}>Menu</Typography>
-          <Typography sx={{ minWidth: 100 }}>Profile</Typography>
+          {/* <Typography sx={{ minWidth: 100 }}>Profile</Typography> */}
         </>:
         <>
           <Typography sx={{ minWidth: 100 }} onClick={()=>navigate("/login")} className={s.btnoptions}>Log In</Typography>
@@ -89,17 +89,17 @@ export default function NavMenu() {
         <MenuItem>
           <Avatar /> {user.name}
         </MenuItem>
-        {user.type?<MenuItem>
-          <Avatar /> Mis Compras
+        {user.idUser?<MenuItem onClick={()=>navigate("/buyHistory")} className={s.btnoptions}>
+          <Avatar /> My Shops
         </MenuItem>:null}
         <MenuItem>
-          <Avatar /> Editar Perfil
+          <Avatar /> Edit Profile
         </MenuItem>
         <MenuItem onClick={() => {
                             localStorage.setItem("user", JSON.stringify({idUser: null}));
                             dispatch(login({idUser: null}));
                         }}>
-          <Logout /> Cerrar Sesion
+          <Logout /> Log out
         </MenuItem>
         <Divider />
       </Menu>:null}
