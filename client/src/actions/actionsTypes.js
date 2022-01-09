@@ -31,10 +31,13 @@ export const CLEAR_CART = 'CLEAR_CART'; // todo
 export const GET_PRODUCTS_CART='GET_PRODUCTS_CART';
 export const CHANGE_QTY = 'CHANGE_QTY';
 
+export const SET_ORDER_PRODUCTS = 'SET_ORDER_PRODUCTS';
+
 
 export const UPDATE= 'UPDATE';
 
 export const CREATE_USER = 'CREATE_USER';
+export const CLEAR_REGISTER_INFO = "CLEAR_REGISTER_INFO";
 export const ERROR_LOGIN='ERROR_LOGIN';
 
 

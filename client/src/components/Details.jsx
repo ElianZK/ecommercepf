@@ -18,8 +18,10 @@ const Details = () => {
     const {idproduct} = useParams();
     const product = useSelector(state => state.productsReducer.productDetail[0])
     const prod = JSON.parse(localStorage.getItem('cart')) || [].find(element => element.id === idproduct);
-    //const [qty, setQty] = useState(prod ?.qty||1); 
-    const [qty, setQty] = useState(1); 
+    //const [amount, setAmount] = useState(prod ?.amount||1); 
+    const [amount, setAmount] = useState(1); 
+    const Users = localStorage.getItem("user")
+    const idUser= Users!=="null"?JSON.parse(localStorage.getItem("user")).idUser:null
 
 // localstorege.getItem('user')
 
@@ -39,10 +41,10 @@ const Details = () => {
 function handleAddToCart(e){
     e.preventDefault();
         //dispatch(addToCart(product));
-        dispatch(update(Number(qty)))
-        if ((Number(qty)) <= product.stock) {
-            setQty(Number(qty));
-            dispatch(addToCart({ ...product, qty})) //falta usuario 
+        dispatch(update(Number(amount)))
+        if ((Number(amount)) <= product.stock) {
+            setAmount(Number(amount));
+            dispatch(addToCart({ ...product,amount: amount},idUser)) //falta usuario 
             Swal.fire({
                 icon: 'success',
                 text: 'Producto agregado exitosamente!',
@@ -52,9 +54,9 @@ function handleAddToCart(e){
         };
 }
 
-function handleChangeQty(e){
+function handleChangeamount(e){
     e.preventDefault();
-    setQty(Number(e.target.value))
+    setAmount(Number(e.target.value))
 }
 
     
@@ -80,8 +82,9 @@ function handleChangeQty(e){
                     <p className={s.prodprice}>{` ${formatMoney(product.price)}`}<span > ARS</span></p>
                     {product.stock>0?<div className={s.grupcount}>
                         <label>Cantidad</label>
-                        <input type="number" min={1} max={Number(product.stock)} onChange={handleChangeQty} value={qty}/>
-                    </div>:<div></div>}
+                        <input type="number" min={1} max={Number(product.stock)} onChange={handleChangeamount} value={amount}/>
+                        <label>Disponibles: {product.stock}</label>
+                    </div>:<div><span>No disponible por el momento</span></div>}
                     <p className={s.salesnum}><strong>130 </strong>Ventas realizadas</p>
                     <button className={`${s.btn}`}>Comprar ahora</button>
                     <button 
