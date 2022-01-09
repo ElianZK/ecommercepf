@@ -55,7 +55,7 @@ import { formatMoney } from 'accounting';
 
 
     function handleGoToCheckOut() {
-        if (Users && Users.email?.length > 0) {
+        if (idUser && idUser.email?.length) {
            navigate('/checkout')
         } else {
             navigate('/register');
@@ -153,9 +153,9 @@ import { formatMoney } from 'accounting';
                   
                 <div className={s.btn_container}>
                     <button className={s.btn}><Link to='/'><span>GO MORE SHOP</span></Link></button>
-                    
+                {idUser? 
                     <button className={s.btn}><Link to='/checkout' onClick={handleGoToCheckOut}><span>GO TO CHECKOUT</span></Link></button>
-                 
+                    : null}
                     <button className={s.btn} onClick={handleClearCart}>CLEAR ALL CART</button>  
 
                 </div>                         
