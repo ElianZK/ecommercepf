@@ -81,9 +81,11 @@ const postUserOrder = async(req, res,next)=>{
     //[Gestiono la compra con stripe
     const payment = await stripe.paymentIntents.create({
       amount: Math.round(totalPrice*100), //TODO: 1 peso 100 centavos
-      currency: "ARS",
+      currency: "ars",
       description: `User Email: ${email}`, //TODO: AGREGAR NOMBRE Y APELLIDO, CON FECHA DE COMPRA Y CANTIDAD DE ITEMS
+      receipt_email: email,
       payment_method: id,
+      payment_method_types: ['card'],
       confirm: true, //confirm the payment at the same time of created the transaction
     });
     //! console.log("PAYMENT: ",payment);

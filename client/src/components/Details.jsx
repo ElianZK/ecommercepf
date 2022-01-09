@@ -81,15 +81,15 @@ function handleChangeamount(e){
                         <label>Cantidad</label>
                         <input type="number" min={1} max={Number(product.stock)} onChange={handleChangeamount} value={amount}/>
                         <label>Disponibles: {product.stock}</label>
-                    </div>:<div></div>}
+                    </div>:<div><span>No disponible por el momento</span></div>}
                     <p className={s.salesnum}><strong>130 </strong>Ventas realizadas</p>
                     <button className={`${s.btn}`}>Comprar ahora</button>
                     <button 
                         className={`${s.btn}`} onClick={handleAddToCart}>Agregar al carrito</button>
 
-                    <h3 className={s.titlepay}>Medios de pago</h3>
+                    {/* <h3 className={s.titlepay}>Medios de pago</h3>
                     <img className={s.payment} src="https://http2.mlstatic.com/secure/payment-logos/v2/payment-logo-mlm-consumer_credits-medium_v_ddbb2eb147.png" alt="Logo medio de pago mercado pago" />
-                    <img className={s.payment} src="https://tdinversiones.com/wp-content/uploads/2020/12/paypal-logo.png" alt="Logo medio de pago paypal" />
+                    <img className={s.payment} src="https://tdinversiones.com/wp-content/uploads/2020/12/paypal-logo.png" alt="Logo medio de pago paypal" /> */}
                 </div>
             </div>
             <div className={s.desc}>

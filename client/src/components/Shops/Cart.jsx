@@ -22,11 +22,17 @@ import { formatMoney } from 'accounting';
 
     useEffect(() => {
         dispatch(getProductsCartUser(idUser)); 
-    }, [dispatch, idUser]); 
+    }, [dispatch]); 
 
     const handleDeleteItem = (idproduct) => {
         //e.preventDefault()
-        dispatch(deleteItemFromCart( idproduct, idUser))
+        dispatch(deleteItemFromCart(idproduct, idUser))
+        Swal.fire({
+            icon: 'success',
+            text: 'Producto eliminado correctamente!',
+            showConfirmButton: false,
+            timer: 2000
+          })
     }
 
     const handlerChangeAmount = (product,idUser,e) => {
@@ -46,6 +52,7 @@ import { formatMoney } from 'accounting';
             dispatch(changeAmount(auxProducts, idUser));
         };
     }
+
 
     function handleGoToCheckOut() {
         if (Users && Users.email?.length > 0) {
