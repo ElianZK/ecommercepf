@@ -42,7 +42,7 @@ export default function Checkout(){
         const User = useSelector(state => state.usersReducer.loginInfo.user)
         //const {idUser} = JSON.parse(localStorage.getItem("user"));
 
-        const token=localStorage.getItem('token')
+
         
         const [state,setState]= useState({
             name: User.name,
@@ -72,7 +72,7 @@ export default function Checkout(){
                 amount: Number(cart[i].amount),
             })
             totalPrice += (cart[i].price*cart[i].amount)
-            iva = (totalPrice*0.21)
+            //iva = (totalPrice*0.21)
             // console.log("comp",buys)
             // console.log("iva",iva)
         }
@@ -108,7 +108,7 @@ export default function Checkout(){
                                 city: state.city,
                                 direction:'esto no es direccion!!!!!'
                             },
-                            totalPrice: Math.round(totalPrice)*0.1,
+                            totalPrice: Math.round(totalPrice),
                             id: id
                         }
                 dispatch(setOrderProducts(pay, User.idUser)) //aca deberia ir la ruta post
@@ -119,7 +119,7 @@ export default function Checkout(){
                         
                 })
                 dispatch(clearCart(User.idUser))
-                navigate('/order/:UserId') //q vaya a ordenes
+                navigate('/buyHistory') //q vaya a ordenes
                 } else {
                     console.log(error); 
                 }
