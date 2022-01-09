@@ -4,7 +4,8 @@ const PostReviews = async(req, res, next)=> {
 
     try {   
         let { id } = req.params;
-        let { idUser, score, description } = req.body;
+        let { userIdUser, score, description,productIdProduct } = req.body;
+        console.log('req.body :>> ', req.body);
 
         //busco si existe el producto por id
         let prod = await Product.findByPk(id)
@@ -18,8 +19,8 @@ const PostReviews = async(req, res, next)=> {
         let newReview = await Reviews.create({
             score:score,
             description:description,
-            productIdProduct:id,
-            userIdUser:idUser
+            productIdProduct:productIdProduct,
+            userIdUser:userIdUser
         })
 
         res.json(newReview);

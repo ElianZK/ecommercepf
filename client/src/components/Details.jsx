@@ -11,6 +11,7 @@ import {formatMoney} from 'accounting'
 import Swal from 'sweetalert2';
 import Reviews from './Reviews';
 import CreateReviews from './CreateReviews';
+import style from '../assets/styles/Reviews.module.css'
 
 const Details = () => {
     const dispatch = useDispatch();
@@ -20,7 +21,7 @@ const Details = () => {
     //const [qty, setQty] = useState(prod ?.qty||1); 
     const [qty, setQty] = useState(1); 
 
-
+// localstorege.getItem('user')
 
     const columns = [
     {
@@ -58,7 +59,7 @@ function handleChangeQty(e){
 
     
     useEffect(() => {
-       dispatch(getProductId(idproduct));
+        dispatch(getProductId(idproduct));
     }, [dispatch, idproduct])
 
     return (
@@ -101,15 +102,18 @@ function handleChangeQty(e){
                 {/* <p>El Samsung Galaxy A12 llega con una pantalla HD + de 6.5 pulgadas y potenciado por un procesador de ocho núcleos, 4GB RAM con 64GB de almacenamiento expandible mediante ranura microSD. La cámara posterior del Galaxy A12 es cuádruple, con lentes de 48MP, 5MP, 2MP y 2MP, mientras que la cámara frontal para selfies es de 8 megapíxeles. Completando las características del Samsung Galaxy A12 encontramos una batería de 5000 mAh de carga rápida, lector de huellas montadas de lado, y Android 10 a bordo. 
                     Pantalla HD + de 6.5 pulgadas$$ Almacenamiento expandible mediante ranura microSD$$Cámara posterior del Galaxy A12 es cuádruple, con lentes de 48MP, 5MP, 2MP y 2MP, mientras que la cámara frontal para selfies es de 8 megapíxeles$$Sensores: Huella digital (lateral), acelerómetro, Batería: 5000 mAh, Procesador: Octa-core 2.35 GHz</p> */}
             </div>
-            <div>
-            --------------------------------
+            {/* parte de los REVIEWS */}
+            <div className={style.total_review} >
+                {/* componente que crea el review */}
+                <div  className={style.create_reviews} >
+                    <CreateReviews idproduct={idproduct} />
+                </div>
+                {/* componente que muestra mis review por producto */}
+                <div>
+                    <Reviews idproduct={idproduct} />
+                </div>
             </div>
-            <div>
-                <CreateReviews idproduct={idproduct} />
-            </div>
-            <div>
-                <Reviews/>
-            </div>
+            
         </div>:<div></div>}
 
         

@@ -33,7 +33,9 @@ import { GET_ALL_PRODUCTS,
     UPDATE,
     CREATE_USER,
     GET_USERS,
-    UPDATE_USER
+    UPDATE_USER,
+    CREATE_REVIEWS,
+    GET_REVIEWS
 } from "./actionsTypes";
 import axios from 'axios';
 
@@ -590,7 +592,6 @@ const SERVER = 'http://localhost:3001';
         }
     }
 
-          
 
     export function update(payload) {
         return {
@@ -620,4 +621,34 @@ const SERVER = 'http://localhost:3001';
     
     ///////////////////////////////////////////////////////////////////////////////////////////
     
-   
+    //CreateReview crea una puntuacion y comentario 
+    export function CreateReview(id,review){
+        console.log('object :>> ', id);
+        return dispatch => {
+            axios.post(`http://localhost:3001/product/${id}/review`,review)
+            .then((result) => {
+                return dispatch({
+                    type:CREATE_REVIEWS,
+                    payload: result.data
+                })
+            }).catch((err) => {
+                console.log('err :>> ', err);
+            });
+        }
+
+    }
+
+    //obtengo todos mis comentarios por ID de producto
+    export function get_Review(id){
+        return dispatch => {
+            axios.get(`http://localhost:3001/product/${id}/review`)
+            .then((result) => {
+                return dispatch({
+                    type:GET_REVIEWS,
+                    payload:result.data
+                })
+            }).catch((err) => {
+                console.log('err :>> ', err);
+            });
+        }
+    }
