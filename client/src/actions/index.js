@@ -50,13 +50,15 @@ const SERVER = 'http://localhost:3001';
                 if(all){
                     products = await axios.get(`${SERVER}/products?all=true`);
                 }else{
-                    let {offset=0, limit=25, minPrice= null,  maxPrice= null,brand = null, category=null} = data
+                    let {offset=0, limit=25, search=null, minPrice=0,  maxPrice=null,brand = null, category=null, sort=null} = data;
+                    search= search? `&search=${search}`:'';
                     minPrice= minPrice?`&minPrice=${minPrice}`: '';
                     maxPrice=maxPrice?`&maxPrice=${maxPrice}`:'';
                     brand=brand? `&brand=${brand}`:'';
                     category=category? `&category=${category}`:'';
+                    sort= sort? `&sort=${sort}`:'';
                     //console.log(`${SERVER}/products?offset=${offset}&limit=${limit}${maxPrice}${minPrice}${brand}${category}`)
-                    products = await axios.get(`${SERVER}/products?offset=${offset}&limit=${limit}${maxPrice}${minPrice}${brand}${category}`);
+                    products = await axios.get(`${SERVER}/products?offset=${offset}&limit=${limit}${maxPrice}${minPrice}${brand}${category}${sort}${search}`);
                 }
                 return dispatch({
                     type: GET_ALL_PRODUCTS,
@@ -98,14 +100,14 @@ const SERVER = 'http://localhost:3001';
         }
     };
 
-    export function getBrands(){
+    export function getBrands(category=''){
         return async function(dispatch){
             try{
-                const brands= await axios.get(`${SERVER}/brands`)
-                return dispatch({
-                    type: GET_ALL_BRANDS,
-                    payload: brands.data
-                })
+              const brands= await axios.get(`${SERVER}/brands?category=${category}`)
+              return dispatch({
+                  type: GET_ALL_BRANDS,
+                  payload: brands.data
+              })
             }catch(err){
                 console.log(err)
             }
