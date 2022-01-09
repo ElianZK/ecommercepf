@@ -31,7 +31,7 @@ import { formatMoney } from 'accounting';
             icon: 'success',
             text: 'Producto eliminado correctamente!',
             showConfirmButton: false,
-            timer: 2000
+            timer: 3000
           })
     }
 

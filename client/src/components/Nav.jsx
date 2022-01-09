@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {  useEffect} from 'react'
 import s from '../assets/styles/Nav.module.css'
 import { Link, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
@@ -11,6 +11,8 @@ import logo from '../assets/img/logo-ecommerce.png'
 import {ShoppingCart} from '@material-ui/icons';
 import {Badge} from '@material-ui/core';
 import NavMenu from './NavMenu'
+import {getProductsCartUser} from '../actions/index'
+
 
 const Nav = () => {
     const user = useSelector(state => {
@@ -20,8 +22,12 @@ const Nav = () => {
    
     const dispatch = useDispatch();
     const cart = useSelector(state => state.ordenReducer.cart)
-    let totalItems = cart && [].concat(cart).reduce((accumulator, currentValue) => Number(accumulator) + Number(currentValue.amount), 0)
-    //let totalItems = cart.lenght
+    let totalItems = cart?.reduce((accumulator, currentValue) => Number(accumulator) + Number(currentValue.amount), 0)
+    const {idUser} = JSON.parse(localStorage.getItem("user"));
+
+    useEffect(() => {
+        dispatch(getProductsCartUser(idUser)); 
+    }, [dispatch]); 
 
     return (
         <header className={s.container}>

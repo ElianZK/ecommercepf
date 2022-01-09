@@ -21,7 +21,7 @@ const getUserOrders = async(req, res,next)=>{
         attributes:{
           exclude:["confirmationDate", "UserId"]
         },
-        include: Product
+        include: [Product]
       
       })
       

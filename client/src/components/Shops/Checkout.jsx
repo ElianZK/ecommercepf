@@ -117,7 +117,8 @@ export default function Checkout(){
                         showConfirmButton: true,
                      }).then((result)=>{
                         if(result.value){
-                           navigate('/buyHistory') //q vaya a historial
+                           //navigate('/buyHistory') //q vaya a ordenes
+                           window.location='/buyHistory'
                         }
                      });
                 dispatch(clearCart(User.idUser))

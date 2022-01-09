@@ -87,9 +87,9 @@ function handleChangeamount(e){
                     <button 
                         className={`${s.btn}`} onClick={handleAddToCart}>Agregar al carrito</button>
 
-                    <h3 className={s.titlepay}>Medios de pago</h3>
+                    {/* <h3 className={s.titlepay}>Medios de pago</h3>
                     <img className={s.payment} src="https://http2.mlstatic.com/secure/payment-logos/v2/payment-logo-mlm-consumer_credits-medium_v_ddbb2eb147.png" alt="Logo medio de pago mercado pago" />
-                    <img className={s.payment} src="https://tdinversiones.com/wp-content/uploads/2020/12/paypal-logo.png" alt="Logo medio de pago paypal" />
+                    <img className={s.payment} src="https://tdinversiones.com/wp-content/uploads/2020/12/paypal-logo.png" alt="Logo medio de pago paypal" /> */}
                 </div>
             </div>
             <div className={s.desc}>
