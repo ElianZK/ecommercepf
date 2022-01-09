@@ -98,6 +98,7 @@ export default function NavMenu() {
         <MenuItem onClick={() => {
                             localStorage.setItem("user", JSON.stringify({idUser: null}));
                             dispatch(login({idUser: null}));
+                            window.location=window.location;
                         }}>
           <Logout /> Log out
         </MenuItem>
