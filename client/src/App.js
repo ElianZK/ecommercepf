@@ -42,12 +42,13 @@ function App() {
         <Route exact path="/login" element={<Login/>} />
         <Route exact path="/register" element={<Register/>} />
         <Route exact path="/search/:search" element={<Home/>} />
-        <Route exact path="/addCategory" element={<CatForm/>} />
-        <Route exact path="/addBrand" element={<BrandForm/>} />
+        
+        <Route exact path="/addCategory" element={<CatForm/>} /> {/* admin */}
+        <Route exact path="/addBrand" element={<BrandForm/>} /> {/* admin */}
         <Route exact path="/addToCart" element={<Cart />} />
-        <Route exact path="/products" element={<Products />} />
+        <Route exact path="/products" element={<Products />} /> {/* admin */}
         <Route exact path="/cart" element={<Cart />} />
-        <Route exact path="/userForm" element={<UsersForm/>} />
+        <Route exact path="/userForm" element={<UsersForm/>} /> {/* admin */}
         <Route exact path="/checkout" element={<Checkout />} />
         <Route exact path="/profile" element={<Profile/>} />
       </Routes>

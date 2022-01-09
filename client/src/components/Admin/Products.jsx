@@ -7,8 +7,22 @@ import DataTable from 'react-data-table-component';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faTrashAlt, faEdit } from '@fortawesome/free-solid-svg-icons'
 import imgnotfound from "../../assets/img/notfound.gif";
+import axios from 'axios';
 
 const Products = () => {
+    const [isAdmin, setIsAdmin] = useState(false);
+
+    const idUser = useSelector(state => state.usersReducer.loginInfo.user.idUser);
+
+    useEffect(() => {
+        axios.get("http://localhost:3001/user/type/" + idUser)
+        .then(res => {
+            let { access } = res.data;
+    
+            setIsAdmin(access && !!idUser)
+        })
+    }, [idUser]);
+
     const dispatch = useDispatch();
     const products = useSelector((state) => {
         return state.productsReducer.allProducts.rows;
@@ -47,77 +61,79 @@ const Products = () => {
     }, [dispatch])
     return (
         <div className={s.Container}>
-            {/* <div className={s.modal}>
-                <form className={s.editProd}>
-                    <div>
-                        <div className={s.formGroup}>
+            {isAdmin ? (<>
+                {/* <div className={s.modal}>
+                    <form className={s.editProd}>
+                        <div>
+                            <div className={s.formGroup}>
 
 
+                            </div>
+                            <div className={s.formGroup}>
+
+                            </div>
+                            <div className={s.formGroup}>
+
+                            </div>
+                            <div className={s.formGroup}>
+
+                            </div>
+                            <div className={s.formGroup}>
+
+                            </div>
+                            <div className={s.formGroup}>
+
+                            </div>
+                            <div className={s.formGroup}>
+
+                            </div>
                         </div>
-                        <div className={s.formGroup}>
 
-                        </div>
-                        <div className={s.formGroup}>
+                    </form>
 
-                        </div>
-                        <div className={s.formGroup}>
-
-                        </div>
-                        <div className={s.formGroup}>
-
-                        </div>
-                        <div className={s.formGroup}>
-
-                        </div>
-                        <div className={s.formGroup}>
-
-                        </div>
+                </div> */}
+                <form className={s.Form}>
+                    <h2 className={s.Title}>Registro de Productos</h2>
+                    <div className={s.formGroup}>
+                        <input id="name" name="name" type="text" placeholder="Ingrese el nombre"></input>
                     </div>
-
+                    <div className={s.formGroup}>
+                        <input id="price" name="price" type="text" placeholder="Ingrese el precio"></input>
+                    </div>
+                    <div className={s.formGroup}>
+                        <input id="stock" name="stock" type="text" placeholder="Ingrese el Stock"></input>
+                    </div>
+                    <div className={s.formGroup}>
+                        <input id="image" name="image" type="text" placeholder="Ingrese la imagen"></input>
+                    </div>
+                    <div className={s.formDetail}>
+                        <input id="att" name="att" type="text" placeholder="Ingrese el atributo"></input>
+                        <input id="desc" name="desc" type="text" placeholder="Ingrese la descripcion"></input>
+                        <button>ADD</button>
+                    </div>
+                    <div className={s.formGroup}>
+                        <button className={s.button}>Registrar</button>
+                    </div>
                 </form>
+                <div className={s.containerSearch}>
 
-            </div> */}
-            <form className={s.Form}>
-                <h2 className={s.Title}>Registro de Productos</h2>
-                <div className={s.formGroup}>
-                    <input id="name" name="name" type="text" placeholder="Ingrese el nombre"></input>
+                <input name="name" placeholder="Ingrese su busqueda" onChange={(e)=>{
+                        let name= e.target.value;
+                        setSearch(name)
+                        setSearchres(
+                            products.filter(p=>{
+                                console.log(p)
+                                return p.name.includes(name) 
+                            })
+                        )
+                    }}/>
                 </div>
-                <div className={s.formGroup}>
-                    <input id="price" name="price" type="text" placeholder="Ingrese el precio"></input>
-                </div>
-                <div className={s.formGroup}>
-                    <input id="stock" name="stock" type="text" placeholder="Ingrese el Stock"></input>
-                </div>
-                <div className={s.formGroup}>
-                    <input id="image" name="image" type="text" placeholder="Ingrese la imagen"></input>
-                </div>
-                <div className={s.formDetail}>
-                    <input id="att" name="att" type="text" placeholder="Ingrese el atributo"></input>
-                    <input id="desc" name="desc" type="text" placeholder="Ingrese la descripcion"></input>
-                    <button>ADD</button>
-                </div>
-                <div className={s.formGroup}>
-                    <button className={s.button}>Registrar</button>
-                </div>
-            </form>
-            <div className={s.containerSearch}>
-
-            <input name="name" placeholder="Ingrese su busqueda" onChange={(e)=>{
-                    let name= e.target.value;
-                    setSearch(name)
-                    setSearchres(
-                        products.filter(p=>{
-                            console.log(p)
-                            return p.name.includes(name) 
-                        })
-                    )
-                }}/>
-            </div>
-            <DataTable
-                pagination
-                columns={columns}
-                data={searchres?searchres:products} /**/
-            />
+                <DataTable
+                    pagination
+                    columns={columns}
+                    data={searchres?searchres:products} /**/
+                />
+            </>) : <h1>No tenes acceso a esta página</h1>}
         </div>
     )
 }
