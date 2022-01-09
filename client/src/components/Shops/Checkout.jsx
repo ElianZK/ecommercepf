@@ -68,7 +68,7 @@ export default function Checkout(){
                 idProduct: cart[i].idProduct,
                 name:cart[i].name,
                 image: cart[i].image, 
-                price: formatMoney(cart[i].price),
+                price: Number(cart[i].price),
                 amount: Number(cart[i].amount),
             })
             totalPrice += (cart[i].price*cart[i].amount)
