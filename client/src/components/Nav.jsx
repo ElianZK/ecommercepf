@@ -1,24 +1,20 @@
-import React from 'react'
-import s from '../assets/styles/Nav.module.css'
-import { Link, useNavigate } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
-//import { useEffect, useState } from 'react';
-import { useGoogleLogout } from 'react-google-login'; 
-import { logOut,  login } from '../actions';
-import Swal from 'sweetalert2';
-import SearchBar from './SearchBar'
-import logo from '../assets/img/logo-ecommerce.png'
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+//import { logOut,  login } from '../actions';
+import logo from '../assets/img/logo-ecommerce.png';
 import {ShoppingCart} from '@material-ui/icons';
 import {Badge} from '@material-ui/core';
-import NavMenu from './NavMenu'
+import SearchBar from './SearchBar';
+import NavMenu from './NavMenu';
+import s from '../assets/styles/Nav.module.css';
 
-const Nav = () => {
-    const user = useSelector(state => {
-        console.log(state.usersReducer)
-        return state.usersReducer.loginInfo.user;
-    });
+const Nav = ({filters, setFilters}) => {
+    // const user = useSelector(state => {
+    //     console.log(state.usersReducer)
+    //     return state.usersReducer.loginInfo.user;
+    // });
    
-    const dispatch = useDispatch();
     const cart = useSelector(state => state.ordenReducer.cart)
     let totalItems = cart && [].concat(cart).reduce((accumulator, currentValue) => Number(accumulator) + Number(currentValue.amount), 0)
     //let totalItems = cart.lenght
@@ -27,7 +23,7 @@ const Nav = () => {
         <header className={s.container}>
             <nav className={s.options}>               
                 <img className={s.logo} src={logo} onClick={()=>{window.location='/'}} alt="logo ecommerce"/> 
-                <SearchBar />
+                <SearchBar filters={filters} setFilters={setFilters}/>
                 <div className={s.buttons}>
                     {/* {user.idUser ? <> */}
                         <NavMenu/>

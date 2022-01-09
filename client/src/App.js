@@ -13,13 +13,23 @@ import Cart from './components/Shops/Cart';
 //import Cart from './components/Shops.jsx/Cart';
 import UsersForm from './components/Admin/usersForm';
 import Checkout from './components/Shops/Checkout'
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { login } from './actions';
 
+//TODO: FALTA HACER LA RUTA DE ADMIN ACÁ CON LAS RUTAS INTERNAS. QUE EN LA DE ADMIN SE COMPRUEBE EL USUARIO 
+
 function App() {
   const dispatch = useDispatch();
-
+  const  [filters, setFilters] = useState({
+    sort: '',
+    category: '',
+    brand: '',
+    limit: 15,  
+    minPrice: 0,
+    maxPrice: null,
+    search: ''
+  })
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
 
@@ -34,18 +44,18 @@ function App() {
 
   return (
     <div className="App">
-      <Nav/>
+      <Nav filters={filters} setFilters={setFilters}/>
       <Routes>
-        <Route exact path="/" element={<Home/>} />
+        <Route exact path="/" element={<Home filters={filters} setFilters={setFilters}/>} />
+        <Route exact path="/search/:search" element={<Home filters={filters} setFilters={setFilters}/>} />
         <Route exact path="/detail/:idproduct" element={<Details/>} />
         <Route exact path="/login" element={<Login/>} />
         <Route exact path="/register" element={<Register/>} />
-        <Route exact path="/search/:search" element={<Home/>} />
         <Route exact path="/addCategory" element={<CatForm/>} />
         <Route exact path="/addBrand" element={<BrandForm/>} />
         <Route exact path="/addToCart" element={<Cart />} />
-        <Route exact path="/products" element={<Products />} />
         <Route exact path="/cart" element={<Cart />} />
+        <Route exact path="/products" element={<Products />} />
         <Route exact path="/userForm" element={<UsersForm/>} />
         <Route exact path="/checkout" element={<Checkout />} />
       </Routes>
