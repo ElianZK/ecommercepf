@@ -47,7 +47,6 @@ function App() {
       <Nav filters={filters} setFilters={setFilters}/>
       <Routes>
         <Route exact path="/" element={<Home filters={filters} setFilters={setFilters}/>} />
-        <Route exact path="/search/:search" element={<Home filters={filters} setFilters={setFilters}/>} />
         <Route exact path="/detail/:idproduct" element={<Details/>} />
         <Route exact path="/login" element={<Login/>} />
         <Route exact path="/register" element={<Register/>} />
