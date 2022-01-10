@@ -649,7 +649,7 @@ const SERVER = 'http://localhost:3001';
 
     export function getOrderProducts(idUser){
         return async function(dispatch){
-            console.log("getorder",idUser)
+            // console.log("getorder",idUser)
             const {data} = await axios.get(`${SERVER}/users/orders/${idUser}`)
             console.log(data)
             

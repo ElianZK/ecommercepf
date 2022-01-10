@@ -27,6 +27,7 @@ const Home = () => {
             if(Array.isArray(state.productsReducer.allProducts)) return state.productsReducer.allProducts;
             return state.productsReducer.allProducts.productsInfo
     }) 
+
     const total = useSelector((state) => {
         return state.productsReducer.allProducts.total || 0
     }) 

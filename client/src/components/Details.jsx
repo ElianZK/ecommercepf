@@ -18,15 +18,27 @@ const Details = () => {
     const {idproduct} = useParams();
     const product = useSelector(state => state.productsReducer.productDetail[0])
     const prod = JSON.parse(localStorage.getItem('cart')) || [].find(element => element.id === idproduct);
-    console.log('prod details cart :>> ', prod);
     //const [amount, setAmount] = useState(prod ?.amount||1); 
     const [amount, setAmount] = useState(1); 
     // const Users = localStorage.getItem("user")
     // console.log('Users details :>> ', Users);
     // const idUser= Users!=="null"?JSON.parse(localStorage.getItem("user")).idUser:null
-    const idUser = JSON.parse(localStorage.getItem("user"));
-    console.log('idUser details:>> ', idUser);
     
+    // obtengo mi iduser de mi User
+    const idUser = JSON.parse(localStorage.getItem("user"));
+
+    // recibo de mi localstorage.setitem de mi byhistory 
+    const byhistory = JSON.parse(localStorage.getItem('byhistory'))
+
+    if (byhistory===null) {
+        var filterhistory = []
+    } else {
+         //comprueba si existe mi idproducto existe en mi orders 
+        var filterhistory = byhistory.filter(e => e.products.find(p => p.idProduct===idproduct))
+    }
+   
+    
+
     const columns = [
     {
         name: 'Title',
@@ -111,7 +123,7 @@ function handleChangeamount(e){
             <div className={style.total_review} >
                 
                 {
-                    (idUser === null || idUser.idUser === null )
+                    (idUser === null || idUser.idUser === null || filterhistory.length ===0 )
                     ?(
                         <div>
                             <Reviews idproduct={idproduct} />

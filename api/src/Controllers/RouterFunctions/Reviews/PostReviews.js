@@ -32,8 +32,6 @@ const PostReviews = async(req, res, next)=> {
                 score:score,
                 description:description,
             }
-            
-            
         })
 
         res.status(200).json({created:created,newReview})

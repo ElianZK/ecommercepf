@@ -13,6 +13,11 @@ export default function BuyHistory() {
     const orders =  useSelector(state => state.ordenReducer.orders)
     const User = useSelector(state => state.usersReducer.loginInfo.user)
     const {idUser} = JSON.parse(localStorage.getItem("user"));
+
+
+    // guardo en el locaStorage mi orders y lo convierto en string
+    localStorage.setItem('byhistory',JSON.stringify(orders))
+
     useEffect(() => {
         dispatch(getOrderProducts(idUser))
     }, [])
