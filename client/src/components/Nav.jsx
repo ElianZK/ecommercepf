@@ -13,13 +13,13 @@ import {Badge} from '@material-ui/core';
 import NavMenu from './NavMenu'
 import {getProductsCartUser} from '../actions/index'
 
-const Nav = ({isAdmin}) => {
+const Nav = ({isAdmin,filters, setFilters}) => {
     const user = useSelector(state => {
         return state.usersReducer.loginInfo.user;
     });
+    const dispatch = useDispatch();
     const navigate = useNavigate();
    
-    const dispatch = useDispatch();
     const cart = useSelector(state => state.ordenReducer.cart)
     let totalItems = cart && [].concat(cart).reduce((accumulator, currentValue) => Number(accumulator) + Number(currentValue.amount), 0)
     const User = JSON.parse(localStorage.getItem("user"));
@@ -36,7 +36,7 @@ const Nav = ({isAdmin}) => {
         <header className={s.container}>
             <nav className={s.options}>               
                 <img className={s.logo} src={logo} onClick={()=>{navigate("/")}} alt="logo ecommerce"/> 
-                <SearchBar />
+                <SearchBar filters={filters} setFilters={setFilters}/>
 
                 <div className={s.buttons}>
                     {/* {user.idUser ? <> */}

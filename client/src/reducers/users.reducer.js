@@ -30,17 +30,10 @@ export function usersReducer(state = initialState, action){
     console.log(action);
     switch(action.type){
         case LOGIN:
-            // const {idUser, name, lastname, email, phone, image} = action.payload;
-
-            const newState = {
-                ...state,
-                loginInfo: action.payload,
-                // updateInfo: action.payload
+            return{
+                ...state, 
+                loginInfo: {...action.payload}
             }
-
-            console.log(newState)
-
-            return newState;
         
         case LOGOUT:
             return{

@@ -11,10 +11,9 @@ import BrandForm from './components/Admin/BrandForm'
 import Products from './components/Admin/Products'
 import Cart from './components/Shops/Cart';
 import Profile from './components/Profile.jsx';
-//import Cart from './components/Shops.jsx/Cart';
+import BuyHistory from './components/Shops/BuyHistory'
 import UsersForm from './components/Admin/usersForm';
-import BuyHistory from './components/Shops/BuyHistory';
-import Checkout from './components/Shops/Checkout';
+import Checkout from './components/Shops/Checkout'
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from './actions';
@@ -22,9 +21,19 @@ import CantAccess from './components/Admin/CantAccess';
 import axios from 'axios';
 import Dashboard from './components/Admin/Dashboard';
 
+//TODO: FALTA HACER LA RUTA DE ADMIN ACÁ CON LAS RUTAS INTERNAS. QUE EN LA DE ADMIN SE COMPRUEBE EL USUARIO 
+
 function App() {
   const dispatch = useDispatch();
-
+  const  [filters, setFilters] = useState({
+    sort: '',
+    category: '',
+    brand: '',
+    limit: 15,  
+    minPrice: 0,
+    maxPrice: null,
+    search: ''
+  })
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
 
@@ -50,16 +59,15 @@ function App() {
 
   return (
     <div className="App">
-      <Nav isAdmin={isAdmin}/>
+      <Nav isAdmin={isAdmin} filters={filters} setFilters={setFilters}/>
       <Routes>
-        <Route exact path="/" element={<Home/>} />
+        <Route exact path="/" element={<Home filters={filters} setFilters={setFilters}/>} />
         <Route exact path="/detail/:idproduct" element={<Details/>} />
         <Route exact path="/login" element={<Login/>} />
-        <Route exact path="/register" element={<Register/>} />
-        <Route exact path="/search/:search" element={<Home/>} />
-        
+        <Route exact path="/register" element={<Register/>} />        
         <Route exact path="/addToCart" element={<Cart />} />
         <Route exact path="/cart" element={<Cart />} />
+        <Route exact path="/products" element={<Products />} />
         <Route exact path="/userForm" element={<UsersForm/>} />
         <Route exact path="/buyHistory" element={<BuyHistory/>} />
         <Route exact path="/checkout" element={<Checkout />} />

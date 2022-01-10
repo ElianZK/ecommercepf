@@ -1,23 +1,22 @@
 const server = require('./src/app.js');
 // const { conn } = require('./src/db.js');
 const { getProducts} =require('./src/Controllers/DbLoading/getProds');
-let { Category, Order, Product, User, Cart, Details, Brand, CategoryBrand, Reviews} = require('./src/db');
-
-const variable = false;
+let { Category, Order, Product, User, Cart, Details, Brand, CategoryBrand, Reviews, WishList} = require('./src/db');
 
 const startServer= async()=>{
   try {
     
-    await Brand.sync({force:variable});
-    await Category.sync({force:variable});
-    await CategoryBrand.sync({force:variable});
-    await Product.sync({force:variable});
-    await User.sync({force:variable});
-    await Order.sync({force:variable});
-    await Cart.sync({force:variable});
-    await Details.sync({force:variable});
-    await Reviews.sync({force:variable});
-
+    await Brand.sync({force:false});
+    await Category.sync({force:false});
+    await CategoryBrand.sync({force:false});
+    await Product.sync({force:false});
+    await User.sync({force:false});
+    await Order.sync({force:false});
+    await Cart.sync({force:false});
+    await Details.sync({force:false});
+    await WishList.sync({force:false});
+    await Reviews.sync({force:false});
+    
     let aux = await Product.count();
     console.log("Products Registered in the DB: ",aux);
     if(!aux){

@@ -74,7 +74,7 @@ const postUserOrder = async(req, res,next)=>{
     //[Atualizo los stocks y las cantidades de productos de la orden.
     for(let i =0; i<availableProducts.length;i++){
       let {databaseProduct, product, amount, price } = availableProducts[i];
-      await databaseProduct.update({stock:databaseProduct.stock- amount});
+      await databaseProduct.update({stock:databaseProduct.stock- amount, sold_quantity:databaseProduct.sold_quantity+amount});
       await product.update({amount, price})
     }
     
@@ -111,32 +111,3 @@ module.exports= {
 }
 
 
-
-// const checkout = async(req, res, next)=>{
-//   try {
-
-//     const { id, amount } = req.body;
-
-//     const payment = await stripe.paymentIntents.create({
-//       amount,
-//       currency: "USD",
-//       description: "Gaming Keyboard",
-//       payment_method: id,
-//       confirm: true, //confirm the payment at the same time of created the transaction
-//     });
-//     /*
-
-
-//     console.log(payment);
-
-//     return res.status(200).json({ message: "Successful Payment" });
-    
-//   } catch (error) {
-//     console.log(error);
-//     return res.json({ message: error.raw.message });
-//   }
-// };
-
-// module.exports = {
-//   checkout
-// }

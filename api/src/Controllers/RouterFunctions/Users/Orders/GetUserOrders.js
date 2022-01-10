@@ -2,7 +2,7 @@ const {Details, User, Order, Product} = require("../../../../db");
 
 const getUserOrders = async(req, res,next)=>{
   try {
-    console.log(req.params)
+    //! console.log(req.params);
     const {UserId, OrderId=null} = req.params;
     let user = await User.findOne({
       where:{
@@ -29,14 +29,22 @@ const getUserOrders = async(req, res,next)=>{
     }else{
       //[En caso de tener un id de Orden, muestro tanto la orden como los productos asociados a esa orden
       let order = await Order.findByPk(OrderId);
-
+      
       let orderProducts = await Details.findAll({
         where:{
           OrderId
         },
-        attributes:{
-          exclude:["confirmationDate", "UserId"]
-        }
+      })
+      let products = await Product.findAll({
+        where:{
+          idProduct: orderProducts.map(el=>el.toJSON().ProductId)
+        },
+        attributes: ["price", "name", "idProduct", "thumbnail"]
+      })
+      orderProducts = orderProducts.map(el=>{
+        el = el.toJSON();
+        let product = products.find(element=> element.idProduct===el.ProductId).toJSON();
+        return {...el, price:product.price, name: product.name, thumbnail:product.thumbnail};
       })
       
       res.status(200).json({user, order, orderProducts})

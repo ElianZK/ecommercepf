@@ -1,10 +1,11 @@
 import React,{useEffect, useState} from 'react';
 import s from '../assets/styles/Details.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faHeart as Heartwhite } from '@fortawesome/free-regular-svg-icons'
+import {faHeart as Heartwhite } from '@fortawesome/free-regular-svg-icons';
+import {faHeart as HeartFill } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { getProductId, addToCart, update} from '../actions/index.js'
+import { getProductId, addToCart, update, getWishList, addItemToWishList, deleteItemFromWishList} from '../actions/index.js'
 import { Slide } from 'react-slideshow-image'
 import DataTable from 'react-data-table-component';
 import {formatMoney} from 'accounting'
@@ -12,9 +13,11 @@ import Swal from 'sweetalert2';
 import Reviews from './Reviews';
 import CreateReviews from './CreateReviews';
 import style from '../assets/styles/Reviews.module.css'
+import {useNavigate} from 'react-router-dom';
 
 const Details = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const {idproduct} = useParams();
     const product = useSelector(state => state.productsReducer.productDetail[0])
     const prod = JSON.parse(localStorage.getItem('cart')) || [].find(element => element.id === idproduct);
@@ -25,10 +28,13 @@ const Details = () => {
     // const idUser= Users!=="null"?JSON.parse(localStorage.getItem("user")).idUser:null
     
     // obtengo mi iduser de mi User
-    const idUser = JSON.parse(localStorage.getItem("user"));
+    const User = JSON.parse(localStorage.getItem("user"));
+    const idUser = !User?null:User.idUser;
 
     // recibo de mi localstorage.setitem de mi byhistory 
     const byhistory = JSON.parse(localStorage.getItem('byhistory'))
+    const wishList = useSelector(state=>state.productsReducer.wishList);
+    const [fav, setFav]=useState(Boolean(wishList.find(el=>el.idProduct===idproduct))); 
 
     if (byhistory===null) {
         var filterhistory = []
@@ -58,7 +64,7 @@ function handleAddToCart(e){
         dispatch(update(Number(amount)))
         if ((Number(amount)) <= product.stock) {
             setAmount(Number(amount));
-            dispatch(addToCart({ ...product,amount: amount},idUser.idUser)) //falta usuario 
+            dispatch(addToCart({ ...product,amount: amount},idUser)) //falta usuario 
             Swal.fire({
                 icon: 'success',
                 text: 'Producto agregado exitosamente!',
@@ -74,9 +80,50 @@ function handleChangeamount(e){
 }
 
     
-    useEffect(() => {
-        dispatch(getProductId(idproduct));
-    }, [dispatch, idproduct])
+  useEffect(() => {
+      dispatch(getProductId(idproduct));
+      dispatch(getWishList(idUser));
+  }, [dispatch, idproduct])
+
+
+  useEffect(()=>{
+    if(idUser){
+     setFav(Boolean(wishList.find(el=>el.idProduct===idproduct)));
+    }else{
+      //|falta que esto se ejecute. Ocurre porque el idUser es extraido del localStorage y no del estado del reducer entonces no lo detecta el useEffect
+      setFav(false);
+    }
+  },[wishList, idUser])
+
+  const addToFavourites = async ()=>{
+    if(!idUser){
+      try{
+        let result = await Swal.fire({
+          title: 'Inicie Sesión.',
+          text: "Para agregar a favoritos debe haberse logueado.",
+          icon: 'info',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Iniciar Sesión',
+          cancelButtonText: 'Cancelar'
+        })
+        if (result.isConfirmed) {
+          navigate('/login');
+        }
+      }catch(error){
+        alert("Debe iniciar sesión");
+      }
+    }else{
+      if(fav){
+        dispatch(deleteItemFromWishList(idUser,idproduct));
+      }else{
+        dispatch(addItemToWishList(idUser,idproduct));
+      } 
+      setFav(!fav);
+    }
+  };
+
 
     return (
         <>
@@ -91,7 +138,7 @@ function handleChangeamount(e){
                     </Slide>
                 </div>
                 <div className={`${s.subcontainer} ${s.details}`}>
-                    <button className={s.btnfav}><FontAwesomeIcon icon={Heartwhite} /></button>
+                    <button className={s.btnfav} onClick={e=>addToFavourites(e)}><FontAwesomeIcon icon={fav?HeartFill:Heartwhite} /></button>
                     <h2 className={s.prodname}>{product.name}</h2>
                     <p className={s.prodprice}>{` ${formatMoney(product.price)}`}<span > ARS</span></p>
                     {product.stock>0?<div className={s.grupcount}>
@@ -99,7 +146,7 @@ function handleChangeamount(e){
                         <input type="number" min={1} max={Number(product.stock)} onChange={handleChangeamount} value={amount}/>
                         <label>Disponibles: {product.stock}</label>
                     </div>:<div><span>No disponible por el momento</span></div>}
-                    <p className={s.salesnum}><strong>130 </strong>Ventas realizadas</p>
+                    <p className={s.salesnum}><strong>{product.sold_quantity} </strong>Ventas realizadas</p>
                     <button className={`${s.btn}`}>Comprar ahora</button>
                     <button 
                         className={`${s.btn}`} onClick={handleAddToCart}>Agregar al carrito</button>
@@ -123,7 +170,7 @@ function handleChangeamount(e){
             <div className={style.total_review} >
                 
                 {
-                    (idUser === null || idUser.idUser === null || filterhistory.length ===0 )
+                    (idUser === null || idUser === null || filterhistory.length ===0 )
                     ?(
                         <div>
                             <Reviews idproduct={idproduct} />

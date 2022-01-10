@@ -16,7 +16,9 @@ import{ GET_ALL_PRODUCTS,
         REMOVE_CATEGORY,
         REMOVE_BRANDS,
         EDIT_CATEGORY,
-        EDIT_BRANDS
+        EDIT_BRANDS,
+        GET_WISHLIST,
+        UPDATE_WISHLIST,
     } from '../actions/actionsTypes'
 
 const initialState = {
@@ -24,6 +26,7 @@ const initialState = {
     productDetail: [],
     categories: [], 
     brands: [],
+    wishList:[],
     loginInfo:{
         isConnected: false,
         user: {
@@ -50,7 +53,6 @@ export function productsReducer(state = initialState, action){
         case GET_PRODUCT_ID:
             return {
                 ...state,
-                allProducts: action.payload,
                 productDetail: action.payload
             };   
 
@@ -144,13 +146,13 @@ export function productsReducer(state = initialState, action){
         case LOGIN:
             return{
                 ...state,
-                loginInfo: action.payload
+                loginInfo:{...action.payload}
             }
         
         case LOGOUT:
             return{
                 ...state,
-                loginInfo: action.payload
+                loginInfo: {...action.payload}
             }
 
         case FILTERS_CLEAR:
@@ -178,12 +180,22 @@ export function productsReducer(state = initialState, action){
                     action.payload : category)]
             }
         
-        case EDIT_BRANDS:
-            return {
+            case EDIT_BRANDS:
+                return {
+                    ...state,
+                    brands: [...state.brands.map((brand) => brand.id === action.payload.id?
+                        action.payload : brand)]
+                }      
+            case UPDATE_WISHLIST:
+              return{
                 ...state,
-                brands: [...state.brands.map((brand) => brand.id === action.payload.id?
-                    action.payload : brand)]
-            }  
+                wishList:[...action.payload]
+              }  
+            case GET_WISHLIST:
+              return{
+                ...state,
+                wishList:[...action.payload]
+              }
 
         default:
             return state;
