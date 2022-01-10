@@ -1,7 +1,6 @@
 import React, {  useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from 'react-router-dom';
-import {info} from './info';
 import s from '../../assets/styles/BuyHistory.module.css'
 import {getOrderProducts} from '../../actions/index'
 import { formatMoney } from 'accounting';
@@ -11,8 +10,8 @@ export default function BuyHistory() {
 
     const dispatch = useDispatch()
     const orders =  useSelector(state => state.ordenReducer.orders)
-    const User = useSelector(state => state.usersReducer.loginInfo.user)
-    const {idUser} = JSON.parse(localStorage.getItem("user"));
+    const User = JSON.parse(localStorage.getItem("user"));
+    const idUser = !User?null:User.idUser;
     useEffect(() => {
         dispatch(getOrderProducts(idUser))
     }, [])

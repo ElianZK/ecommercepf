@@ -2,3 +2,5 @@ node_modules
 api/package-lock.json
 client/package-lock.json
 */.env
+client/build
+api/.gitignore

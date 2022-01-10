@@ -22,9 +22,9 @@ const Nav = () => {
    
     const dispatch = useDispatch();
     const cart = useSelector(state => state.ordenReducer.cart)
-    let totalItems = cart?.reduce((accumulator, currentValue) => Number(accumulator) + Number(currentValue.amount), 0)
-    const {idUser} = JSON.parse(localStorage.getItem("user"));
-
+    let totalItems = cart && [].concat(cart).reduce((accumulator, currentValue) => Number(accumulator) + Number(currentValue.amount), 0)
+    const User = JSON.parse(localStorage.getItem("user"));
+    const idUser = !User?null:User.idUser;
     useEffect(() => {
         dispatch(getProductsCartUser(idUser)); 
     }, [dispatch]); 

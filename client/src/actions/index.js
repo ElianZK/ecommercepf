@@ -40,6 +40,7 @@ import axios from 'axios';
 
 
 const SERVER = 'http://localhost:3001';
+//const SERVER = 'https://e-commerce-pf.herokuapp.com';
 
 
     export function getAllProducts(data,all=false) {

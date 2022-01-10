@@ -38,8 +38,8 @@ export default function Checkout(){
         const dispatch = useDispatch()
         const navigate = useNavigate()
 
-        const User = useSelector(state => state.usersReducer.loginInfo.user)
-        const {idUser} = JSON.parse(localStorage.getItem("user"));
+        const User = JSON.parse(localStorage.getItem("user"));
+        const idUser = !User?null:User.idUser;
         const cart = useSelector((state)=>state.ordenReducer.cart)
 
         //const token=localStorage.getItem('token')

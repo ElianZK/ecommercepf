@@ -17,8 +17,8 @@ import { formatMoney } from 'accounting';
     const dispatch = useDispatch();
     const navigate = useNavigate()
     const products = useSelector(state => state.ordenReducer.cart);
-    const Users = useSelector(state => state.usersReducer.loginInfo.users)
-    const {idUser} = JSON.parse(localStorage.getItem("user"));
+    const User = JSON.parse(localStorage.getItem("user"));
+    const idUser = !User?null:User.idUser;
 
     useEffect(() => {
         dispatch(getProductsCartUser(idUser)); 

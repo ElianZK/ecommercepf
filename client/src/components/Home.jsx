@@ -14,8 +14,8 @@ import imgnotfound from "../assets/img/notfound.gif";
 import Swal from 'sweetalert2';
 
 const Home = () => {
-    const Users = useSelector(state => state.usersReducer.loginInfo.users)
-    const {idUser} = JSON.parse(localStorage.getItem("user"));
+    const User = JSON.parse(localStorage.getItem("user"));
+    const idUser = !User?null:User.idUser;
     const dispatch = useDispatch();
     const {search=null} = useParams();
     const [sort,setSort] = useState('');
