@@ -639,6 +639,7 @@ const SERVER = 'http://localhost:3001';
     } 
     export function getWishList(idUser){
       return async function(dispatch){
+        if(!idUser) return;
         try {
           let response = await axios.get(`http://localhost:3001/users/wishlist/${idUser}`);
           dispatch({
@@ -654,7 +655,7 @@ const SERVER = 'http://localhost:3001';
       return async function(dispatch){
         try {
           let response = await axios.post(`http://localhost:3001/users/wishlist/${idUser}/${idProduct}`);
-          if(response.created){
+          if(response.data.created){
             dispatch({
               type: UPDATE_WISHLIST,
               payload:response.data.wishList
@@ -672,10 +673,10 @@ const SERVER = 'http://localhost:3001';
       return async function(dispatch){
         try {
           let response = await axios.delete(`http://localhost:3001/users/wishlist/${idUser}/${idProduct}`);
-          if(response.deleted){
+          if(response.data.deleted){
             dispatch({
               type: UPDATE_WISHLIST,
-              payload:response.data.wishList
+              payload:[...response.data.wishList]
             })
           }
           return;
