@@ -18,13 +18,15 @@ const Details = () => {
     const {idproduct} = useParams();
     const product = useSelector(state => state.productsReducer.productDetail[0])
     const prod = JSON.parse(localStorage.getItem('cart')) || [].find(element => element.id === idproduct);
+    console.log('prod details cart :>> ', prod);
     //const [amount, setAmount] = useState(prod ?.amount||1); 
     const [amount, setAmount] = useState(1); 
-    const Users = localStorage.getItem("user")
-    const idUser= Users!=="null"?JSON.parse(localStorage.getItem("user")).idUser:null
-
-// localstorege.getItem('user')
-
+    // const Users = localStorage.getItem("user")
+    // console.log('Users details :>> ', Users);
+    // const idUser= Users!=="null"?JSON.parse(localStorage.getItem("user")).idUser:null
+    const idUser = JSON.parse(localStorage.getItem("user"));
+    console.log('idUser details:>> ', idUser);
+    
     const columns = [
     {
         name: 'Title',
@@ -44,7 +46,7 @@ function handleAddToCart(e){
         dispatch(update(Number(amount)))
         if ((Number(amount)) <= product.stock) {
             setAmount(Number(amount));
-            dispatch(addToCart({ ...product,amount: amount},idUser)) //falta usuario 
+            dispatch(addToCart({ ...product,amount: amount},idUser.idUser)) //falta usuario 
             Swal.fire({
                 icon: 'success',
                 text: 'Producto agregado exitosamente!',
@@ -107,14 +109,29 @@ function handleChangeamount(e){
             </div>
             {/* parte de los REVIEWS */}
             <div className={style.total_review} >
-                {/* componente que crea el review */}
-                <div  className={style.create_reviews} >
-                    <CreateReviews idproduct={idproduct} />
-                </div>
-                {/* componente que muestra mis review por producto */}
-                <div>
-                    <Reviews idproduct={idproduct} />
-                </div>
+                
+                {
+                    (idUser === null || idUser.idUser === null )
+                    ?(
+                        <div>
+                            <Reviews idproduct={idproduct} />
+                        </div>
+                    )
+                    :(
+                        <div>                        
+                            {/* componente que crea el review */}   
+                            <div  className={style.create_reviews} >
+                                <CreateReviews idproduct={idproduct} idUser={idUser} />
+                            </div>
+                            {/* componente que muestra mis review por producto */}
+                            <div>
+                                <Reviews idproduct={idproduct} />
+                            </div>
+                        </div>
+                    )
+                }
+                    
+               
             </div>
             
         </div>:<div></div>}

@@ -17,7 +17,7 @@ const Reviews = (props) => {
     }
 
     let promedio = y/tamaño
-    console.log(' :>> ',Math.round(promedio));
+    // console.log(' :>> ',Math.round(promedio));
 
     useEffect(()=>{
         dispatch(get_Review(props.idproduct))
@@ -34,11 +34,11 @@ const Reviews = (props) => {
             <div className={style.promedio}>
             
                 {
-                    promedio
+                    promedio.toFixed(1)
                 }
                 <ReactStars
                     count={5}
-                    value={Math.round(promedio)}
+                    value={promedio.toFixed(1)}
                     size={28}
                     edit={false}
                     // activeColor="#ffd700"

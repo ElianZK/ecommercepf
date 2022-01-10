@@ -18,7 +18,7 @@ export default function usersReducer(state = initialState, action){
     }
 
     if (action.type ===GET_REVIEWS ) {
-        console.log('object gget revi :>> ', action.payload);
+        // console.log('object gget revi :>> ', action.payload);
         return {
             ...state,
             getreview: action.payload

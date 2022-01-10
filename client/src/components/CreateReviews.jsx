@@ -6,13 +6,13 @@ import ReactStars from "react-rating-stars-component";
 import { CreateReview } from "../actions";
 
 const CreateReviews = (props) => {
-    // console.log('props :>> ', props);
+    // console.log('props createreview :>> ', props.idUser.idUser);
     const dispatch = useDispatch();
     const [values,setValues] = useState({
         score:"",
         description:"",
         productIdProduct:props.idproduct,
-        userIdUser:'07f646c2-9d3d-4177-aeb9-cfe06dbf9ff2'
+        userIdUser:props.idUser.idUser
     })
 
     // cambio de comentarios
@@ -26,7 +26,7 @@ const CreateReviews = (props) => {
 
     //cambio de rating o star o puntuacion
     const ratingChanged = (newRating) => {
-        console.log('newRating :>> ', newRating);
+        // console.log('newRating :>> ', newRating);
         setValues({
             ...values,
             score:newRating.toString()
@@ -41,11 +41,12 @@ const CreateReviews = (props) => {
             score:"",
         description:""
         })
+        window.location = `/detail/${props.idproduct}`
     }
 
-    useEffect(()=>{
-        
-    },[])
+    // useEffect(()=>{
+    //     window.location.href = `http://localhost:3000/detail/${props.idproduct}`
+    // },[props.idproduct])
 
     return (
         <div>

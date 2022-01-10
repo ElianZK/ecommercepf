@@ -23,14 +23,20 @@ const PostReviews = async(req, res, next)=> {
             })
         }
         //creo un nuevo review
-        let newReview = await Reviews.create({
-            score:score,
-            description:description,
-            productIdProduct:productIdProduct,
-            userIdUser:userIdUser
+        let [newReview, created] = await Reviews.findOrCreate({
+            where:{
+                productIdProduct:productIdProduct,
+                userIdUser:userIdUser
+            },
+            defaults:{
+                score:score,
+                description:description,
+            }
+            
+            
         })
 
-        res.json(newReview);
+        res.status(200).json({created:created,newReview})
 
     } catch (error) {
         next(error)

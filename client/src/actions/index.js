@@ -462,7 +462,8 @@ const SERVER = 'http://localhost:3001';
     //para boton de carro y cantidades seleccionadas
     
     export const addToCart = (product, userId) => (dispatch) => {
-        console.log('jo',product)
+        // console.log('jo',product)
+        // console.log('userId addtoCArt :>> ', userId);
         if (!userId) {
             let products = JSON.parse(localStorage.getItem("cart")) || [];
           let productFind = false;
