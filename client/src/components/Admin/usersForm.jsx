@@ -6,7 +6,8 @@ import s2 from '../../assets/styles/CategoryForm.module.css';
 import Swal from 'sweetalert2';
 import DataTable from 'react-data-table-component';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faTrashAlt, faEdit } from '@fortawesome/free-solid-svg-icons'
+import {faTrashAlt, faEdit, faKey } from '@fortawesome/free-solid-svg-icons'
+import axios from "axios";
 
 export default function UsersForm (){
     const dispatch = useDispatch();
@@ -37,6 +38,18 @@ export default function UsersForm (){
     
     const [created, setCreated] = useState(false);
 
+    const [id, setId] = useState(undefined);
+
+    useEffect(async() => {
+        if(id){
+            const res = await axios.put("http://localhost:3001/user/"+id, {value: true});
+
+            console.log(res.data);
+
+            setId(undefined)
+        }
+    }, [id]);
+
     const users = useSelector(state => {
         let {users} = state.usersReducer;
 
@@ -46,7 +59,6 @@ export default function UsersForm (){
                 name: user.name,
                 lastname: user.lastname,
                 email: user.email,
-                password: user.password,
                 phone: user.phone,
     
                 buttons: [
@@ -61,9 +73,14 @@ export default function UsersForm (){
                             type: user.type
                         })
                     }}><FontAwesomeIcon icon={faEdit}/></button></abbr>,
+
                     <abbr title="Eliminar user" key={1}><button className={s2.btnDel} onClick={() => {
                         dispatch(deleteUser(user.idUser));
-                    }}><FontAwesomeIcon icon={faTrashAlt}/></button></abbr>
+                    }}><FontAwesomeIcon icon={faTrashAlt}/></button></abbr>,
+
+                    <abbr title="Eliminar user" key={1}><button className={s2.btnKey} onClick={() => {
+                        setId(user.idUser);
+                    }}><FontAwesomeIcon icon={faKey}/></button></abbr>
                 ]
             }
         }) : [];
@@ -91,12 +108,6 @@ export default function UsersForm (){
         {
             name: 'Email',
             selector: row => row.email,
-            sortable: true,
-        },
-
-        {
-            name: 'Password',
-            selector: row => row.password,
             sortable: true,
         },
 

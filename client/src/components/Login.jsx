@@ -76,6 +76,19 @@ const Login = () => {
     useEffect(() => {
         if(!loginuser.error){
             if(loginuser.user.idUser){
+                console.log(loginuser)
+                if(loginuser.user.changePassword){
+                    Swal.fire({
+                        title:'Se sugiere que cambie la contraseña para asegurar la contraseña',
+                        text: "De no cambiarla, esta alerta seguirá apareciendo cáda vez que inicie sesión. Presione ok para cambiar la contraseña.",
+                        icon: 'info'
+                    }).then(res => {
+                        if(res.isConfirmed){
+                            navigate("/profile");
+                        }
+                    })
+                }
+
                 navigate("/");
             }
         }else{

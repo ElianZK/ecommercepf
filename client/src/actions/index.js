@@ -669,6 +669,7 @@ const SERVER = 'http://localhost:3001';
         return async function(dispatch){
             try{
                 const res = await axios.put(`${SERVER}/users/${id}`, {...user, from});
+                await axios.put("http://localhost:3001/user/"+id, {value: false});
 
                 const payload = {
                     user: res.data,

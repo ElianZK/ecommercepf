@@ -88,6 +88,14 @@
     background-color: rgb(236, 47, 47);
     color: white;
     border: 1px solid black;
+    margin-right: 20px;
+}
+
+.btnKey{
+    width: 30px;
+    height: 30px;
+    background-color: rgb(255, 247, 0);
+    border: 1px solid black;
 }
 
 .btnDel:hover{

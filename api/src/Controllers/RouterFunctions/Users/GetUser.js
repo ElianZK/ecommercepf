@@ -24,7 +24,8 @@ const GetUser = async(req, res) =>{
             email: user.email,
             password: user.password,
             phone: user.phone,
-            image: user.image
+            image: user.image,
+            changePassword: user.changepassword
         });
     }else{
         res.status(404).json({message: "Usuario inexistente"});
