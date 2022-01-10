@@ -97,6 +97,8 @@ export default function NavMenu() {
         </MenuItem>
         <MenuItem onClick={() => {
                             localStorage.setItem("user", JSON.stringify({idUser: null}));
+                            // vuelve null a mi byhistory
+                            localStorage.setItem("byhistory", JSON.stringify(null));
                             dispatch(login({idUser: null}));
                             window.location=window.location;
                         }}>

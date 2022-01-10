@@ -86,8 +86,7 @@ const Nav = ({isAdmin}) => {
                         </div>
                     </>} */}
                 </div>
-            </nav>
-            
+            </nav> 
         </header>
     )
 }

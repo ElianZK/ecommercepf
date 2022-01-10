@@ -178,12 +178,12 @@ export function productsReducer(state = initialState, action){
                     action.payload : category)]
             }
         
-            case EDIT_BRANDS:
-                return {
-                    ...state,
-                    brands: [...state.brands.map((brand) => brand.id === action.payload.id?
-                        action.payload : brand)]
-                }        
+        case EDIT_BRANDS:
+            return {
+                ...state,
+                brands: [...state.brands.map((brand) => brand.id === action.payload.id?
+                    action.payload : brand)]
+            }  
 
         default:
             return state;

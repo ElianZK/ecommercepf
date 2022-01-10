@@ -36,7 +36,9 @@ import { GET_ALL_PRODUCTS,
     UPDATE_USER,
     SET_ORDER_PRODUCTS,
     CHECK_TYPE,
-    DELETE_USER
+    DELETE_USER,
+    CREATE_REVIEWS,
+    GET_REVIEWS,
 } from "./actionsTypes";
 import axios from 'axios';
 
@@ -285,9 +287,7 @@ const SERVER = 'http://localhost:3001';
         return async function(dispatch){
             try{
                 payload["accountType"] = "internal";
-
                 const res = await axios.post(`${SERVER}/user/login`, payload);
-
                 let data = {
                     user: {
                         ...res.data
@@ -298,6 +298,7 @@ const SERVER = 'http://localhost:3001';
 
                 localStorage.setItem("user", JSON.stringify(data.user));
 
+            localStorage.setItem("user", JSON.stringify(data.user));
                 return dispatch({
                     type: LOGIN,
                     payload: {
@@ -431,7 +432,26 @@ const SERVER = 'http://localhost:3001';
         }   
     };
 
-    
+//     //crea un usuario 'admin' o 'user'
+//     export function createUser(body) {
+//         console.log(body)
+//         return async function(dispatch){
+//             try{
+//                 const res = await axios.post(`${SERVER}/auth/users`, body)
+
+//                 console.log("tengo", res);
+
+//                 return dispatch({
+//                     type: CREATE_USER,
+//                     payload: res.data
+//                 })     
+//             }catch(e){
+//                 console.log("hubo un error", e);
+//             }
+//         }
+//     };
+// =======
+
 
     
    // me traigo el carro de productos tanto de usuarios como de invitados
@@ -473,7 +493,8 @@ const SERVER = 'http://localhost:3001';
     //para boton de carro y cantidades seleccionadas
     
     export const addToCart = (product, userId) => (dispatch) => {
-        console.log('jo',product)
+        // console.log('jo',product)
+        // console.log('userId addtoCArt :>> ', userId);
         if (!userId) {
             let products = JSON.parse(localStorage.getItem("cart")) || [];
           let productFind = false;
@@ -700,7 +721,7 @@ const SERVER = 'http://localhost:3001';
 
     export function getOrderProducts(idUser){
         return async function(dispatch){
-            console.log("getorder",idUser)
+            // console.log("getorder",idUser)
             const {data} = await axios.get(`${SERVER}/users/orders/${idUser}`)
             console.log(data)
             
@@ -735,4 +756,34 @@ const SERVER = 'http://localhost:3001';
     
     ///////////////////////////////////////////////////////////////////////////////////////////
     
-   
+    //CreateReview crea una puntuacion y comentario 
+    export function createReview(id,review){
+        console.log('object :>> ', id);
+        return dispatch => {
+            axios.post(`http://localhost:3001/product/${id}/review`,review)
+            .then((result) => {
+                return dispatch({
+                    type:CREATE_REVIEWS,
+                    payload: result.data
+                })
+            }).catch((err) => {
+                console.log('err :>> ', err);
+            });
+        }
+
+    }
+
+    //obtengo todos mis comentarios por ID de producto
+    export function get_Review(id){
+        return dispatch => {
+            axios.get(`http://localhost:3001/product/${id}/review`)
+            .then((result) => {
+                return dispatch({
+                    type:GET_REVIEWS,
+                    payload:result.data
+                })
+            }).catch((err) => {
+                console.log('err :>> ', err);
+            });
+        }
+    }

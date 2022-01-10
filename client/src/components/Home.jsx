@@ -26,6 +26,7 @@ const Home = () => {
             if(Array.isArray(state.productsReducer.allProducts)) return state.productsReducer.allProducts;
             return state.productsReducer.allProducts.productsInfo
     }) 
+
     const total = useSelector((state) => {
         return state.productsReducer.allProducts.total || 0
     }) 
@@ -62,7 +63,7 @@ const Home = () => {
     function addCart(product){
         console.log("datacard",product)
         console.log("usercard",idUser)
-        dispatch(addToCart({...product,amount: 1},idUser))
+        dispatch(addToCart({...product,amount: 1},idUser.idUser))
         Swal.fire({
             icon: 'success',
             text: 'Producto agregado exitosamente!',

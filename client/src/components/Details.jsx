@@ -9,6 +9,9 @@ import { Slide } from 'react-slideshow-image'
 import DataTable from 'react-data-table-component';
 import {formatMoney} from 'accounting'
 import Swal from 'sweetalert2';
+import Reviews from './Reviews';
+import CreateReviews from './CreateReviews';
+import style from '../assets/styles/Reviews.module.css'
 
 const Details = () => {
     const dispatch = useDispatch();
@@ -17,10 +20,24 @@ const Details = () => {
     const prod = JSON.parse(localStorage.getItem('cart')) || [].find(element => element.id === idproduct);
     //const [amount, setAmount] = useState(prod ?.amount||1); 
     const [amount, setAmount] = useState(1); 
-    const Users = localStorage.getItem("user")
-    const idUser= Users!=="null"?JSON.parse(localStorage.getItem("user")).idUser:null
+    // const Users = localStorage.getItem("user")
+    // console.log('Users details :>> ', Users);
+    // const idUser= Users!=="null"?JSON.parse(localStorage.getItem("user")).idUser:null
+    
+    // obtengo mi iduser de mi User
+    const idUser = JSON.parse(localStorage.getItem("user"));
 
+    // recibo de mi localstorage.setitem de mi byhistory 
+    const byhistory = JSON.parse(localStorage.getItem('byhistory'))
 
+    if (byhistory===null) {
+        var filterhistory = []
+    } else {
+         //comprueba si existe mi idproducto existe en mi orders 
+        var filterhistory = byhistory.filter(e => e.products.find(p => p.idProduct===idproduct))
+    }
+   
+    
 
     const columns = [
     {
@@ -41,13 +58,13 @@ function handleAddToCart(e){
         dispatch(update(Number(amount)))
         if ((Number(amount)) <= product.stock) {
             setAmount(Number(amount));
-            dispatch(addToCart({ ...product,amount: amount},idUser)) //falta usuario 
+            dispatch(addToCart({ ...product,amount: amount},idUser.idUser)) //falta usuario 
             Swal.fire({
                 icon: 'success',
                 text: 'Producto agregado exitosamente!',
                 showConfirmButton: false,
                 timer: 2000
-              })
+            })
         };
 }
 
@@ -58,7 +75,7 @@ function handleChangeamount(e){
 
     
     useEffect(() => {
-       dispatch(getProductId(idproduct));
+        dispatch(getProductId(idproduct));
     }, [dispatch, idproduct])
 
     return (
@@ -102,7 +119,36 @@ function handleChangeamount(e){
                 {/* <p>El Samsung Galaxy A12 llega con una pantalla HD + de 6.5 pulgadas y potenciado por un procesador de ocho núcleos, 4GB RAM con 64GB de almacenamiento expandible mediante ranura microSD. La cámara posterior del Galaxy A12 es cuádruple, con lentes de 48MP, 5MP, 2MP y 2MP, mientras que la cámara frontal para selfies es de 8 megapíxeles. Completando las características del Samsung Galaxy A12 encontramos una batería de 5000 mAh de carga rápida, lector de huellas montadas de lado, y Android 10 a bordo. 
                     Pantalla HD + de 6.5 pulgadas$$ Almacenamiento expandible mediante ranura microSD$$Cámara posterior del Galaxy A12 es cuádruple, con lentes de 48MP, 5MP, 2MP y 2MP, mientras que la cámara frontal para selfies es de 8 megapíxeles$$Sensores: Huella digital (lateral), acelerómetro, Batería: 5000 mAh, Procesador: Octa-core 2.35 GHz</p> */}
             </div>
+            {/* parte de los REVIEWS */}
+            <div className={style.total_review} >
+                
+                {
+                    (idUser === null || idUser.idUser === null || filterhistory.length ===0 )
+                    ?(
+                        <div>
+                            <Reviews idproduct={idproduct} />
+                        </div>
+                    )
+                    :(
+                        <div>                        
+                            {/* componente que crea el review */}   
+                            <div  className={style.create_reviews} >
+                                <CreateReviews idproduct={idproduct} idUser={idUser} />
+                            </div>
+                            {/* componente que muestra mis review por producto */}
+                            <div>
+                                <Reviews idproduct={idproduct} />
+                            </div>
+                        </div>
+                    )
+                }
+                    
+               
+            </div>
+            
         </div>:<div></div>}
+
+        
         </>
     )
 }

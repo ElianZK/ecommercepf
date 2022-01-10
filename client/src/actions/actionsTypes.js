@@ -46,3 +46,6 @@ export const GET_USERS = 'GET_USERS';
 export const UPDATE_USER = "UPDATE_USER";
 
 export const CHECK_TYPE = "CHECK_TYPE";
+//REVIEWS
+export const CREATE_REVIEWS= 'CREATE_REVIEWS';
+export const GET_REVIEWS='GET_REVIEWS'
