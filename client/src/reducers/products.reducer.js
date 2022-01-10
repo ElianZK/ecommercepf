@@ -146,13 +146,13 @@ export function productsReducer(state = initialState, action){
         case LOGIN:
             return{
                 ...state,
-                loginInfo: action.payload
+                loginInfo:{...action.payload}
             }
         
         case LOGOUT:
             return{
                 ...state,
-                loginInfo: action.payload
+                loginInfo: {...action.payload}
             }
 
         case FILTERS_CLEAR:

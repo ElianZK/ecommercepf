@@ -29,7 +29,7 @@ export function usersReducer(state = initialState, action){
             console.log(action.payload)
             return{
                 ...state, 
-                loginInfo: action.payload
+                loginInfo: {...action.payload}
             }
         
         case LOGOUT:
