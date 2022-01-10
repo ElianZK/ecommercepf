@@ -3,9 +3,7 @@ const { User } = require('../../../db')
 
 const PostUsers = async(req, res, next) =>{
     try {
-        let { idUser, name, lastname, type , email, password, phone} = req.body;
-        
-        console.log("voy a crear un user", req.body);
+        let { idUser, name, lastname, type , email, password, phone, photo, from} = req.body;
 
         if (!email || !password ) {
             return res.json({created:false, message: "faltan datos para completar"})
@@ -26,21 +24,28 @@ const PostUsers = async(req, res, next) =>{
                 phone,
                 name,
                 lastname,
-                email
+                email,
+                image: photo
             }
         });
-
-        console.log("nuevo?", created);
 
         //compruebo si es true o false mi created
         if (!created) {
             return res.json({
                 created:false,
                 message: 'Este email ya existe'
-            })
+            });
         }
 
-        return res.json({created: created, newUser})
+        if(from === "admin"){
+            const users = await User.findAll()
+
+            console.log(users);
+
+            return res.json(users);
+        }else{
+            return res.json({created: created, newUser});
+        }
     } catch (error) {
         next(error)
     }

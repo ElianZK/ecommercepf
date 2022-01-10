@@ -34,7 +34,9 @@ import { GET_ALL_PRODUCTS,
     CREATE_USER,
     GET_USERS,
     UPDATE_USER,
-    SET_ORDER_PRODUCTS
+    SET_ORDER_PRODUCTS,
+    CHECK_TYPE,
+    DELETE_USER
 } from "./actionsTypes";
 import axios from 'axios';
 
@@ -206,14 +208,15 @@ const SERVER = 'http://localhost:3001';
         }
     }
 
-    export function createUser(body) {
-        console.log(body)
+    export function createUser(body, from="user") {
         return async function(dispatch){
             try{
-                const res = await axios.post(`${SERVER}/users/create`, body)
+                const res = await axios.post(`${SERVER}/users/create`, {...body, from})
+
+                console.log(res.data);
 
                 return dispatch({
-                    type: CREATE_USER,
+                    type: from==="user" ? CREATE_USER : GET_USERS,
                     payload: res.data
                 })     
             }catch(e){
@@ -245,6 +248,8 @@ const SERVER = 'http://localhost:3001';
                             ...res.data
                         }
                     }
+
+                    console.log(data);
     
                     localStorage.setItem("user", JSON.stringify(data.user));
 
@@ -289,6 +294,8 @@ const SERVER = 'http://localhost:3001';
                     }
                 }
 
+                console.log(data)
+
                 localStorage.setItem("user", JSON.stringify(data.user));
 
                 return dispatch({
@@ -316,6 +323,26 @@ const SERVER = 'http://localhost:3001';
             payload: {isConnected: false}
         } 
     };
+
+    export function checkType(/*id*/){
+        return{
+            type: CHECK_TYPE,
+            payload: {isAdmin: true}
+        }
+        // return async function(dispatch){
+        //     console.log("petición con el id " + id);
+
+        //     try{
+        //         return dispatch({
+        //             isAdmin: true
+        //         })
+        //     }catch(e){
+        //         return dispatch({
+        //             isAdmin: false
+        //         })
+        //     }
+        // }
+    }
 
     export function removeCategory(id){
         return async function(dispatch){
@@ -579,25 +606,65 @@ const SERVER = 'http://localhost:3001';
         }
     }
 
-    export function updateUser(id, user){
+    export function getAllUsers(){
         return async function(dispatch){
             try{
-                console.log("voy a updatear el user " + id)
+                const res = await axios.get(`${SERVER}/users/all`);
 
-                const res = await axios.put(`${SERVER}/users/${id}`, user)
+                const users = res.data.userinfo;
 
-                console.log("se actualizó el user",res);
+                return dispatch({
+                    type: GET_USERS,
+                    payload: users
+                })         
+            }catch(e){
+                
+            }
+        }
+    }
+
+    export function updateUser(id, user, from="admin"){
+        return async function(dispatch){
+            try{
+                const res = await axios.put(`${SERVER}/users/${id}`, {...user, from});
+                await axios.put("http://localhost:3001/user/"+id, {value: false});
+
+                const payload = {
+                    user: res.data,
+                    from
+                }
+
+                console.log("payload armado", payload)
 
                 return dispatch({
                     type: UPDATE_USER,
-                    payload: id
-                })
+                    payload,
+                });
             }catch(e){
                 console.log("no se pudo actualizar el user", e)
             }
         }
     }
 
+    export function deleteUser(id){
+        return async function(dispatch){
+            try{
+                console.log("voy a eliminar al user " + id);
+                await axios.delete(`${SERVER}/users/${id}`);
+
+                const res = await axios.get(`${SERVER}/users`);
+
+                const users = res.data.userinfo;
+
+                return dispatch({
+                    type: GET_USERS,
+                    payload: users
+                })    
+            }catch(e){
+                console.log("no se pudo eliminar el user" , e)
+            }
+        }
+    }
           
 
     export function update(payload) {
