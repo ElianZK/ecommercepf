@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import Swal from 'sweetalert2';
-import {CardElement, Elements, useElements, useStripe} from "@stripe/react-stripe-js"
+import {CardElement, Elements, useElements, useStripe,} from "@stripe/react-stripe-js"
 import { loadStripe } from '@stripe/stripe-js';
 import { useNavigate } from 'react-router-dom';
 import { setOrderProducts, clearCart } from '../../actions';
@@ -13,7 +13,6 @@ const stripePromise = loadStripe('pk_test_51KE0nYFfD78XPAGcGPPH7JVRgUrvShCe00gJQ
 
 function Validate(input) {
     let errors = {};
-    //let emailPatron = /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$/i;
 
 
     if(!input.name){
@@ -40,7 +39,8 @@ export default function Checkout(){
         const navigate = useNavigate()
 
         const User = useSelector(state => state.usersReducer.loginInfo.user)
-        //const {idUser} = JSON.parse(localStorage.getItem("user"));
+        const {idUser} = JSON.parse(localStorage.getItem("user"));
+        const cart = useSelector((state)=>state.ordenReducer.cart)
 
         //const token=localStorage.getItem('token')
         
@@ -57,7 +57,6 @@ export default function Checkout(){
         
         })
         
-        const cart = useSelector((state)=>state.ordenReducer.cart)
 
 
         let totalPrice= 0 
@@ -68,11 +67,11 @@ export default function Checkout(){
                 idProduct: cart[i].idProduct,
                 name:cart[i].name,
                 image: cart[i].image, 
-                price: formatMoney(cart[i].price),
+                price: Number(cart[i].price),
                 amount: Number(cart[i].amount),
             })
             totalPrice += (cart[i].price*cart[i].amount)
-            iva = (totalPrice*0.21)
+            //iva = (totalPrice*0.21)
             // console.log("comp",buys)
             // console.log("iva",iva)
         }
@@ -108,13 +107,13 @@ export default function Checkout(){
                                 city: state.city,
                                 direction:'esto no es direccion!!!!!'
                             },
-                            totalPrice: Math.round(totalPrice)*0.1,
+                            totalPrice: Math.round(totalPrice),
                             id: id
                         }
                 dispatch(setOrderProducts(pay, User.idUser)) //aca deberia ir la ruta post
                     Swal.fire({
                         icon: 'success',
-                        text: "Thank you for your purchase , you will receive an email with the details,  success",
+                        text: "Thank you for your purchase , you will receive an email with the details",
                         showConfirmButton: true,
                      }).then((result)=>{
                         if(result.value){
@@ -131,7 +130,7 @@ export default function Checkout(){
             return <form className= {s.form_compra}  
                             onSubmit={handleSubmit}>
                         <CardElement className={s.card}/>     
-                        {state.email && state.address && state.address && state.postalCode && 
+                        {state.email && state.address &&
                         <button className={s.btn}>
                                 Buy
                             </button>}

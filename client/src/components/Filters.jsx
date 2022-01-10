@@ -9,7 +9,7 @@ import {
 
 function Filters({handleChangeLimit, handleSortProducts, handleFilterByCategory, handleFilterByBrand}) {
      const dispatch = useDispatch();
-     const allProducts = useSelector(state => state.productsReducer.allProducts);
+     const allProducts = useSelector(state => state.productsReducer.allProducts.productsInfo);
 
      useEffect(() => {
          dispatch(getAllProducts({offset:0, limit:25, maxPrice: null, minPrice:null, brand: null}))
