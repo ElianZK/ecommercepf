@@ -33,7 +33,9 @@ import { GET_ALL_PRODUCTS,
     UPDATE,
     CREATE_USER,
     GET_USERS,
-    UPDATE_USER
+    UPDATE_USER,
+    GET_WISHLIST,
+    UPDATE_WISHLIST,
 } from "./actionsTypes";
 import axios from 'axios';
 
@@ -233,47 +235,60 @@ const SERVER = 'http://localhost:3001';
     }
 
     export function login(payload){
+      return async function(dispatch){
         if(payload.idUser){
-            return async function(dispatch){
-                try{
-                    payload["accountType"] = "external";
-    
-                    const res = await axios.post(`${SERVER}/user/login`, payload);
+          try{
+            payload["accountType"] = "external";
 
-                    let data = {
-                        user: {
-                            ...res.data
-                        }
-                    }
-    
-                    localStorage.setItem("user", JSON.stringify(data.user));
+            const res = await axios.post(`${SERVER}/user/login`, payload);
 
-                    return dispatch({
-                        type: LOGIN,
-                        payload: {
-                            ...data,
-                            error: false
-                        }
-                    });
-                }catch(e){
-                    return dispatch({
-                        type: LOGIN,
-                        payload: {
-                            user: {idUser: null},
-                            error: true
-                        }
-                    });
-                }
+            let data = {
+              user: {
+                ...res.data
+              },
+              isVerified: false,
+              error: false,
+              lastUpdate: 0,
             }
+
+            localStorage.setItem("user", JSON.stringify(data.user));
+
+            return dispatch({
+              type: LOGIN,
+              payload: {
+                ...data,
+
+              }
+            });
+          }catch(e){
+            return dispatch({
+              type: LOGIN,
+              payload: {
+                isVerified: false,
+                user: {idUser: null},
+                error: true,
+                lastUpdate: 0,
+              }
+            });
+          }
         }else{
-            return {
-                type: LOGIN,
-                payload: {
-                    user: {idUser: null},
-                    error: null
-                }
+          localStorage.setItem("user", JSON.stringify({
+            isVerified: false,
+            user: {idUser: null},
+            error: true,
+            lastUpdate: 0,
+          }))
+          return dispatch({
+            type: LOGIN,
+            payload: {
+              isVerified: false,
+              user: {idUser: null},
+              error: null,
+              lastUpdate: 0,
             }
+          });
         }
+      }
     }; 
 
     export function loginWithNormalAccount(payload){
@@ -284,9 +299,12 @@ const SERVER = 'http://localhost:3001';
                 const res = await axios.post(`${SERVER}/user/login`, payload);
 
                 let data = {
+                    lastUpdate: 0,
+                    isVerified: false,
                     user: {
                         ...res.data
-                    }
+                    },
+                    error: false
                 }
 
                 localStorage.setItem("user", JSON.stringify(data.user));
@@ -295,13 +313,14 @@ const SERVER = 'http://localhost:3001';
                     type: LOGIN,
                     payload: {
                         ...data,
-                        error: false
                     }
                 });
             }catch(e){
                 return dispatch({
                     type: LOGIN,
                     payload: {
+                        lastUpdate: 0,
+                        isVerified: false,
                         user: {idUser: null},
                         error: true
                     }
@@ -446,39 +465,39 @@ const SERVER = 'http://localhost:3001';
     //para boton de carro y cantidades seleccionadas
     
     export const addToCart = (product, userId) => (dispatch) => {
-        console.log('jo',product)
-        if (!userId) {
-            let products = JSON.parse(localStorage.getItem("cart")) || [];
-          let productFind = false;
-          products = products.map((p) => {
-              
-            if (p.idProduct === product.idProduct ) {
-                  productFind = true;
-              return {
-                    ...p,
-                    //qty: Number(p.qty) + 1,
-                    amount: Number(p.amount) + product.amount<=p.stock?Number(p.amount) + product.amount:p.amount,
-                }; 
-            }
-            return p;
-          });
-           if (productFind===false){ 
-              products.push(product);
-              console.log(products)
+      console.log('jo',product)
+      if (!userId) {
+        let products = JSON.parse(localStorage.getItem("cart")) || [];
+        let productFind = false;
+        products = products.map((p) => {
+            
+          if (p.idProduct === product.idProduct ) {
+                productFind = true;
+            return {
+                  ...p,
+                  //qty: Number(p.qty) + 1,
+                  amount: Number(p.amount) + product.amount<=p.stock?Number(p.amount) + product.amount:p.amount,
+              }; 
           }
-          products= products.filter(p=>p.amount>0)
-          localStorage.setItem("cart", JSON.stringify(products));
-          return dispatch({ 
-              type: ADD_TO_CART,
-              payload: products });/* */
+          return p;
+        });
+          if (productFind===false){ 
+            products.push(product);
+            console.log("ACABO DE AGREGAR UN PRODUCTO AL CARRITO DEL LOCALSTORAGE: ", products)
         }
+        products= products.filter(p=>p.amount>0)
+        localStorage.setItem("cart", JSON.stringify(products));
+        return dispatch({ 
+            type: ADD_TO_CART,
+            payload: products });/* */
+      }
       if (userId) {
           const body = {productsInfo: [{...product}/* id: product.idProduct, qty: 1  */]};
-          console.log('lo',product.idProduct)
+          //! console.log('lo',product.idProduct)
           return axios
             .put(`${SERVER}/users/cart/${userId}`, body) //fatlta autenci usuario
             .then((response) => {
-                console.log("putproductadd",response)
+                //!console.log("putproductadd",response)
               dispatch({ 
                   type: ADD_TO_CART_FROM_DB,
                   payload: response.data.cart 
@@ -618,10 +637,53 @@ const SERVER = 'http://localhost:3001';
             })
         }
     } 
+    export function getWishList(idUser){
+      return async function(dispatch){
+        try {
+          let response = await axios.get(`http://localhost:3001/users/wishlist/${idUser}`);
+          dispatch({
+            type:GET_WISHLIST,
+            payload: response.data.wishList
+          })
+        } catch (error) {
+          
+        }
+      };
+    }
+    export function addItemToWishList(idUser,idProduct){
+      return async function(dispatch){
+        try {
+          let response = await axios.post(`http://localhost:3001/users/wishlist/${idUser}/${idProduct}`);
+          if(response.created){
+            dispatch({
+              type: UPDATE_WISHLIST,
+              payload:response.data.wishList
+            })
+          }
+          return;
+        } catch (error) {
+          console.log("addItemToWishList action error: ", error);
+        }
+      }
+    }
+   
     
-    
-    
-    
+    export function deleteItemFromWishList(idUser,idProduct){
+      return async function(dispatch){
+        try {
+          let response = await axios.delete(`http://localhost:3001/users/wishlist/${idUser}/${idProduct}`);
+          if(response.deleted){
+            dispatch({
+              type: UPDATE_WISHLIST,
+              payload:response.data.wishList
+            })
+          }
+          return;
+        } catch (error) {
+          console.log("deleteItemToWishList action error: ", error);
+        }
+      }
+    }
     //   export const getAllFavourites = () => async (dispatch) => {
     //     try {
         //       const { data } = await axios.get(`/users/favs`, { headers });
