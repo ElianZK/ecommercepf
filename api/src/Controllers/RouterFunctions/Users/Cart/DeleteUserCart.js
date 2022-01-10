@@ -8,8 +8,8 @@ try {
   let cart = null;
   
   if(idProduct){
-    console.log("pruebaidproduct",idProduct)
-    cart= user.removeProducts(idProduct);
+    //! console.log("pruebaidproduct",idProduct)
+    cart= await user.removeProduct(idProduct);
   }else{
     cart = await Cart.destroy({
       where:{
@@ -26,11 +26,11 @@ try {
     return {idProduct, name, price, stock,image, amount, totalPrice:amount*price}
   })
 
-  return res.status(200).json({/* user,*/ cart:  products});
-  //res.status(200).json({user, deleted:Boolean(cart),productsDeleted:cart})
+  return res.status(200).json({cart:  products});
+
   
 } catch (error) {
-  console.log("DELETE /users/cart/:UserId: ", error);
+  console.log("DELETE /users/cart/:UserId?idProduct= ", error);
   next(error);
 }
 }
