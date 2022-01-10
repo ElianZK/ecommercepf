@@ -9,6 +9,7 @@ const { ResetPassword } = require('../Controllers/RouterFunctions/Users/ResetPas
 const { DeleteUsers } = require('../Controllers/RouterFunctions/Users/DeleteUsers')
 const {putUserCart, getUserCart, deleteUserCart} = require('../Controllers/RouterFunctions/Users/Cart/');
 const {getUserOrders, postUserOrder} = require('../Controllers/RouterFunctions/Users/Orders/');
+const {getUserWishList, postUserWishList, deleteWishListProduct} = require('../Controllers/RouterFunctions/Users/WishList');
 const router = Router();
 
 router.get('/', GetUsers);
@@ -31,4 +32,8 @@ router.get('/orders/:UserId', getUserOrders);
 router.get('/orders/:UserId/:OrderId', getUserOrders);
 router.post('/order/:UserId', postUserOrder)
 
+//WishList Routes
+router.get('/wishlist/:UserId', getUserWishList);
+router.post('/wishlist/:UserId/:ProductId', postUserWishList);
+router.delete('/wishlist/:UserId/:ProductId', deleteWishListProduct)
 module.exports= router
