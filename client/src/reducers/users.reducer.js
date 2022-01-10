@@ -65,10 +65,15 @@ export function usersReducer(state = initialState, action){
                 }
 
         case UPDATE_USER:{
+            const {user} = action.payload;
+
+            console.log(user)
+            console.log(action.payload.from)
+
             if(action.payload.from === "profile"){
                 return{
                     ...state,
-                    loginInfo: action.payload
+                    loginInfo: {user}
                 }
             }else{
                 return{

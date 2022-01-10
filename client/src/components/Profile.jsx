@@ -20,7 +20,7 @@ const Profile = () => {
     const [isConnected, setIsConncted] = useState(false);
 
     useEffect(() => {
-        console.log(user)
+        console.log("mode: " + mode)
         setData({...user})
     }, [user, mode])
 
@@ -47,8 +47,6 @@ const Profile = () => {
                         <button className={s.btn} onClick={() => setMode("edit")}>editar perfil</button> 
                         : 
                         <button className={s.btn} onClick={() => {
-                            console.log("voy a updatear al usuario " + user.idUser);
-                            console.log("datos a actualizar ", data);
                             dispatch(updateUser(user.idUser, data, "profile"));
                             setMode("view");
                         }}>aceptar cambios</button> 
@@ -83,6 +81,16 @@ const Profile = () => {
                                 return {
                                     ...prev,
                                     email: e.target.value
+                                }
+                            })}/>}</td>
+                        </tr>
+
+                        <tr>
+                            <td><h2 className={s.th}>password</h2></td>
+                            <td className={s.value}>{mode === "view" ? user.password : <input type="text" value={data.password} onChange={(e) => setData(prev => {
+                                return {
+                                    ...prev,
+                                    password: e.target.value
                                 }
                             })}/>}</td>
                         </tr>

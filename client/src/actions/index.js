@@ -668,7 +668,19 @@ const SERVER = 'http://localhost:3001';
     export function updateUser(id, user, from="admin"){
         return async function(dispatch){
             try{
-                await axios.put(`${SERVER}/users/${id}`, {...user, from});  
+                const res = await axios.put(`${SERVER}/users/${id}`, {...user, from});
+
+                const payload = {
+                    user: res.data,
+                    from
+                }
+
+                console.log("payload armado", payload)
+
+                return dispatch({
+                    type: UPDATE_USER,
+                    payload,
+                });
             }catch(e){
                 console.log("no se pudo actualizar el user", e)
             }

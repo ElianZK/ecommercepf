@@ -22,6 +22,7 @@ const GetUser = async(req, res) =>{
             name: user.name,
             lastname: user.lastname,
             email: user.email,
+            password: user.password,
             phone: user.phone,
             image: user.image
         });
