@@ -19,4 +19,5 @@ router.use('/users', UserRoutes);
 router.use('/product', ReviewsRouter)
 router.use("/user", user)
 router.use("/api", emailUser)
+router.use("/admin", admin)
 module.exports = router;

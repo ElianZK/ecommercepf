@@ -13,14 +13,16 @@ const Products = () => {
     const products = useSelector((state) => {
         return state.productsReducer.allProducts.rows;
     }) 
-    const [data,setData]= useState({
-        name: '',
-        price:'',
-        stock: '',
-        image:[],
-        thumbnail:'',
-        atribute:[]
-    })
+    const [data,setData]= useState([])
+    const [name,setName]=useState('');
+    const [price,setPrice]=useState('');
+    const [stock,setStock]=useState('');
+    const [condition,setCondition]=useState('');
+    const [images,setImages]=useState([]);
+    const [image,setImage]=useState('');
+    const [thumbnail,setThumbnail]=useState('');
+    
+
     const [search, setSearch] = useState('')
     const [searchres, setSearchres] = useState(null)
     const columns = [
@@ -96,9 +98,18 @@ const Products = () => {
                 <div className={s.formGroup}>
                     <input id="stock" name="stock" type="text" placeholder="Ingrese el Stock"></input>
                 </div>
+                <div className={s.formGroup}>
+                    <select name="condition">
+                        <option value="new">New</option>
+                        <option value="used">Used</option>
+                    </select>
+                </div>
                 <div className={s.formDetail}>
                     <input id="image" name="image" type="text" placeholder="Ingrese la imagen"></input>
                     <button>ADDImage</button>
+                </div>
+                <div className={s.formGroup}>
+                    <input id="thumbnail" name="thubnail" type="text" placeholder="Ingrese un thubnail"></input>
                 </div>
                 <div className={s.formDetail}>
                     <input id="att" name="att" type="text" placeholder="Ingrese el atributo"></input>

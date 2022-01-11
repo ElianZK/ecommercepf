@@ -15,8 +15,8 @@ const stripePromise = loadStripe('pk_test_51KE0nYFfD78XPAGcGPPH7JVRgUrvShCe00gJQ
 export default function Checkout(){
         const dispatch = useDispatch()
 
-        const User = useSelector(state => state.usersReducer.loginInfo.user)
-        const {idUser} = JSON.parse(localStorage.getItem("user"));
+        const User = JSON.parse(localStorage.getItem("user"));
+        const idUser = !User?null:User.idUser;
         const cart = useSelector((state)=>state.ordenReducer.cart)
 
         //const token=localStorage.getItem('token')

@@ -15,15 +15,17 @@ const GetUser = async(req, res) =>{
             email
         }}); 
     }
-    
-    //console.log(user);
 
     if(user){
         res.json({
             idUser: user.idUser,
-            name: user.name + " " + user.lastname,
+            name: user.name,
+            lastname: user.lastname,
             email: user.email,
-            phone: user.phone
+            password: user.password,
+            phone: user.phone,
+            image: user.image,
+            changePassword: user.changepassword
         });
     }else{
         res.status(404).json({message: "Usuario inexistente"});

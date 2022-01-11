@@ -10,6 +10,7 @@ import DataTable from 'react-data-table-component';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faTrashAlt, faEdit } from '@fortawesome/free-solid-svg-icons'
 import { editBrand } from "../../actions/index";
+import axios from "axios";
 
 export default function BrandForm (){
     const dispatch = useDispatch();
@@ -137,53 +138,54 @@ export default function BrandForm (){
         })
     }
 
-return(
-<>
-<div className={s.Container}>
-    {/* <!-- AÑADIR COMPONENTE NAVBAR -->
-    <!-- AÑADIR BOTON DESPLEGABLE PERFIL --> */}
-    <form className={s.Form} >
-        <div className={s.Title}> 
-            <h2>Product Brand Creation</h2>
-        </div>
+    return(
+        <>
+            <div className={s.Container}>
+                {/* <!-- AÑADIR COMPONENTE NAVBAR -->
+                <!-- AÑADIR BOTON DESPLEGABLE PERFIL --> */}
+                <form className={s.Form} >
+                    <div className={s.Title}> 
+                        <h2>Product Brand Creation</h2>
+                    </div>
 
-        <div className={s.InputSelect}>
-            <div className={s.formGroup}>
-                <input 
-                    onChange={handleChange}
-                    value={brand.name}
-                    name='name'
-                    type="text"
-                    placeholder="Add a New Category"
+                    <div className={s.InputSelect}>
+                        <div className={s.formGroup}>
+                            <input 
+                                onChange={handleChange}
+                                value={brand.name}
+                                name='name'
+                                type="text"
+                                placeholder="Add a New Category"
+                            />
+
+                            {error.name?<span>{error.name}</span>:null}
+
+                            <button type="submit"onClick={handleSubmit}>
+                                Add
+                            </button>
+
+                        </div><br></br>
+
+                    </div>
+                    
+                </form>
+                <div className={s.containerSearch}>
+                    <input name="name" placeholder="Ingrese la marca" onChange={(e)=>{
+                        let name= e.target.value;
+                        setSearch(name)
+                        setSearchres(
+                            tbrands.filter(br=>{
+                                return br.name.includes(name)
+                            })
+                        )
+                    }}/>
+                </div>
+                <DataTable
+                    columns={columns}
+                    data={searchres?searchres:tbrands} 
+                    pagination
                 />
-
-                {error.name?<span>{error.name}</span>:null}
-
-                <button type="submit"onClick={handleSubmit}>
-                    Add
-                </button>
-
-            </div><br></br>
-
-        </div>
-        
-    </form>
-    <div className={s.containerSearch}>
-        <input name="name" placeholder="Ingrese la marca" onChange={(e)=>{
-            let name= e.target.value;
-            setSearch(name)
-            setSearchres(
-                tbrands.filter(br=>{
-                    return br.name.includes(name)
-                })
-            )
-        }}/>
-    </div>
-    <DataTable
-        columns={columns}
-        data={searchres?searchres:tbrands} 
-        pagination
-    />
-</div>
-</>
-)}
+            </div>
+        </>
+    )
+}

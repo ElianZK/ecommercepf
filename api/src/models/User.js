@@ -40,6 +40,12 @@ module.exports = (sequelize) => {
             required: true,
             allowNull: false
         },
+
+        changepassword:{
+            type:DataTypes.BOOLEAN,
+            defaultValue: false
+        },
+
         phone:{
             type: DataTypes.STRING,
             allowNull:false
@@ -57,12 +63,12 @@ module.exports = (sequelize) => {
                 postalCode:{type:DataTypes.STRING}
             }),
             allowNull:true,
-            // defaultValue: {
-            //   country:'',
-            //   city:'',
-            //   address:'',
-            //   postalCode:''
-            // }
+            defaultValue: {
+              country:'',
+              city:'',
+              address:'',
+              postalCode:''
+            }
         }
     },{
         timestamps:false

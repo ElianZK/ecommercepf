@@ -77,6 +77,7 @@ export function ordenReducer(state = initialState, action){
 
 
         case UPDATE: 
+            console.log(state.cart)
             return {
             ...state,
             cart: [...state.cart]
