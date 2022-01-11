@@ -9,6 +9,7 @@ const ReviewsRouter = require('./Reviews');
 const user = require('./user');
 const emailUser = require('./email');
 
+const admin = require('./admin');
 
 const router = Router();
 router.use('/categories', CategoryRouter);
@@ -18,6 +19,6 @@ router.use('/auth',AuthRouter);
 router.use('/users', UserRoutes);
 router.use('/product', ReviewsRouter)
 router.use("/user", user)
-router.use("/api", emailUser)
 router.use("/admin", admin)
+router.use("/api", emailUser)
 module.exports = router;
