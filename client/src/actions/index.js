@@ -34,7 +34,8 @@ import { GET_ALL_PRODUCTS,
     CREATE_USER,
     GET_USERS,
     UPDATE_USER,
-    SET_ORDER_PRODUCTS
+    SET_ORDER_PRODUCTS, 
+    SEND_EMAIL   
 } from "./actionsTypes";
 import axios from 'axios';
 
@@ -461,6 +462,7 @@ const SERVER = 'http://localhost:3001';
             }
             return p;
           });
+          
            if (productFind===false){ 
               products.push(product);
               console.log(products)
@@ -646,6 +648,7 @@ const SERVER = 'http://localhost:3001';
         }
 
     }
+    
 
 
 
