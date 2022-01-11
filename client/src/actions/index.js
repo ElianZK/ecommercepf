@@ -36,6 +36,8 @@ import { GET_ALL_PRODUCTS,
     UPDATE_USER,
     CREATE_REVIEWS,
     GET_REVIEWS,
+    DELETE_REVIEW,
+    UPDATE_REVIEW,
     SET_ORDER_PRODUCTS
 } from "./actionsTypes";
 import axios from 'axios';
@@ -685,7 +687,7 @@ const SERVER = 'http://localhost:3001';
     ///////////////////////////////////////////////////////////////////////////////////////////
     
     //CreateReview crea una puntuacion y comentario 
-    export function CreateReview(id,review){
+    export function createReview(id,review){
         console.log('object :>> ', id);
         return dispatch => {
             axios.post(`http://localhost:3001/product/${id}/review`,review)
@@ -708,6 +710,36 @@ const SERVER = 'http://localhost:3001';
             .then((result) => {
                 return dispatch({
                     type:GET_REVIEWS,
+                    payload:result.data
+                })
+            }).catch((err) => {
+                console.log('err :>> ', err);
+            });
+        }
+    }
+
+    export function eliminar_review(prod,id){
+        return dispatch => {
+            axios.delete(`http://localhost:3001/product/${prod}/review/${id}`)
+            .then((result) => {
+                console.log('result :>> ', result.data);
+                return dispatch({
+                    type:DELETE_REVIEW,
+                    payload:result.data
+                })
+            }).catch((err) => {
+                console.log('err :>> ', err);
+            });
+        }
+    }
+
+    export function update_review(prod,id,values){
+        return dispatch => {
+            axios.put(`http://localhost:3001/product/${prod}/review/${id}`,values)
+            .then((result) => {
+                console.log('result :>> ', result.data);
+                return dispatch({
+                    type:UPDATE_REVIEW,
                     payload:result.data
                 })
             }).catch((err) => {

@@ -1,19 +1,21 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { Link, useParams } from 'react-router-dom';
+import { useDispatch, useSelector} from "react-redux";
 import style from '../assets/styles/Reviews.module.css';
 import ReactStars from "react-rating-stars-component";
-import { createReview } from "../actions";
+import { update_review } from "../actions";
 import Swal from 'sweetalert2';
 
-const CreateReviews = (props) => {
-    // console.log('props createreview :>> ', props.idUser.idUser);
+const EditReview = () => {
+    const idparams = useParams();
+    console.log('idproduct :>> ', idparams);
     const dispatch = useDispatch();
     const [values,setValues] = useState({
         score:"",
         description:"",
-        productIdProduct:props.idproduct,
-        userIdUser:props.idUser.idUser
+        // productIdProduct:props.idproduct,
+        // userIdUser:props.idUser.idUser
     })
 
     // cambio de comentarios
@@ -46,12 +48,13 @@ const CreateReviews = (props) => {
                 // footer: '<a href="">Why do I have this issue?</a>'
             })
         } else {
-            dispatch(createReview(props.idproduct, values))
+            dispatch(update_review(idparams.id, idparams.idReview, values))
             setValues({
                 score:"",
             description:""
             })
-            window.location = `/detail/${props.idproduct}`
+            // window.location = `/product/${idparams.id}/idReview/${idparams.idReview}`
+            window.location = `/detail/${idparams.id}`
         }
         
     }
@@ -61,7 +64,7 @@ const CreateReviews = (props) => {
     // },[props.idproduct])
 
     return (
-        <div>
+        <div className={style.editar_form}>
             <form className={style.form_review} onSubmit={onSubmit}>
                 {/* ratings o stars */}
                 <div className={style.createStar}>
@@ -102,4 +105,4 @@ const CreateReviews = (props) => {
         </div>
     )
 }
-export default CreateReviews;
+export default EditReview;

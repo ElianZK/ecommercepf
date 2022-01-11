@@ -115,3 +115,40 @@
   padding: 18px;
   border-bottom: 2px solid rgb(131, 131, 131);
 }
+
+.editar_remove{
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+}
+
+.boton_editar{
+  margin: 0px 0px 0px 10px;
+  background-color: rgba(233, 231, 231, 0.35);
+  color: rgb(2, 28, 84);
+  border: 2px solid rgba(2, 28, 84, 0.871);
+  padding: 3.5px 6px 3.5px 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.boton_eliminar{
+  margin: 0px 0px 0px 10px;
+  background-color: rgba(233, 231, 231, 0.35);
+  color: rgb(126, 7, 7);
+  border: 2px solid rgba(128, 8, 8, 0.72);
+  padding: 0px 6px 0px 6px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+
+/* componente editar */
+
+.editar_form{
+  margin: 150px 0px 0px 50px;
+  
+}

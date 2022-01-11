@@ -17,6 +17,7 @@ import Checkout from './components/Shops/Checkout';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { login } from './actions';
+import EditReview from './components/EditReview';
 
 function App() {
   const dispatch = useDispatch();
@@ -37,6 +38,7 @@ function App() {
     <div className="App">
       <Nav/>
       <Routes>
+      
         <Route exact path="/" element={<Home/>} />
         <Route exact path="/detail/:idproduct" element={<Details/>} />
         <Route exact path="/login" element={<Login/>} />
@@ -50,7 +52,9 @@ function App() {
         <Route exact path="/userForm" element={<UsersForm/>} />
         <Route exact path="/buyHistory" element={<BuyHistory/>} />
         <Route exact path="/checkout" element={<Checkout />} />
+        <Route exact path="/product/:id/review/:idReview" element={<EditReview/>} />
       </Routes>
+      
     </div>
   );
 }

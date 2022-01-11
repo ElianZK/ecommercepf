@@ -46,4 +46,6 @@ export const UPDATE_USER = "UPDATE_USER";
 
 //REVIEWS
 export const CREATE_REVIEWS= 'CREATE_REVIEWS';
-export const GET_REVIEWS='GET_REVIEWS'
+export const GET_REVIEWS='GET_REVIEWS';
+export const DELETE_REVIEW='DELETE_REVIEW';
+export const UPDATE_REVIEW = 'UPDATE_REVIEW';
