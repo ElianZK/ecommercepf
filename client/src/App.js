@@ -24,7 +24,8 @@ import Dashboard from './components/Admin/Dashboard';
 function App() {
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  useEffect(async() => {
+    await axios.post("http://localhost:3001/user/adminExists");
     const user = JSON.parse(localStorage.getItem("user"));
 
     if(user){
