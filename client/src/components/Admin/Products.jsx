@@ -13,14 +13,17 @@ const Products = () => {
     const products = useSelector((state) => {
         return state.productsReducer.allProducts.rows;
     }) 
-    const [data,setData]= useState([])
-    const [name,setName]=useState('');
-    const [price,setPrice]=useState('');
-    const [stock,setStock]=useState('');
-    const [condition,setCondition]=useState('');
+    const brands = useSelector(state=>state.productsReducer.brands);
+    const categories = useSelector(state=>state.productsReducer.categories);
+    const [data,setData]= useState({
+        name:'',
+        price: '',
+        stock: '',
+        condition: '',
+        thumbnail: '',        
+    })
     const [images,setImages]=useState([]);
     const [image,setImage]=useState('');
-    const [thumbnail,setThumbnail]=useState('');
     
 
     const [search, setSearch] = useState('')

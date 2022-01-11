@@ -1,4 +1,4 @@
-
+function emailAfterBuy(nombre, idPedido, Country,City, Street,CP, Products){
 let variable = `
 <!DOCTYPE html>
 <html lang="en">
@@ -83,7 +83,7 @@ let variable = `
             <div class="descr">
                 <div class="head center">
                     <img class="logo" src="https://henrecommerce.netlify.app/static/media/logo-ecommerce.3281dcd9.png">
-                    <p>Buenas noticias! Tu pedido ha sido confirmado</p>
+                    <p>Buenas noticias ! Tu pedido ha sido confirmado</p>
                     <p>¡Gracias por comprar con nosotros!</p>
                 </div>
                 <div class="detalle center" >
@@ -120,4 +120,5 @@ let variable = `
         </div>
     </body>
 </html>`
-export const sendEmail 
+}
+export const sendEmail //exportar emailAfterBuy
