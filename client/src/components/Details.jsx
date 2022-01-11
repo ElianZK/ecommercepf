@@ -6,7 +6,9 @@ import {faHeart as HeartFill } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getProductId, addToCart, update, getWishList, addItemToWishList, deleteItemFromWishList} from '../actions/index.js'
-import { Slide } from 'react-slideshow-image'
+//import { Slide } from 'react-slideshow-image'
+import { Carousel } from 'react-responsive-carousel';
+//import {Carousel} from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import {formatMoney} from 'accounting'
 import Swal from 'sweetalert2';
@@ -130,12 +132,19 @@ function handleChangeamount(e){
         {product?<div className={s.container}>
             <div className={s.data}>
                 <div className={`${s.subcontainer} ${s.imgcontainer}`}>
-                    <Slide easing="ease">
+                    {/* <Slide easing="ease">
                         <div className={s.images}>
                             {product.image.map((image, i)=>(
                             <div key={i} className={s.image}><img  src={image} alt="Producto"/></div>))}
                         </div>
-                    </Slide>
+                    </Slide> */}
+                    <Carousel axis="vertical" autoPlay={true} interval={6000} showIndicators={true} infiniteLoop={true} centerMode={true} centerSlidePercentage={true}>
+                    {product.image.map((image, i)=>(<div className={s.itemimage}>
+                            <div key={i} /* className={s.image} */><img  src={image} alt={`Producto ${i}`} className={s.image}/></div>
+                            </div>
+                        ))}
+
+                    </Carousel>
                 </div>
                 <div className={`${s.subcontainer} ${s.details}`}>
                     <button className={s.btnfav} onClick={e=>addToFavourites(e)}><FontAwesomeIcon icon={fav?HeartFill:Heartwhite} /></button>

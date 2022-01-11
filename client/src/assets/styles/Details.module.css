@@ -18,26 +18,32 @@
    overflow: hidden;
    box-shadow: 3px 3px 15px black;
 }
-.imgcontainer img{
-   /* width: 100%; */
+.imgcontainer div{
+   width: 100%;
    height: 100%;
+   margin-left: auto;
+   margin-right: auto;
 }
 .default-nav{
    display: none;
 }
 
-.images{
+/* .images{
    display: flex;
    width: 300%;
    height: 100%;
-}
-.image{
+} */
+.itemimage{
    width: 100%;
    height: 100%;
+}
+.image{
+   max-width: 100%;
+   height: auto;
    display: flex;
    justify-content: center;
 }
-
+/* 
 .btnimg{
    position: relative;
    width: 30px;
@@ -48,9 +54,9 @@
 .btnimg:hover{
    cursor: pointer;
    background-color: #d1b410;
-}
+} */
 
-.imgleft{
+/* .imgleft{
    top: -55%;
    left: 2%;
 }
@@ -58,7 +64,7 @@
 .imgrigth{
    top: -55%;
    left: 87%;
-}
+} */
 .subcontainer{
    border-radius: 15px;
    width: 47%;

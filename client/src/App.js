@@ -25,6 +25,9 @@ import Dashboard from './components/Admin/Dashboard';
 
 function App() {
   const dispatch = useDispatch();
+  const [isAdmin, setIsAdmin] = useState(true);
+
+  const idUser = useSelector(state => state.usersReducer.loginInfo.user.idUser);
   const  [filters, setFilters] = useState({
     sort: '',
     category: '',
@@ -44,18 +47,16 @@ function App() {
     }
   }, [dispatch])
 
-  const [isAdmin, setIsAdmin] = useState(false);
+  
 
-  const idUser = useSelector(state => state.usersReducer.loginInfo.user.idUser);
-
-  useEffect(() => {
+ /*  useEffect(() => {
       axios.get("http://localhost:3001/user/type/" + idUser)
       .then(res => {
           let { access } = res.data;
   
           setIsAdmin(access && !!idUser)
       })
-  }, [idUser]);
+  }, [idUser]); */
 
   return (
     <div className="App">
@@ -68,7 +69,6 @@ function App() {
         <Route exact path="/addToCart" element={<Cart />} />
         <Route exact path="/cart" element={<Cart />} />
         <Route exact path="/products" element={<Products />} />
-        <Route exact path="/userForm" element={<UsersForm/>} />
         <Route exact path="/buyHistory" element={<BuyHistory/>} />
         <Route exact path="/checkout" element={<Checkout />} />
 
