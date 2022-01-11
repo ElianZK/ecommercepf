@@ -48,7 +48,7 @@
     border-radius: 3px;
 }
 
-.formGroup input{
+.formGroup input,.formGroup select{
     height: 40px;
     border-radius: 3px;
     padding: 0 20px;

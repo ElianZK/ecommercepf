@@ -9,16 +9,12 @@ import {faTrashAlt} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { formatMoney } from 'accounting';
 
-
-
-
-
  function Cart() {
     const dispatch = useDispatch();
     const navigate = useNavigate()
     const products = useSelector(state => state.ordenReducer.cart);
-    const Users = useSelector(state => state.usersReducer.loginInfo.users)
-    const {idUser} = JSON.parse(localStorage.getItem("user"));
+    const User = JSON.parse(localStorage.getItem("user"));
+    const idUser = !User?null:User.idUser;
 
     useEffect(() => {
         dispatch(getProductsCartUser(idUser)); 
@@ -55,7 +51,7 @@ import { formatMoney } from 'accounting';
 
 
     function handleGoToCheckOut() {
-        if (Users && Users.email?.length > 0) {
+        if (idUser && idUser.email?.length) {
            navigate('/checkout')
         } else {
             navigate('/register');
@@ -82,8 +78,6 @@ import { formatMoney } from 'accounting';
     //     desc + perc_desc * price * qty / 100, 0);
     // }
 
-
-   
     const columns=[
         {
             name: "Image",   
@@ -153,9 +147,9 @@ import { formatMoney } from 'accounting';
                   
                 <div className={s.btn_container}>
                     <button className={s.btn}><Link to='/'><span>GO MORE SHOP</span></Link></button>
-                    
+                {idUser? 
                     <button className={s.btn}><Link to='/checkout' onClick={handleGoToCheckOut}><span>GO TO CHECKOUT</span></Link></button>
-                 
+                    : null}
                     <button className={s.btn} onClick={handleClearCart}>CLEAR ALL CART</button>  
 
                 </div>                         

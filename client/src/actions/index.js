@@ -34,12 +34,19 @@ import { GET_ALL_PRODUCTS,
     CREATE_USER,
     GET_USERS,
     UPDATE_USER,
-    SET_ORDER_PRODUCTS
+    SET_ORDER_PRODUCTS,
+    CHECK_TYPE,
+    DELETE_USER,
+    CREATE_REVIEWS,
+    GET_REVIEWS,
+    GET_WISHLIST,
+    UPDATE_WISHLIST,
 } from "./actionsTypes";
 import axios from 'axios';
 
 
 const SERVER = 'http://localhost:3001';
+//const SERVER = 'https://e-commerce-pf.herokuapp.com';
 
 
     export function getAllProducts(data,all=false) {
@@ -51,13 +58,15 @@ const SERVER = 'http://localhost:3001';
                 if(all){
                     products = await axios.get(`${SERVER}/products?all=true`);
                 }else{
-                    let {offset=0, limit=25, minPrice= null,  maxPrice= null,brand = null, category=null} = data
+                    let {offset=0, limit=25, search=null, minPrice=0,  maxPrice=null,brand = null, category=null, sort=null} = data;
+                    search= search? `&search=${search}`:'';
                     minPrice= minPrice?`&minPrice=${minPrice}`: '';
                     maxPrice=maxPrice?`&maxPrice=${maxPrice}`:'';
                     brand=brand? `&brand=${brand}`:'';
                     category=category? `&category=${category}`:'';
+                    sort= sort? `&sort=${sort}`:'';
                     //console.log(`${SERVER}/products?offset=${offset}&limit=${limit}${maxPrice}${minPrice}${brand}${category}`)
-                    products = await axios.get(`${SERVER}/products?offset=${offset}&limit=${limit}${maxPrice}${minPrice}${brand}${category}`);
+                    products = await axios.get(`${SERVER}/products?offset=${offset}&limit=${limit}${maxPrice}${minPrice}${brand}${category}${sort}${search}`);
                 }
                 return dispatch({
                     type: GET_ALL_PRODUCTS,
@@ -99,14 +108,14 @@ const SERVER = 'http://localhost:3001';
         }
     };
 
-    export function getBrands(){
+    export function getBrands(category=''){
         return async function(dispatch){
             try{
-                const brands= await axios.get(`${SERVER}/brands`)
-                return dispatch({
-                    type: GET_ALL_BRANDS,
-                    payload: brands.data
-                })
+              const brands= await axios.get(`${SERVER}/brands?category=${category}`)
+              return dispatch({
+                  type: GET_ALL_BRANDS,
+                  payload: brands.data
+              })
             }catch(err){
                 console.log(err)
             }
@@ -205,14 +214,15 @@ const SERVER = 'http://localhost:3001';
         }
     }
 
-    export function createUser(body) {
-        console.log(body)
+    export function createUser(body, from="user") {
         return async function(dispatch){
             try{
-                const res = await axios.post(`${SERVER}/users/create`, body)
+                const res = await axios.post(`${SERVER}/users/create`, {...body, from})
+
+                console.log(res.data);
 
                 return dispatch({
-                    type: CREATE_USER,
+                    type: from==="user" ? CREATE_USER : GET_USERS,
                     payload: res.data
                 })     
             }catch(e){
@@ -232,75 +242,93 @@ const SERVER = 'http://localhost:3001';
     }
 
     export function login(payload){
+      return async function(dispatch){
         if(payload.idUser){
-            return async function(dispatch){
-                try{
-                    payload["accountType"] = "external";
-    
-                    const res = await axios.post(`${SERVER}/user/login`, payload);
+          try{
+            payload["accountType"] = "external";
 
-                    let data = {
-                        user: {
-                            ...res.data
-                        }
-                    }
-    
-                    localStorage.setItem("user", JSON.stringify(data.user));
+            const res = await axios.post(`${SERVER}/user/login`, payload);
 
-                    return dispatch({
-                        type: LOGIN,
-                        payload: {
-                            ...data,
-                            error: false
-                        }
-                    });
-                }catch(e){
-                    return dispatch({
-                        type: LOGIN,
-                        payload: {
-                            user: {idUser: null},
-                            error: true
-                        }
-                    });
-                }
+            let data = {
+              user: {
+                ...res.data
+              },
+              isVerified: false,
+              error: false,
+              lastUpdate: 0,
             }
+
+            localStorage.setItem("user", JSON.stringify(data.user));
+
+            return dispatch({
+              type: LOGIN,
+              payload: {
+                ...data,
+
+              }
+            });
+          }catch(e){
+            return dispatch({
+              type: LOGIN,
+              payload: {
+                isVerified: false,
+                user: {idUser: null},
+                error: true,
+                lastUpdate: 0,
+              }
+            });
+          }
         }else{
-            return {
-                type: LOGIN,
-                payload: {
-                    user: {idUser: null},
-                    error: null
-                }
+          localStorage.setItem("user", JSON.stringify({
+            isVerified: false,
+            user: {idUser: null},
+            error: true,
+            lastUpdate: 0,
+          }))
+          return dispatch({
+            type: LOGIN,
+            payload: {
+              isVerified: false,
+              user: {idUser: null},
+              error: null,
+              lastUpdate: 0,
             }
+          });
         }
+      }
     }; 
 
     export function loginWithNormalAccount(payload){
         return async function(dispatch){
             try{
                 payload["accountType"] = "internal";
-
                 const res = await axios.post(`${SERVER}/user/login`, payload);
-
                 let data = {
+                    lastUpdate: 0,
+                    isVerified: false,
                     user: {
                         ...res.data
-                    }
+                    },
+                    error: false
                 }
+
+                console.log(data)
 
                 localStorage.setItem("user", JSON.stringify(data.user));
 
+            localStorage.setItem("user", JSON.stringify(data.user));
                 return dispatch({
                     type: LOGIN,
                     payload: {
                         ...data,
-                        error: false
                     }
                 });
             }catch(e){
                 return dispatch({
                     type: LOGIN,
                     payload: {
+                        lastUpdate: 0,
+                        isVerified: false,
                         user: {idUser: null},
                         error: true
                     }
@@ -315,6 +343,26 @@ const SERVER = 'http://localhost:3001';
             payload: {isConnected: false}
         } 
     };
+
+    export function checkType(/*id*/){
+        return{
+            type: CHECK_TYPE,
+            payload: {isAdmin: true}
+        }
+        // return async function(dispatch){
+        //     console.log("petición con el id " + id);
+
+        //     try{
+        //         return dispatch({
+        //             isAdmin: true
+        //         })
+        //     }catch(e){
+        //         return dispatch({
+        //             isAdmin: false
+        //         })
+        //     }
+        // }
+    }
 
     export function removeCategory(id){
         return async function(dispatch){
@@ -403,7 +451,26 @@ const SERVER = 'http://localhost:3001';
         }   
     };
 
-    
+//     //crea un usuario 'admin' o 'user'
+//     export function createUser(body) {
+//         console.log(body)
+//         return async function(dispatch){
+//             try{
+//                 const res = await axios.post(`${SERVER}/auth/users`, body)
+
+//                 console.log("tengo", res);
+
+//                 return dispatch({
+//                     type: CREATE_USER,
+//                     payload: res.data
+//                 })     
+//             }catch(e){
+//                 console.log("hubo un error", e);
+//             }
+//         }
+//     };
+// =======
+
 
     
    // me traigo el carro de productos tanto de usuarios como de invitados
@@ -461,6 +528,7 @@ const SERVER = 'http://localhost:3001';
             }
             return p;
           });
+          
            if (productFind===false){ 
               products.push(product);
               console.log(products)
@@ -578,25 +646,65 @@ const SERVER = 'http://localhost:3001';
         }
     }
 
-    export function updateUser(id, user){
+    export function getAllUsers(){
         return async function(dispatch){
             try{
-                console.log("voy a updatear el user " + id)
+                const res = await axios.get(`${SERVER}/users/all`);
 
-                const res = await axios.put(`${SERVER}/users/${id}`, user)
+                const users = res.data.userinfo;
 
-                console.log("se actualizó el user",res);
+                return dispatch({
+                    type: GET_USERS,
+                    payload: users
+                })         
+            }catch(e){
+                
+            }
+        }
+    }
+
+    export function updateUser(id, user, from="admin"){
+        return async function(dispatch){
+            try{
+                const res = await axios.put(`${SERVER}/users/${id}`, {...user, from});
+                await axios.put("http://localhost:3001/user/"+id, {value: false});
+
+                const payload = {
+                    user: res.data,
+                    from
+                }
+
+                console.log("payload armado", payload)
 
                 return dispatch({
                     type: UPDATE_USER,
-                    payload: id
-                })
+                    payload,
+                });
             }catch(e){
                 console.log("no se pudo actualizar el user", e)
             }
         }
     }
 
+    export function deleteUser(id){
+        return async function(dispatch){
+            try{
+                console.log("voy a eliminar al user " + id);
+                await axios.delete(`${SERVER}/users/${id}`);
+
+                const res = await axios.get(`${SERVER}/users`);
+
+                const users = res.data.userinfo;
+
+                return dispatch({
+                    type: GET_USERS,
+                    payload: users
+                })    
+            }catch(e){
+                console.log("no se pudo eliminar el user" , e)
+            }
+        }
+    }
           
 
     export function update(payload) {
@@ -632,7 +740,7 @@ const SERVER = 'http://localhost:3001';
 
     export function getOrderProducts(idUser){
         return async function(dispatch){
-            console.log("getorder",idUser)
+            // console.log("getorder",idUser)
             const {data} = await axios.get(`${SERVER}/users/orders/${idUser}`)
             console.log(data)
             
@@ -646,16 +754,61 @@ const SERVER = 'http://localhost:3001';
         }
 
     }
-
-
-
     
 
 
+
     
+
+
+    export function getWishList(idUser){
+      return async function(dispatch){
+        if(!idUser) return;
+        try {
+          let response = await axios.get(`http://localhost:3001/users/wishlist/${idUser}`);
+          dispatch({
+            type:GET_WISHLIST,
+            payload: response.data.wishList
+          })
+        } catch (error) {
+          
+        }
+      };
+    }
+    export function addItemToWishList(idUser,idProduct){
+      return async function(dispatch){
+        try {
+          let response = await axios.post(`http://localhost:3001/users/wishlist/${idUser}/${idProduct}`);
+          if(response.data.created){
+            dispatch({
+              type: UPDATE_WISHLIST,
+              payload:response.data.wishList
+            })
+          }
+          return;
+        } catch (error) {
+          console.log("addItemToWishList action error: ", error);
+        }
+      }
+    }
+   
     
-    
-    
+    export function deleteItemFromWishList(idUser,idProduct){
+      return async function(dispatch){
+        try {
+          let response = await axios.delete(`http://localhost:3001/users/wishlist/${idUser}/${idProduct}`);
+          if(response.data.deleted){
+            dispatch({
+              type: UPDATE_WISHLIST,
+              payload:[...response.data.wishList]
+            })
+          }
+          return;
+        } catch (error) {
+          console.log("deleteItemToWishList action error: ", error);
+        }
+      }
+    }
     //   export const getAllFavourites = () => async (dispatch) => {
     //     try {
         //       const { data } = await axios.get(`/users/favs`, { headers });
@@ -667,4 +820,34 @@ const SERVER = 'http://localhost:3001';
     
     ///////////////////////////////////////////////////////////////////////////////////////////
     
-   
+    //CreateReview crea una puntuacion y comentario 
+    export function createReview(id,review){
+        console.log('object :>> ', id);
+        return dispatch => {
+            axios.post(`http://localhost:3001/product/${id}/review`,review)
+            .then((result) => {
+                return dispatch({
+                    type:CREATE_REVIEWS,
+                    payload: result.data
+                })
+            }).catch((err) => {
+                console.log('err :>> ', err);
+            });
+        }
+
+    }
+
+    //obtengo todos mis comentarios por ID de producto
+    export function get_Review(id){
+        return dispatch => {
+            axios.get(`http://localhost:3001/product/${id}/review`)
+            .then((result) => {
+                return dispatch({
+                    type:GET_REVIEWS,
+                    payload:result.data
+                })
+            }).catch((err) => {
+                console.log('err :>> ', err);
+            });
+        }
+    }

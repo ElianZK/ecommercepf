@@ -11,35 +11,12 @@ import { formatMoney } from 'accounting';
 
 const stripePromise = loadStripe('pk_test_51KE0nYFfD78XPAGcGPPH7JVRgUrvShCe00gJQTJ8do8OhF6s205GYs2OrB7qBEdQVhQj3Xh0YtjqE6pAuBQSyomS00FxVwsPvF')
 
-function Validate(input) {
-    let errors = {};
-
-
-    if(!input.name){
-        errors.name = 'name is required';
-    }else if(!/^\w{3,20}$/.test(input.name)){
-        errors.name = 'Invalid name'
-    }else if(!input.lastName){
-        errors.lastName = 'lastName es required'
-    }else if(!/^[a-zA-ZA\s]{3,20}$/.test(input.lastName)){
-        errors.lastName = 'Invalid lastName'
-    }else if(!input.address){
-        errors.address = 'address is required';
-    }
-    else if(!input.email){
-        errors.email = 'email is required'
-    } else if(!input.email){
-        errors.email = 'Invalid email'
-    }
-    return errors;
-}
 
 export default function Checkout(){
         const dispatch = useDispatch()
-        const navigate = useNavigate()
 
-        const User = useSelector(state => state.usersReducer.loginInfo.user)
-        const {idUser} = JSON.parse(localStorage.getItem("user"));
+        const User = JSON.parse(localStorage.getItem("user"));
+        const idUser = !User?null:User.idUser;
         const cart = useSelector((state)=>state.ordenReducer.cart)
 
         //const token=localStorage.getItem('token')
@@ -105,7 +82,7 @@ export default function Checkout(){
                                 country: state.country,
                                 postalCode: state.postalCode,
                                 city: state.city,
-                                direction:'esto no es direccion!!!!!'
+                                direction: state.street
                             },
                             totalPrice: Math.round(totalPrice),
                             id: id

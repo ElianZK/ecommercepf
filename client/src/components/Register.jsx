@@ -37,7 +37,7 @@ function Register() {
         tel:'Ingresa un telefono',
         chterm:'Debe aceptar los terminos y condiciones para continuar con el registro',
     }
-
+    //creo un estado interno data
     let [data,setData] = useState({
         name: '',
         lastname:'',
@@ -127,6 +127,34 @@ function Register() {
         setError({...error, [name]: errort});
     }
 
+    const onSubmit = e => {
+        e.preventDefault();
+        //const auth = getAuth();                
+        const {name, lastname, email, password, phone} = data;
+        dispatch(createUser({
+            type:"user", 
+            email, 
+            password, 
+            phone,
+            name,
+            lastname
+        }));
+        /*createUserWithEmailAndPassword(auth, email, pass)
+        .then((userCredential) => {
+            // Signed in
+            // const user = userCredential.user;
+            console.log(userCredential);
+            navigate("/")
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+        
+            console.log(errorCode);
+
+            setAuthError(errorCode.split("/")[1]);
+        });*/
+    }
     const mkLogin= async (e,type)=>{
         e.preventDefault();
                 
@@ -147,10 +175,13 @@ function Register() {
                     uid: res.user.uid,
                     isVerified: res.user.emailVerified,
                     idUser: res.user.uid,
-                    name: res.user.displayName || "unknown " + type + " user",
+                    name: res.user.displayName.split(" ")[0],
+                    lastName: res.user.displayName.split(" ")[1],
                     photo: res.user.photoURL,
                     email: res.user.email
                 };
+
+                console.log(res.user);
 
                 dispatch(createUser({
                     idUser: data.idUser,
@@ -159,7 +190,8 @@ function Register() {
                     password: "-", 
                     phone: "-",
                     name: data.name,
-                    lastname: "-"
+                    lastname: data.lastName,
+                    photo: data.photo
                 }));
 
 
@@ -175,7 +207,7 @@ function Register() {
 
     return (
         <div className={s.container}>
-            <h2 className={s.title}>Formulario de registro</h2>
+            <h2 className={s.title}>Formulario de Registro</h2>
             <p><strong><i>Registrate y disfrutarás de una gran experiencia de compra</i></strong></p>
             <form className={s.form} onSubmit={e => {
                 e.preventDefault();
@@ -192,33 +224,75 @@ function Register() {
             }}>
                 <div className={s.formGroup}>
                     <label htmlFor="name">Nombre</label>
-                    <input type="text" id="name" name="name" value={data.name} onChange={(e) => validate(e)} placeholder="Nombre"/>
+                    <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={data.name}
+                    onChange={(e) => validate(e)}
+                    placeholder="Nombre"
+                    />
                     {error.name?<span className={s.error}>{error.name}</span>:null}
                 </div>
+
                 <div className={s.formGroup}>
                     <label htmlFor="lastname">Apellidos</label>
-                    <input type="text" id="lastname" name="lastname" value={data.lastname} onChange={(e) => validate(e)} placeholder="Apellidos"/>
+                    <input
+                    type="text"
+                    id="lastname"
+                    name="lastname"
+                    value={data.lastname}
+                    onChange={(e) => validate(e)}
+                    placeholder="Apellidos"
+                    />
                     {error.lastname?<span className={s.error}>{error.lastname}</span>:null}
                 </div>
                 <div className={s.formGroup}>
                     <label htmlFor="email">Email</label>
-                    <input type="text" id="email" name="email" value={data.email} onChange={(e) => validate(e)} placeholder="Email"/>
+                    <input 
+                    type="text"
+                    id="email"
+                    name="email"
+                    value={data.email}
+                    onChange={(e) => validate(e)}
+                    placeholder="Email"
+                    />
                     {error.email?<span className={s.error}>{error.email}</span>:null}
                 </div>
                 <div className={s.formGroup}>
                     <label htmlFor="pass">Contraseña</label>
-                    <input type="password" id="pass" name="password" value={data.pass} onChange={(e) => validate(e)} placeholder="Contraseña"/>
+                    <input
+                    type="password"
+                    id="pass"
+                    name="password"
+                    value={data.pass}
+                    onChange={(e) => validate(e)}
+                    placeholder="Contraseña"
+                    />
                     {error.pass?<span className={s.error}>{error.pass}</span>:null}
                 </div>
                 <div className={s.formGroup}>
                     <label htmlFor="tel">Telefono</label>
-                    <input type="tel" id="tel" name="phone" value={data.tel} onChange={(e) => validate(e)}  placeholder="Telefono"/>
+                    <input
+                    type="tel"
+                    id="tel"
+                    name="phone"
+                    value={data.tel}
+                    onChange={(e) => validate(e)}
+                    placeholder="Telefono"
+                    />
                     {error.tel?<span className={s.error}>{error.tel}</span>:null}
                 </div>
                 <div className={s.formGroup}>
                     <div className={s.formGTerm}>
                         <label htmlFor="chterm">
-                        <input type="checkbox" id="chterm" name="chterm" value="" onChange={(e) => validate(e)}  />Acepto los terminos y condiciones</label>
+                        <input
+                        type="checkbox"
+                        id="chterm"
+                        name="chterm"
+                        value=""
+                        onChange={(e) => validate(e)}
+                        />Acepto los terminos y condiciones</label>
                     </div>
                     {error.chterm?<span className={s.error}>{error.chterm}</span>:null}
                 </div>
