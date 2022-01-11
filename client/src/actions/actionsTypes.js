@@ -19,6 +19,8 @@ export const EDIT_CATEGORY = 'EDIT_CATEGORY';
 export const EDIT_BRANDS = 'EDIT_BRANDS';
 export const REMOVE_PRODUCT = 'REMOVE_PRODUCT';
 export const EDIT_PRODUCT = 'EDIT_PRODUCT';
+export const GET_ALL_ORDERS = 'GET_ALL_ORDERS';
+export const GET_USER_ORDERS ='GET_USER_ORDERS';
 
 export const ADD_TO_CART = 'ADD_TO_CART';
 export const ADD_TO_CART_FROM_DB = 'ADD_TO_CART_FROM_DB';

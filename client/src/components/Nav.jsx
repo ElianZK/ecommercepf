@@ -14,16 +14,16 @@ import NavMenu from './NavMenu'
 import {getProductsCartUser} from '../actions/index'
 
 
-const Nav = () => {
-    const user = useSelector(state => {
-        console.log(state.usersReducer)
-        return state.usersReducer.loginInfo.user;
-    });
+const Nav = ({filters, setFilters}) => {
+    // const user = useSelector(state => {
+    //     console.log(state.usersReducer)
+    //     return state.usersReducer.loginInfo.user;
+    // });
    
-    const dispatch = useDispatch();
     const cart = useSelector(state => state.ordenReducer.cart)
     let totalItems = cart?.reduce((accumulator, currentValue) => Number(accumulator) + Number(currentValue.amount), 0)
     const {idUser} = JSON.parse(localStorage.getItem("user"));
+    const dispatch = useDispatch()
 
     useEffect(() => {
         dispatch(getProductsCartUser(idUser)); 
@@ -33,7 +33,7 @@ const Nav = () => {
         <header className={s.container}>
             <nav className={s.options}>               
                 <img className={s.logo} src={logo} onClick={()=>{window.location='/'}} alt="logo ecommerce"/> 
-                <SearchBar />
+                <SearchBar filters={filters} setFilters={setFilters}/>
                 <div className={s.buttons}>
                     {/* {user.idUser ? <> */}
                         <NavMenu/>

@@ -1,0 +1,50 @@
+.Container{
+    display: flex;
+    margin-top: 100px;
+    width: auto;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+.Filters{
+    display: flex;
+    width: 100%;
+    height: 30px;
+    flex-direction: row;
+    justify-content: center;
+}
+.OrdersContainer{
+    display: flex;
+    width: 70%;
+    height: auto;
+    margin: 50px;
+    flex-direction: column;
+    align-items: center;
+    background-color: #e3f6f5;
+    border: 5px solid #2d334a;
+    border-radius: 5px;
+}
+
+.Overview{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px;
+    width: 80%;
+    background-color: #bae8e8;
+    border:2px solid #272343;
+    border-radius: 3px;
+}
+.Status{
+
+}
+.OverDetail{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.Id{
+    display: flex;
+ width: 90%;
+ justify-content: center;
+}
