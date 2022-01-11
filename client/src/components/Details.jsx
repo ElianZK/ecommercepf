@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faHeart as Heartwhite } from '@fortawesome/free-regular-svg-icons';
 import {faHeart as HeartFill } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { getProductId, addToCart, update, getWishList, addItemToWishList, deleteItemFromWishList} from '../actions/index.js'
 //import { Slide } from 'react-slideshow-image'
 import { Carousel } from 'react-responsive-carousel';

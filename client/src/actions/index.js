@@ -41,6 +41,8 @@ import { GET_ALL_PRODUCTS,
     GET_REVIEWS,
     GET_WISHLIST,
     UPDATE_WISHLIST,
+    DELETE_REVIEW,
+    UPDATE_REVIEW,
 } from "./actionsTypes";
 import axios from 'axios';
 
@@ -844,6 +846,36 @@ const SERVER = 'http://localhost:3001';
             .then((result) => {
                 return dispatch({
                     type:GET_REVIEWS,
+                    payload:result.data
+                })
+            }).catch((err) => {
+                console.log('err :>> ', err);
+            });
+        }
+    }
+
+    export function eliminar_review(prod,id){
+        return dispatch => {
+            axios.delete(`http://localhost:3001/product/${prod}/review/${id}`)
+            .then((result) => {
+                console.log('result :>> ', result.data);
+                return dispatch({
+                    type:DELETE_REVIEW,
+                    payload:result.data
+                })
+            }).catch((err) => {
+                console.log('err :>> ', err);
+            });
+        }
+    }
+
+    export function update_review(prod,id,values){
+        return dispatch => {
+            axios.put(`http://localhost:3001/product/${prod}/review/${id}`,values)
+            .then((result) => {
+                console.log('result :>> ', result.data);
+                return dispatch({
+                    type:UPDATE_REVIEW,
                     payload:result.data
                 })
             }).catch((err) => {

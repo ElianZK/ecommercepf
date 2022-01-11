@@ -60,36 +60,6 @@ const Products = () => {
     }, [dispatch])
     return (
         <div className={s.Container}>
-            {/* <div className={s.modal}>
-                <form className={s.editProd}>
-                    <div>
-                        <div className={s.formGroup}>
-
-
-                        </div>
-                        <div className={s.formGroup}>
-
-                        </div>
-                        <div className={s.formGroup}>
-
-                        </div>
-                        <div className={s.formGroup}>
-
-                        </div>
-                        <div className={s.formGroup}>
-
-                        </div>
-                        <div className={s.formGroup}>
-
-                        </div>
-                        <div className={s.formGroup}>
-
-                        </div>
-                    </div>
-
-                </form>
-
-            </div> */}
             <form className={s.Form}>
                 <h2 className={s.Title}>Registro de Productos</h2>
                 <div className={s.formGroup}>
