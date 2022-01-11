@@ -56,6 +56,7 @@ export default function OrdersPannel (){
                                 <ul>
                                     <h3>{p.name}</h3>
                                     <li>{p.price}</li>
+                                    <li>trer cantidad comprada</li>
                                 </ul>
                             )
                         })
