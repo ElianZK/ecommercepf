@@ -40,7 +40,7 @@ const Nav = ({isAdmin,filters, setFilters}) => {
 
                 <div className={s.buttons}>
                     {/* {user.idUser ? <> */}
-                        {/* <NavMenu isAdmin={isAdmin}/> */}
+                        <NavMenu isAdmin={isAdmin}/>
                         {/* <h1>{user.name}</h1> */}
                         {/* <button className={s.btn} onClick={() => {
                             localStorage.setItem("user", JSON.stringify({idUser: null}));
@@ -56,7 +56,7 @@ const Nav = ({isAdmin,filters, setFilters}) => {
                             <ShoppingCart fontSize='large' color='primary' />
                             </Badge>
                         </Link>
-                    {user.idUser ? <>
+                    {/* {user.idUser ? <>
                         <div class={s.group}>
                             {isAdmin ? <Link to="/dashboard">Dashboard</Link> : null}
 
@@ -84,7 +84,7 @@ const Nav = ({isAdmin,filters, setFilters}) => {
                             <Link to="/login"><button className={s.btn}>Log In</button></Link>
                             <Link to="/register"><button className={s.btn}>Registrarse</button></Link>
                         </div>
-                    </>}
+                    </>} */}
                 </div>
             </nav> 
         </header>

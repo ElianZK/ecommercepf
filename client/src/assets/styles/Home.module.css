@@ -53,3 +53,21 @@
    text-align: center;
    margin-bottom: 20px;;
 }
+
+@media (max-width:1230px) {
+   .pagination{
+      margin-top: 50px;
+   }
+}
+
+@media (max-width:875px) {
+   .pagination{
+      margin-top: 70px;
+   }
+}
+
+@media (max-width:615px) {
+   .pagination{
+      margin-top: 120px;
+   }
+}

@@ -528,6 +528,7 @@ const SERVER = 'http://localhost:3001';
             }
             return p;
           });
+          
            if (productFind===false){ 
               products.push(product);
               console.log(products)
@@ -753,6 +754,7 @@ const SERVER = 'http://localhost:3001';
         }
 
     }
+    
 
 
 
