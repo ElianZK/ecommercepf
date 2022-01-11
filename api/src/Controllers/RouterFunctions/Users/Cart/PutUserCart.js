@@ -53,7 +53,7 @@ const putUserCart = async (req,res,next)=>{
       return {idProduct, name, price, stock,image, amount, totalPrice:amount*price}
     })
 
-    return res.status(200).json({/* user,*/ cart:  products});
+    return res.status(200).json({cart:  products});
   }catch(err){
     console.log("Get users/cart/:id", err);
     next(err)
@@ -62,19 +62,5 @@ const putUserCart = async (req,res,next)=>{
 
 module.exports = {putUserCart};
 
-/*
-Foo.belongsToMany(Bar, { through: Baz })
-The same ones from Foo.hasMany(Bar):
 
-fooInstance.getBars()
-fooInstance.countBars()
-fooInstance.hasBar()
-fooInstance.hasBars()
-fooInstance.setBars()
-fooInstance.addBar()
-fooInstance.addBars()
-fooInstance.removeBar()
-fooInstance.removeBars()
-fooInstance.createBar()
-*/
 

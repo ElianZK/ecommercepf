@@ -43,25 +43,23 @@ export default function OrdersPannel (){
                                 <li>Total amount: {formatMoney(e.totalPrice)}</li>
                             </ul>
 
-                            <button>Id:{e.idOrder}</button>
-
+                            <button> Order Detail </button>
+                            <div className={s.OrderDetail}>
+                                {e.products.map(p=>{
+                                    return(
+                                        <ul className={s.DetailContainer}>
+                                            <h3 className={s.DetailTitle}>{p.name}</h3>
+                                            <li className={s.DetailItems}>Price per unit: {formatMoney(p.price)}</li>
+                                            <li className={s.DetailItems}>Units: {p.details.amount}</li>
+                                        </ul>
+                                    )
+                                })}
+                            </div>
                         </ul>
                     )
                 }
                 )} 
-                <div className={s.OrderDetail}>
-                    {orders?.map(o=>
-                        o.products.map(p=>{
-                            return(
-                                <ul>
-                                    <h3>{p.name}</h3>
-                                    <li>{p.price}</li>
-                                    <li>trer cantidad comprada</li>
-                                </ul>
-                            )
-                        })
-                    )}
-                </div>
+               
             </div>
 
 

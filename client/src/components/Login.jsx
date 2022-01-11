@@ -14,8 +14,8 @@ import { getAuth,
     setPersistence, 
     browserSessionPersistence,
 } from 'firebase/auth';
-import { login, loginWithNormalAccount } from '../actions/index'
-import AccountsButtons from "./AccountsButtons";
+import { login, loginWithNormalAccount, getWishList } from '../actions/index'
+import AccountsButtons from "./AccountsButtons.jsx";
 
 //TODO: falta hacer que al loguarse con una cuenta de alguna red social, si está registrada en la bd, que me deje entrar, de lo contrario que no me deje
 
@@ -48,7 +48,8 @@ const Login = () => {
                     uid: res.user.uid,
                     isVerified: res.user.emailVerified,
                     idUser: res.user.uid,
-                    name: res.user.displayName || "unknown " + type + " user",
+                    name: res.user.displayName.split(" ")[0],
+                    lastName: res.user.displayName.split(" ")[1],
                     photo: res.user.photoURL,
                     email: res.user.email
                 };
@@ -75,6 +76,20 @@ const Login = () => {
     useEffect(() => {
         if(!loginuser.error){
             if(loginuser.user.idUser){
+                console.log(loginuser)
+                if(loginuser.user.changePassword){
+                    Swal.fire({
+                        title:'Se sugiere que cambie la contraseña para asegurar la contraseña',
+                        text: "De no cambiarla, esta alerta seguirá apareciendo cáda vez que inicie sesión. Presione ok para cambiar la contraseña.",
+                        icon: 'info'
+                    }).then(res => {
+                        if(res.isConfirmed){
+                            navigate("/profile");
+                        }
+                    })
+                }
+
+                dispatch(getWishList(loginuser.user.idUser));
                 navigate("/");
             }
         }else{
@@ -89,7 +104,7 @@ const Login = () => {
                 password: ""
             })
         }
-    }, [loginuser])
+    }, [dispatch,loginuser])
 
     return (
         <div className={s.container}>

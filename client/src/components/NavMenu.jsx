@@ -17,7 +17,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import s from '../assets/styles/Nav.module.css'
 
 
-export default function NavMenu() {
+export default function NavMenu({isAdmin}) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -39,7 +39,7 @@ export default function NavMenu() {
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
       <Typography sx={{ minWidth: 100 }} onClick={()=>navigate("/")} className={s.btnoptions}>Home</Typography>
         {user.idUser ?<>
-          <Typography sx={{ minWidth: 100 }}>Menu</Typography>
+          {isAdmin?<Typography sx={{ minWidth: 100 }} onClick={()=>navigate("/dashboard")} className={s.btnoptions}>Dashboard</Typography>:null}
           {/* <Typography sx={{ minWidth: 100 }}>Profile</Typography> */}
         </>:
         <>
@@ -97,6 +97,8 @@ export default function NavMenu() {
         </MenuItem>
         <MenuItem onClick={() => {
                             localStorage.setItem("user", JSON.stringify({idUser: null}));
+                            // vuelve null a mi byhistory
+                            localStorage.setItem("byhistory", JSON.stringify(null));
                             dispatch(login({idUser: null}));
                             window.location=window.location;
                         }}>

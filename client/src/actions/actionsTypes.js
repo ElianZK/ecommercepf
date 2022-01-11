@@ -39,9 +39,17 @@ export const SET_ORDER_PRODUCTS = 'SET_ORDER_PRODUCTS';
 export const UPDATE= 'UPDATE';
 
 export const CREATE_USER = 'CREATE_USER';
+export const DELETE_USER = 'DELETE_USER';
 export const CLEAR_REGISTER_INFO = "CLEAR_REGISTER_INFO";
 export const ERROR_LOGIN='ERROR_LOGIN';
 
 
 export const GET_USERS = 'GET_USERS';
 export const UPDATE_USER = "UPDATE_USER";
+
+export const CHECK_TYPE = "CHECK_TYPE";
+//REVIEWS
+export const CREATE_REVIEWS= 'CREATE_REVIEWS';
+export const GET_REVIEWS='GET_REVIEWS'
+export const GET_WISHLIST = "GET_WISHLIST";
+export const UPDATE_WISHLIST = "UPDATE_WISHLIST";

@@ -48,3 +48,18 @@
  width: 90%;
  justify-content: center;
 }
+
+.OrderDetail{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px;
+    width: 80%;
+    background-color: #bae8e8;
+    border:2px solid #272343;
+    border-radius: 3px;
+}
+
+.DetailContainer{
+    
+}

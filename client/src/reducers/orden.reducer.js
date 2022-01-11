@@ -6,10 +6,9 @@ import {
     CART_FROM_LOCALSTORAGE_TO_DB,
     CART_FROM_DB_TO_LOCALSTORAGE,
     GET_PRODUCTS_CART,
-    GET_ALL_ORDERS,
     CHANGE_QTY,
     CLEAR_CART,
-
+    GET_ALL_ORDERS,
     UPDATE,
     SET_ORDER_PRODUCTS,
 
@@ -26,76 +25,79 @@ const initialState = {
 
 export function ordenReducer(state = initialState, action) {
     switch (action.type) {
-        case GET_ALL_ORDERS:
+        case GET_PRODUCTS_CART:
             return {
                 ...state,
-                orders: action.payload
-            }
-            case GET_PRODUCTS_CART:
-                return {
-                    ...state,
-                    cart: action.payload,
-                };
-            case ADD_TO_CART:
-                return {
-                    ...state,
-                    cart: action.payload,
-                };
+                cart: action.payload,
+            };
+        case ADD_TO_CART:
+            return {
+                ...state,
+                cart: action.payload,
+            };
 
-            case ADD_TO_CART_FROM_DB:
-                return {
-                    ...state,
-                    cart: action.payload,
-                };
+        case ADD_TO_CART_FROM_DB:
+            return {
+                ...state,
+                cart: action.payload,
+            };
 
-            case DELETE_ITEM_FROM_CART:
-                return {
-                    ...state,
-                    cart: state.cart.filter(el => el.id !== action.payload),
-                };
+        case DELETE_ITEM_FROM_CART:
+            return {
+                ...state,
+                cart: state.cart.filter(el => el.id !== action.payload),
+            };
 
-            case DELETE_ITEM_FROM_CART_LOCALSTORAGE:
-                state.cart.map(item => {
-                    if (item.idproduct === action.payload.idProduct) {
-                        return {
-                            ...item.amuont = item.amount - 1
-                        };
-                    } else {
-                        return item;
-                    }
-                })
-                return {
-                    ...state,
-                    cart: state.cart.filter(item => item.amount > 0)
-                };
+        case DELETE_ITEM_FROM_CART_LOCALSTORAGE:
+            state.cart.map(item => {
+                if (item.idproduct === action.payload.idProduct) {
+                    return {
+                        ...item.amuont = item.amount - 1
+                    };
+                } else {
+                    return item;
+                }
+            })
+            return {
+                ...state,
+                cart: state.cart.filter(item => item.amount > 0)
+            };
 
 
-            case CLEAR_CART:
+        case CLEAR_CART:
 
-                return {
-                    ...state,
-                    cart: [],
-                };
+            return {
+                ...state,
+                cart: [],
+            };
 
-            case CHANGE_QTY:
-                return {
-                    ...state,
-                    cart: action.payload,
-                };
-
-
-            case UPDATE:
-                return {
-                    ...state,
-                    cart: [...state.cart]
-                };
+        case CHANGE_QTY:
+            return {
+                ...state,
+                cart: action.payload,
+            };
 
 
-            case SET_ORDER_PRODUCTS:
-                return {
-                    ...state,
-                    orderId: action.payload.orderId,
+        case UPDATE:
+            console.log(state.cart)
+            return {
+                ...state,
+                cart: [...state.cart]
+            };
+
+
+        case SET_ORDER_PRODUCTS:
+            return {
+                ...state,
+                orderId: action.payload.orderId,
                     orders: action.payload.orders
+            }
+
+
+            case GET_ALL_ORDERS:
+                return {
+                    ...state,
+                    orders: action.payload
                 }
 
                 default:

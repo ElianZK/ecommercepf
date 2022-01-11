@@ -7,6 +7,7 @@ import{
     //RESET,
     RESET,
     UPDATE_USER,
+    DELETE_USER,
 } from '../actions/actionsTypes'
 
 const initialState = {
@@ -20,16 +21,18 @@ const initialState = {
     },
     error:null,
 
+    updateInfo: null,
+
     registerInfo: null
 }
 
 export function usersReducer(state = initialState, action){ 
+    console.log(action);
     switch(action.type){
         case LOGIN:
-            console.log(action.payload)
             return{
                 ...state, 
-                loginInfo: action.payload
+                loginInfo: {...action.payload}
             }
         
         case LOGOUT:
@@ -55,7 +58,24 @@ export function usersReducer(state = initialState, action){
                 }
 
         case UPDATE_USER:{
-            console.log("user en reducer " + action.payload)
+            const {user} = action.payload;
+
+            console.log(user)
+            console.log(action.payload.from)
+
+            if(action.payload.from === "profile"){
+                return{
+                    ...state,
+                    loginInfo: {user}
+                }
+            }else{
+                return{
+                    ...state
+                }
+            }
+        }
+
+        case DELETE_USER:{
             return{
                 ...state
             }

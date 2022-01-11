@@ -1,47 +1,96 @@
-import React, { useEffect} from 'react';
-import {useDispatch, useSelector} from 'react-redux'
-import s from '../assets/styles/Filters.module.css'
-import {
-    getAllProducts,
-    getCategories,
-} from '../actions/index'
+import React, { useEffect, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import s from '../assets/styles/Filters.module.css';
+import { getBrands} from '../actions/index';
 
 
-function Filters({handleChangeLimit, handleSortProducts, handleFilterByCategory, handleFilterByBrand}) {
-     const dispatch = useDispatch();
-     const allProducts = useSelector(state => state.productsReducer.allProducts.productsInfo);
+//| function Filters({handleChangeLimit, handleSortProducts, handleFilterByCategory, handleFilterByBrand}) {
+function Filters({setFilters, setPage}){
+  const dispatch = useDispatch();
+  const brands = useSelector(state=>state.productsReducer.brands);
+  const categories = useSelector(state=>state.productsReducer.categories);
+  const [categoryBrands, setCategoryBrands] =useState('');
+  const [priceLimits, setPriceLimits] = useState({
+    minPrice:0,
+    maxPrice:1
+  })
 
-     useEffect(() => {
-         dispatch(getAllProducts({offset:0, limit:25, maxPrice: null, minPrice:null, brand: null}))
-         dispatch(getCategories()) 
-     }, [dispatch])
 
-     /* function handleClick(e){
-         e.preventDefault()
-         dispatch(getAllProducts())
-     } */
-    
-     
-     return (
-        
-        <div className={s.container}>
-            <select 
-            name='limit'
-            onChange={handleChangeLimit}>
-                        <option value='15'>15 Products</option>
-                        <option value="25">25 Products</option>
-                        <option value="35">35 Products</option>
-                        <option value="50">50 Products</option>
-                </select>
+  //Use Effect para obtener las marcas que pertenecen a la categoría filtrada
+  useEffect(() => {
+    dispatch(getBrands(categoryBrands)); 
+  }, [dispatch, categoryBrands])
 
-            <select 
-            name='category'
-            onChange={handleFilterByCategory}>
-                <option value=''>Filters By Categories</option>
-                        <option value="smartPhone">SmathPhone</option>
-                        <option value="smartWatch">SmartWatch</option>
-                        <option value="television">Television</option>
-                </select>
+
+  const handleChangeFilters = (event)=>{
+    event.preventDefault();
+    setFilters(oldState=>({
+      ...oldState,
+      [event.target.name]:event.target.value
+    }))
+    setPage(1);
+  }
+
+  const handleChangeCategory = (event)=>{
+    event.preventDefault();
+    setCategoryBrands(event.target.value);
+    handleChangeFilters(event);
+    setFilters(oldState=>({
+      ...oldState,
+      brand: ""
+    }));
+    setPage(1);
+  }
+
+  const handlePriceSet = (event)=>{
+    setPriceLimits(oldState=>({
+      ...oldState,
+      [event.target.name]:event.target.value
+     }))
+  }
+
+  const handleFormSubmit = (event)=>{
+    event.preventDefault();
+    setFilters(oldState=>({
+      ...oldState,
+      ...priceLimits
+    }));
+    setPage(1);
+  }
+
+  return (
+    <div className={s.container}>
+      <select name='limit' onChange={handleChangeFilters}>
+        <option value='15'>15 Products</option>
+        <option value="25">25 Products</option>
+        <option value="35">35 Products</option>
+        <option value="50">50 Products</option>
+      </select>
+
+      <select name='category' onChange={handleChangeCategory}>
+        <option value=''>Select Category</option>
+        {categories.map(el=>(<option key={el.idCategory} value={el.name}>{el.name}</option>))}
+      </select>
+
+      <select name='brand' onChange={handleChangeFilters}>
+        <option value=''>Select Brand</option>
+        {brands.map(el=>(<option key={el.idBrand} value={el.name}>{el.name}</option>))}
+      </select>
+
+      {/* <form onSubmit={handleFormSubmit} > */}
+        <label>MinPrice</label>
+        <input type="number" name="minPrice" min={0} onChange={e=>handlePriceSet(e)}/>
+        <label>MaxPrice</label>
+        <input type="number" name="maxPrice" min={0} onChange={handlePriceSet}/>
+        <button onClick={handleFormSubmit}>Set</button>
+      {/* </form> */}
+
+      <select name='sort' onChange={handleChangeFilters}>
+        <option value=''>Sorts</option>
+        <option value='Lower_price'>Lower Price</option>
+        <option value='Highest_price'>Highest_price</option>
+      </select>
+
       
     </div>
   )

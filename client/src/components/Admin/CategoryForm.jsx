@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import DataTable from 'react-data-table-component';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faTrashAlt, faEdit } from '@fortawesome/free-solid-svg-icons'
+import axios from "axios";
 
 export default function CatForm (){
     const dispatch = useDispatch();
@@ -121,38 +122,38 @@ export default function CatForm (){
         })
     }
 
-return (
-<>
-<div className={s.Container}>
-    <form className={s.Form} >
-        <div className={s.Title}> 
-            <h2>Product Category Creation</h2>
-        </div>
+    return (
+        <>
+            <div className={s.Container}>
+                <form className={s.Form} >
+                    <div className={s.Title}> 
+                        <h2>Product Category Creation</h2>
+                    </div>
 
 
-        <div className={s.formGroup}>
-            <input 
-                onChange={handleChange}
-                value={category.name}
-                name='name'
-                type="text"
-                placeholder="Add a New Category"/>
-            {error.name?<span>{error.name}</span>:null}
-            <button 
-                type="submit"
-                onClick={handleSubmit}>
-                    Add
-            </button>
+                    <div className={s.formGroup}>
+                        <input 
+                            onChange={handleChange}
+                            value={category.name}
+                            name='name'
+                            type="text"
+                            placeholder="Add a New Category"/>
+                        {error.name?<span>{error.name}</span>:null}
+                        <button 
+                            type="submit"
+                            onClick={handleSubmit}>
+                                Add
+                        </button>
 
-        </div>
+                    </div>
 
-        
-    </form>
-    <DataTable
-        columns={columns}
-        data={tcategorys}
-    />
-</div>
-</>
-)
+                    
+                </form>
+                <DataTable
+                    columns={columns}
+                    data={tcategorys}
+                />
+            </div>
+        </>
+    )
 }
