@@ -113,7 +113,9 @@ const SERVER = 'http://localhost:3001';
     export function getBrands(category=''){
         return async function(dispatch){
             try{
-              const brands= await axios.get(`${SERVER}/brands?category=${category}`)
+              let aux=''  
+              if(!category)  aux=`?category=${category}`
+              const brands= await axios.get(`${SERVER}/brands${aux}`)
               return dispatch({
                   type: GET_ALL_BRANDS,
                   payload: brands.data
