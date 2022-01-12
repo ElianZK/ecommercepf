@@ -8,10 +8,10 @@ const putOrder = async (req,res,next)=>{
     
     //[Busco la orden
     let order = await Order.findByPk(OrderId);
-    let updated = await order.update({dispatched});
+    await order.update({dispatched});
     
 
-    return res.status(200).json({order, updated});
+    return res.status(200).json({order});
   }catch(err){
     console.log("PUT /order/:OrderId", err);
     next(err)
