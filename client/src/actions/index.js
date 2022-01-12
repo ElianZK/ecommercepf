@@ -499,7 +499,7 @@ const SERVER = 'http://localhost:3001';
                       type: CLEAR_CART
                   }) */
                   const localCart = JSON.parse(localStorage.getItem("cart")) || [] //orderId es el estado para la orden de ese usuario
-                  //localStorage.removeItem("cart")
+                  localStorage.removeItem("cart")
                   const res= await axios.put(`${SERVER}/users/cart/${userId}`,{productsInfo: [...data.cart,...localCart]})
                    return dispatch ({
                        type: GET_PRODUCTS_CART,
