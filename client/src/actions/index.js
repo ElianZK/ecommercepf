@@ -550,6 +550,7 @@ const SERVER = 'http://localhost:3001';
             .put(`${SERVER}/users/cart/${userId}`, body) //fatlta autenci usuario
             .then((response) => {
                 console.log("putproductadd",response)
+                localStorage.setItem("cart", JSON.stringify(response.data.cart));
               dispatch({ 
                   type: ADD_TO_CART_FROM_DB,
                   payload: response.data.cart 

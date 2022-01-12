@@ -66,13 +66,13 @@ function handleAddToCart(e){
         dispatch(update(Number(amount)))
         if ((Number(amount)) <= product.stock) {
             setAmount(Number(amount));
-            dispatch(addToCart({ ...product,amount: amount},idUser)) //falta usuario 
+            dispatch(addToCart({ ...product,amount: amount},idUser))
             Swal.fire({
                 icon: 'success',
                 text: 'Producto agregado exitosamente!',
                 showConfirmButton: false,
                 timer: 2000
-            })
+              })
         };
 }
 
@@ -160,9 +160,6 @@ function handleChangeamount(e){
                     <button 
                         className={`${s.btn}`} onClick={handleAddToCart}>Agregar al carrito</button>
 
-                    {/* <h3 className={s.titlepay}>Medios de pago</h3>
-                    <img className={s.payment} src="https://http2.mlstatic.com/secure/payment-logos/v2/payment-logo-mlm-consumer_credits-medium_v_ddbb2eb147.png" alt="Logo medio de pago mercado pago" />
-                    <img className={s.payment} src="https://tdinversiones.com/wp-content/uploads/2020/12/paypal-logo.png" alt="Logo medio de pago paypal" /> */}
                 </div>
             </div>
             <div className={s.desc}>
