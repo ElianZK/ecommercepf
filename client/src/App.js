@@ -54,14 +54,14 @@ function App() {
 
   
 
- /*  useEffect(() => {
+  useEffect(() => {
       axios.get("http://localhost:3001/user/type/" + idUser)
       .then(res => {
           let { access } = res.data;
   
           setIsAdmin(access && !!idUser)
       })
-  }, [idUser]); */
+  }, [idUser]);
   return (
     <div className="App">
       <Nav isAdmin={isAdmin} filters={filters} setFilters={setFilters}/>

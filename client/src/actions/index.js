@@ -40,8 +40,8 @@ import { GET_ALL_PRODUCTS,
 import axios from 'axios';
 
 
-const SERVER = 'http://localhost:3001';
-//const SERVER = 'https://e-commerce-pf.herokuapp.com';
+//const SERVER = 'http://localhost:3001';
+const SERVER = 'https://e-commerce-pf.herokuapp.com';
 
 
     export function getAllProducts(data,all=false) {
@@ -516,8 +516,9 @@ const SERVER = 'http://localhost:3001';
           return axios
             .put(`${SERVER}/users/cart/${userId}`, body) //fatlta autenci usuario
             .then((response) => {
+
                 //console.log("putproductadd",response)
-                localStorage.setItem("cart", JSON.stringify(response.data.cart));
+               // localStorage.setItem("cart", JSON.stringify(response.data.cart));
               dispatch({ 
                   type: ADD_TO_CART_FROM_DB,
                   payload: response.data.cart 
