@@ -11,6 +11,8 @@ import {
     GET_ALL_ORDERS,
     UPDATE,
     SET_ORDER_PRODUCTS,
+    ADMIN_FILTER_ORDERS_BY_STATE,
+    ADMIN_FILTER_ORDERS_BY_PRICE,
 
 } from '../actions/actionsTypes'
 
@@ -93,6 +95,34 @@ export function ordenReducer(state = initialState, action) {
                     orders: action.payload.orders
             }
 
+        case ADMIN_FILTER_ORDERS_BY_STATE:
+                let sort;
+                if (action.payload === '') sort = state.orders;
+
+                if(action.payload === 'created') sort = state.orders.sort(o=>
+                    o.status === 'created'
+                )
+
+                if(action.payload === 'completed') sort = state.orders.sort(o=>
+                    o.status === 'completed'
+                )
+
+                if(action.payload === 'rejected') sort = state.orders.sort(o=>
+                    o.status === 'rejected'
+                )
+                return{
+                    ...state,
+                    orders:sort
+                }
+        case ADMIN_FILTER_ORDERS_BY_PRICE:
+            let sortPrice;
+            if(action.payload === 'All') sortPrice = state.orders;
+            if(action.payload === 'H-price') sortPrice = state.orders.map((a,b)=>b.totalPrice - a.totalPrice);
+            if(action.payload === 'L-price') sortPrice = state.orders.map((a,b)=>a.totalPrice - b.totalPrice);
+            return {
+                ...state,
+                orders:sortPrice
+            }
 
             case GET_ALL_ORDERS:
                 return {

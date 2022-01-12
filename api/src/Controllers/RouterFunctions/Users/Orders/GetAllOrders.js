@@ -1,4 +1,4 @@
-const {Order,Product} = require("../../../../db");
+const {Order,Product,User} = require("../../../../db");
 
 
 
@@ -8,13 +8,26 @@ try {
     attributes:{
       exclude:["confirmationDate"]
     },
-    include: [Product],
+    include: [Product]
 
-  
+   
   })
-  
-
-  res.status(200).json({orders});
+  let data=[]
+  for (let i = 0; i < orders.length; i++) {
+      // orders[i] = orders
+      let idUser = orders[i].UserId
+      let user = await User.findAll({
+        where: {
+          idUser
+        },
+        attributes:["name","lastname","idUser"]
+      })
+      console.log(user)
+      // data.push({...orders[i], ...user})
+      data.push(await user)
+  }
+  // console.log("data user", data)
+  res.status(200).json({orders,data});
 
 } catch (error) {
   console.log('/admin/orders', error)

@@ -8,6 +8,7 @@ import{
     RESET,
     UPDATE_USER,
     DELETE_USER,
+    GET_USER_INFO,
 } from '../actions/actionsTypes'
 
 const initialState = {
@@ -77,10 +78,16 @@ export function usersReducer(state = initialState, action){
 
         case DELETE_USER:{
             return{
-                ...state
+                ...state,
+                users:action.payload
             }
         }
-
+        case GET_USER_INFO:
+            return{
+                ...state,
+                users:action.payload
+            }
+        
         default:
             return state;
     }

@@ -5,17 +5,17 @@ let { Category, Order, Product, User, Cart, Details, Brand, CategoryBrand, Revie
 
 const startServer= async()=>{
   try {
-    
+     
     await Brand.sync({force:false});
     await Category.sync({force:false});
     await CategoryBrand.sync({force:false});
     await Product.sync({force:false});
-    await User.sync({force:true});
-    await Order.sync({force:true});
-    await Cart.sync({force:true});
-    await Details.sync({force:true});
-    await WishList.sync({force:true});
-    await Reviews.sync({force:true});
+    await User.sync({force:false});
+    await Order.sync({force:false});
+    await Cart.sync({force:false});
+    await Details.sync({force:false});
+    await WishList.sync({force:false});
+    await Reviews.sync({force:false});
     
     let aux = await Product.count();
     console.log("Products Registered in the DB: ",aux);
