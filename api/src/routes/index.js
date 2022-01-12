@@ -7,15 +7,9 @@ const BrandsRouter = require('./brands');
 const AuthRouter = require('./auth');
 const ReviewsRouter = require('./Reviews');
 const user = require('./user');
-<<<<<<< HEAD
-const emailUser = require('./email');
-
-const admin = require('./admin');
-=======
 const admin = require('./admin');
 const emailUser = require('./email');
 
->>>>>>> origin/develop-fran
 
 const router = Router();
 router.use('/categories', CategoryRouter);
