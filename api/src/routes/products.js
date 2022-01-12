@@ -10,7 +10,7 @@ const { editProduct } = require('../Controllers/RouterFunctions/Products/EditPro
 const router = Router();
 
 
-router.get('/:productID', getProductById);
+router.get('/:ProductId', getProductById);
 
 router.get('/', getProducts);
 

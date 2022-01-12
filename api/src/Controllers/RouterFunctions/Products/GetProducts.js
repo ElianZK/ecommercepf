@@ -12,8 +12,10 @@ const getProducts= async (req, res, next)=>{
       brand,
       condition, 
       stock=true,
-      all=false
+      all=false,
+      sort
     } = req.query;
+
 
     if(all){
       let products= await Product.findAndCountAll()
@@ -21,7 +23,7 @@ const getProducts= async (req, res, next)=>{
     }
     if(limit>50) next({message: "The requested limit is higher than the allowed. Maximum allowed is 50", status:400})
     
-    const options = {product:[], through:[]}; 
+    const options = {product:[], through:[], sort:[]}; 
     //[Filter by Search
     if(search){
       options.product.push({name:{[Op.iLike]:`%${search}%`}});
@@ -63,7 +65,14 @@ const getProducts= async (req, res, next)=>{
     if(stock){
       options.product.push({stock:{ [Op.gte]:1}})
     }
-
+    //[Sort
+    if(sort){
+      if(sort === "Lower_price" || sort==="Highest_price"){
+        options.sort.push(sort==="Lower_price"?["price","ASC"]:["price","DESC"]);
+      }else if(sort === "Desc_name" || sort==="Asc_name"){
+        options.sort.push(sort==="Asc_name"?["name","ASC"]:["name","DESC"]);
+      }
+    }
   
     let {count, rows} = await Product.findAndCountAll({
       where:{
@@ -72,7 +81,7 @@ const getProducts= async (req, res, next)=>{
         ]
       },
       attributes:{
-        exclude: ["image","attributes","sold_quantity","stock" ]
+        exclude: ["attributes","sold_quantity","stock" ]
       },
       include:{
         model: CategoryBrand,
@@ -83,6 +92,9 @@ const getProducts= async (req, res, next)=>{
           ]
         }
       },
+      order:[
+        ...options.sort
+      ],
       limit,
       offset
     })

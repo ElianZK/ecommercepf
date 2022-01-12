@@ -12,4 +12,4 @@ router.post('/:id/review', PostReviews);
 router.put('/:id/review/:idReview', PutReviews);
 router.delete('/:id/review/:idReview', DeleteReviews);
 
-module.exports = router
+module.exports = router;

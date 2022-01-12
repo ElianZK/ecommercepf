@@ -50,6 +50,9 @@
     transition: background-color .3s;
 }
 
+.btnoptions {
+    cursor: pointer;
+}
 .group{
     width: 100%;
     height: 80px;

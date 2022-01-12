@@ -2,7 +2,7 @@ import React from 'react'
 import s from '../assets/styles/ProductCard.module.css'
 import { Link } from "react-router-dom"
 import {formatMoney} from 'accounting'
-function ProductCard({ id , name , price , image}) {
+function ProductCard({ id , name , price , image, data,add}) {
    return (
       <div className={s.card}> 
          <div className={s.container}> 
@@ -12,7 +12,7 @@ function ProductCard({ id , name , price , image}) {
             <div className={s.actions}>
                <p className={s.price}>{`${formatMoney(price)}`}<span > ARS</span></p>
                <button className={`${s.btn} `}>Comprar ahora</button>
-               <button className={`${s.btn}`}>Agregar al carrito</button>
+               <button className={`${s.btn}`} onClick={()=>add(data)}>Agregar al carrito</button>
             </div>
             <div className={s.namecont}>
                   <Link to={`/detail/${id}`}><p className={s.name}><strong>{name}</strong></p></Link>
@@ -22,4 +22,4 @@ function ProductCard({ id , name , price , image}) {
    )
 }
 
-export default ProductCard
+export default ProductCard;

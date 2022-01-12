@@ -1,7 +1,10 @@
+*{
+   box-sizing: border-box;
+}
 .container{
     min-height: 25vh;
-    display: flex;
-    flex-direction: column;
+    display: row;
+    flex-direction: row;
     background-color: rgb(247, 245, 241);
     padding: 30px;
     margin-top: 100px;
@@ -132,10 +135,11 @@
  }
  .btn{
     display:block;
-    
-    justify-content: center;
-   align-items: center;
-    justify-content: center;
+    /*justify-content: center;*/
+   /*align-items: center;*/
+    /*justify-content: center;*/
+    margin-left:auto;
+    margin-right: auto;
    background-color: #FFD803;
    width: 200px;
    height: 45px;

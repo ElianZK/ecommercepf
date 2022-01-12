@@ -14,7 +14,7 @@ import { getAuth,
     setPersistence, 
     browserSessionPersistence,
 } from 'firebase/auth';
-import { login, loginWithNormalAccount } from '../actions/index'
+import { login, loginWithNormalAccount, getWishList } from '../actions/index'
 import AccountsButtons from "./AccountsButtons.jsx";
 
 //TODO: falta hacer que al loguarse con una cuenta de alguna red social, si está registrada en la bd, que me deje entrar, de lo contrario que no me deje
@@ -89,6 +89,7 @@ const Login = () => {
                     })
                 }
 
+                dispatch(getWishList(loginuser.user.idUser));
                 navigate("/");
             }
         }else{
@@ -103,7 +104,7 @@ const Login = () => {
                 password: ""
             })
         }
-    }, [loginuser])
+    }, [dispatch,loginuser])
 
     return (
         <div className={s.container}>

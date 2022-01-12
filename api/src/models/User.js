@@ -57,15 +57,17 @@ module.exports = (sequelize) => {
         },
         address:{
             type:DataTypes.JSON({
-                calle:{type:DataTypes.STRING},
-                cp:{type:DataTypes.STRING},
-                domicilio:{type:DataTypes.STRING}
+                country:{type:DataTypes.STRING},
+                city:{type:DataTypes.STRING},
+                address:{type:DataTypes.STRING},
+                postalCode:{type:DataTypes.STRING}
             }),
             allowNull:true,
             defaultValue: {
-                calle: "calle",
-                cp: "cp",
-                domicilio: "domicilio"
+              country:'',
+              city:'',
+              address:'',
+              postalCode:''
             }
         }
     },{

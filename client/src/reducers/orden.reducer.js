@@ -3,13 +3,11 @@ import{ ADD_TO_CART,
         ADD_TO_CART_FROM_DB,
         DELETE_ITEM_FROM_CART,
         DELETE_ITEM_FROM_CART_LOCALSTORAGE,
-        CART_FROM_LOCALSTORAGE_TO_DB,
-        CART_FROM_DB_TO_LOCALSTORAGE,
         GET_PRODUCTS_CART,
         CHANGE_QTY,
-        CLEAR_CART,
-      
+        CLEAR_CART,      
         UPDATE,
+        SET_ORDER_PRODUCTS,
         
 } from '../actions/actionsTypes'
 
@@ -17,8 +15,8 @@ import{ ADD_TO_CART,
 
 const initialState ={
     cart: JSON.parse(localStorage.getItem("cart")) || [],
+    orders: [],
     
-   
 }
 
 
@@ -48,17 +46,16 @@ export function ordenReducer(state = initialState, action){
         };
 
         case  DELETE_ITEM_FROM_CART_LOCALSTORAGE:
-       
             state.cart.map(item => {
-                		if (item.idproduct === action.payload.idProduct) {
-                			return {...item.qty = item.qty - 1};
-                		} else {
-                			return item;
-                		}
-                	})
+                if (item.idproduct === action.payload.idProduct) {
+                    return {...item.amuont = item.amount - 1};
+                } else {
+                    return item;
+                }
+                })
                     return {
                         ...state,
-                        cart: state.cart.filter(item =>item.qty > 0)
+                        cart: state.cart.filter(item =>item.amount > 0)
         };
     
 
@@ -70,35 +67,27 @@ export function ordenReducer(state = initialState, action){
         };
 
         case CHANGE_QTY:
-        return {
+            return {
             ...state,
             cart: action.payload,
         };
 
-        case CART_FROM_LOCALSTORAGE_TO_DB:
-        return {
+
+        case UPDATE: 
+            return {
             ...state,
-            cart: action.payload.cart,
-            orderId: action.payload.orderId
+            cart: action.payload
+        };
+
+        	
+        case SET_ORDER_PRODUCTS:
+            return {
+            ...state,
+            orders: action.payload.orders
         }
 
-        case UPDATE: {
-        
-        		return {
-        			...state,
-        			cart: [...state.cart]
-        		};
-        	
-        }
-        
-        case CART_FROM_DB_TO_LOCALSTORAGE:
-        return {
-            ...state,
-            cart: [...action.payload.products],
-            orderId: action.payload.orderId
-        }
-            default:
-                return state    
+        default:
+            return state    
             }
 }
        

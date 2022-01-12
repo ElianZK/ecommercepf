@@ -1,7 +1,7 @@
 const server = require('./src/app.js');
 // const { conn } = require('./src/db.js');
 const { getProducts} =require('./src/Controllers/DbLoading/getProds');
-let { Category, Order, Product, User, Cart, Details, Brand, CategoryBrand} = require('./src/db');
+let { Category, Order, Product, User, Cart, Details, Brand, CategoryBrand, Reviews, WishList} = require('./src/db');
 
 const startServer= async()=>{
   try {
@@ -11,10 +11,12 @@ const startServer= async()=>{
     await CategoryBrand.sync({force:false});
     await Product.sync({force:false});
     await User.sync({force:false});
-    await Order.sync({force:true});
-    await Cart.sync({force:true});
-    await Details.sync({force:true});
-
+    await Order.sync({force:false});
+    await Cart.sync({force:false});
+    await Details.sync({force:false});
+    await WishList.sync({force:false});
+    await Reviews.sync({force:false});
+    
     let aux = await Product.count();
     console.log("Products Registered in the DB: ",aux);
     if(!aux){
