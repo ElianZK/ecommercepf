@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { setOrderProducts, clearCart } from "../../actions";
 import s from "../../assets/styles/Checkout.module.css";
 import { formatMoney } from "accounting";
+import validate from '/'
 
 
 const stripePromise = loadStripe(
@@ -57,10 +58,10 @@ export default function Checkout() {
   }
 
   function handleChange(e) {
-    setState({
+    validate(setState({
       ...state,
       [e.target.name]: e.target.value,
-    });
+    }));
   }
 
   const Payment = () => {
@@ -68,6 +69,7 @@ export default function Checkout() {
     const elements = useElements();
 
     const handleSubmit = async (e) => {
+
       e.preventDefault();
       const { error, paymentMethod } = await stripe.createPaymentMethod({
         type: "card",
