@@ -6,6 +6,8 @@ import { GET_ALL_PRODUCTS,
     FILTER_PRODUCTS_BY_CATEGORY,
     FILTER_PRODUCTS_BY_PRICE,
     FILTER_PRODUCTS_BY_BRANDS,
+    ADMIN_FILTER_ORDERS_BY_STATE,
+    ADMIN_FILTER_ORDERS_BY_PRICE,
     SORT_PRODUCTS,
     CREATE_CATEGORY,
     CREATE_PRODUCT,
@@ -34,8 +36,13 @@ import { GET_ALL_PRODUCTS,
     GET_REVIEWS,
     GET_WISHLIST,
     UPDATE_WISHLIST,
+<<<<<<< HEAD
     DELETE_REVIEW,
     UPDATE_REVIEW,
+=======
+    GET_ALL_ORDERS,
+    GET_USER_INFO,
+>>>>>>> 8cea0360307e142d52280d1d84a6c177bef38a2d
 } from "./actionsTypes";
 import axios from 'axios';
 
@@ -815,6 +822,7 @@ const SERVER = 'http://localhost:3001';
         }
     }
 
+<<<<<<< HEAD
     export function eliminar_review(prod,id){
         return dispatch => {
             axios.delete(`http://localhost:3001/product/${prod}/review/${id}`)
@@ -844,3 +852,53 @@ const SERVER = 'http://localhost:3001';
             });
         }
     }
+=======
+
+export function getAllOrders() {
+    return async function (dispatch) {
+        const {data} = await axios.get(`${SERVER}/admin/orders`)
+        let orders = data.orders.map(o=>{
+            console.log('ORDERSSS',o)
+            let user = data.data[0].filter(d=>{
+                console.log('USERRR', d)
+                console.log(d.idUser,o.UserId)
+                console.log(d.idUser === o.UserId)
+                return(d.idUser === o.UserId)
+                
+            })
+            return {
+                ...o,
+                user: user[0]
+            }
+        })
+        return dispatch({
+            type: GET_ALL_ORDERS,
+            payload: orders
+        })
+    }
+}
+
+export function adminFilterOrdersByState(payload){
+    return{
+        type: ADMIN_FILTER_ORDERS_BY_STATE,
+        payload
+    }
+}
+
+export function adminFilterOrdersByPrice(payload){
+    return{
+        type: ADMIN_FILTER_ORDERS_BY_PRICE,
+        payload
+    }
+}
+
+export function getUserInfo(userId){
+    return async function dispatch(payload){
+        const user = await axios.get(`${SERVER}/users/${userId}`)
+        return dispatch({
+            type: GET_USER_INFO,
+            payload: user
+        })
+    }
+}
+>>>>>>> 8cea0360307e142d52280d1d84a6c177bef38a2d
