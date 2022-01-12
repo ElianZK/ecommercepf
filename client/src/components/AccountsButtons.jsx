@@ -20,7 +20,7 @@ const AccountsButtons = ({access}) => {
                 <img className={s.icon} src={facebookIcon} alt="icono"/>
             </button>
         </div>
-    )
+    ) 
 }
 
 export default AccountsButtons

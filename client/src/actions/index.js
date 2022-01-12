@@ -6,6 +6,8 @@ import { GET_ALL_PRODUCTS,
     FILTER_PRODUCTS_BY_CATEGORY,
     FILTER_PRODUCTS_BY_PRICE,
     FILTER_PRODUCTS_BY_BRANDS,
+    ADMIN_FILTER_ORDERS_BY_STATE,
+    ADMIN_FILTER_ORDERS_BY_PRICE,
     SORT_PRODUCTS,
     CREATE_CATEGORY,
     CREATE_PRODUCT,
@@ -36,12 +38,14 @@ import { GET_ALL_PRODUCTS,
     UPDATE_WISHLIST,
     DELETE_REVIEW,
     UPDATE_REVIEW,
+    GET_ALL_ORDERS,
+    GET_USER_INFO,
 } from "./actionsTypes";
 import axios from 'axios';
 
 
-const SERVER = 'http://localhost:3001';
-//const SERVER = 'https://e-commerce-pf.herokuapp.com';
+//const SERVER = 'http://localhost:3001';
+const SERVER = 'https://e-commerce-pf.herokuapp.com';
 
 
     export function getAllProducts(data,all=false) {
@@ -497,7 +501,7 @@ const SERVER = 'http://localhost:3001';
         }
       if (userId) {
           let exits=false;
-          let aux= cart?.map(p=>{
+          let aux= Array.isArray(cart)?cart.map(p=>{
               if(p.idProduct===product.idProduct){
                 exits=true;
                 return {
@@ -506,7 +510,7 @@ const SERVER = 'http://localhost:3001';
                 }
               }
               return p;
-          })
+          }):[]
 
           if(!exits) aux=[...aux, product]
 
@@ -516,8 +520,9 @@ const SERVER = 'http://localhost:3001';
           return axios
             .put(`${SERVER}/users/cart/${userId}`, body) //fatlta autenci usuario
             .then((response) => {
+
                 //console.log("putproductadd",response)
-                localStorage.setItem("cart", JSON.stringify(response.data.cart));
+               // localStorage.setItem("cart", JSON.stringify(response.data.cart));
               dispatch({ 
                   type: ADD_TO_CART_FROM_DB,
                   payload: response.data.cart 
@@ -844,3 +849,51 @@ const SERVER = 'http://localhost:3001';
             });
         }
     }
+
+export function getAllOrders() {
+    return async function (dispatch) {
+        const {data} = await axios.get(`${SERVER}/admin/orders`)
+        let orders = data.orders.map(o=>{
+            console.log('ORDERSSS',o)
+            let user = data.data[0].filter(d=>{
+                console.log('USERRR', d)
+                console.log(d.idUser,o.UserId)
+                console.log(d.idUser === o.UserId)
+                return(d.idUser === o.UserId)
+                
+            })
+            return {
+                ...o,
+                user: user[0]
+            }
+        })
+        return dispatch({
+            type: GET_ALL_ORDERS,
+            payload: orders
+        })
+    }
+}
+
+export function adminFilterOrdersByState(payload){
+    return{
+        type: ADMIN_FILTER_ORDERS_BY_STATE,
+        payload
+    }
+}
+
+export function adminFilterOrdersByPrice(payload){
+    return{
+        type: ADMIN_FILTER_ORDERS_BY_PRICE,
+        payload
+    }
+}
+
+export function getUserInfo(userId){
+    return async function dispatch(payload){
+        const user = await axios.get(`${SERVER}/users/${userId}`)
+        return dispatch({
+            type: GET_USER_INFO,
+            payload: user
+        })
+    }
+}

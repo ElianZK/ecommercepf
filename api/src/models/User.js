@@ -59,14 +59,14 @@ module.exports = (sequelize) => {
             type:DataTypes.JSON({
                 country:{type:DataTypes.STRING},
                 city:{type:DataTypes.STRING},
-                address:{type:DataTypes.STRING},
+                street:{type:DataTypes.STRING},
                 postalCode:{type:DataTypes.STRING}
             }),
             allowNull:true,
             defaultValue: {
               country:'',
               city:'',
-              address:'',
+              street:'',
               postalCode:''
             }
         }
