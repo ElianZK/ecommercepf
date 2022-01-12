@@ -1,6 +1,10 @@
-function emailAfterBuy(nombre, idPedido, Country,City, Street,CP, Products){
-let variable = `
-<!DOCTYPE html>
+const {formatMoney} = require('accounting')
+
+function ShopConfirm(orderProducts,totalPrice,address){
+    //let orderProducts = orderProducts.product//.details.dataValues
+  //console.log("orderProducts", orderProducts)
+ 
+  let variable = `<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
@@ -58,7 +62,7 @@ let variable = `
                 justify-content: space-evenly;
                 align-items: center;
             }
-            .list img{
+            .list-img{
                 max-height: 150px;
             }
             .imgproduct, .qty, .price{
@@ -83,42 +87,61 @@ let variable = `
             <div class="descr">
                 <div class="head center">
                     <img class="logo" src="https://henrecommerce.netlify.app/static/media/logo-ecommerce.3281dcd9.png">
-                    <p>Buenas noticias ! Tu pedido ha sido confirmado</p>
+                    <p>Buenas noticias! Tu pedido ha sido confirmado</p>
                     <p>¡Gracias por comprar con nosotros!</p>
                 </div>
                 <div class="detalle center" >
-                  <h3><strong>ID del pedido</strong> 5fce7e785a1543df9247d673</h3>
-                  <h4>Forma de pago</h4>
-                  <p>Tarjeta</p>
-                  <p>**** **** **** 5563</p>
-                  <p><strong>Country</strong> Oaxaca</p>
-                  <p><strong>City</strong> Ixtepec</p>
-                  <p><strong>Street</strong> Magisterial #21</p>
-                  <p><strong>Postal Code</strong> 70000</p>
+                    
+                    <h4>Forma de pago</h4>
+                    <p>Tarjeta</p>
+                    
+                    <p><strong>Country</strong>${address.country}</p>
+                    <p><strong>City</strong>${address.city}</p>
+                    <p><strong>Street</strong>${address.street}</p>
+                    <p><strong>Postal Code</strong>${address.postalCode}</p>
                 </div>
-                <div class="products center">`;
-                /************INICIO CODIGO QUE IRA DENTRO DEL FOR PARA RECORRER ARREGLO DE PRODUCTOS *************** */
+                <div class="products center">
+                <table>
+                <thead>
+                <tr>
+                    <th class="imgproduct">Image</th>
+                    <th class="nameproduct">Name</th>
+                    <th class="qty">Quantity</th>
+                    <th class="price">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                `
+                 for(let i=0; i<orderProducts.length;i++){
                 variable +=`
-                    <div class="list">
-                        <img src="http://http2.mlstatic.com/D_871760-MLA48113560987_112021-O.jpg" alt="" class="imgproduct">
-                        <p class="nameproduct">Alcatel 1v Plus 32 Gb Negro 2 Gb Ram</p>
-                        <p class="qty">3</p>
-                        <p class="price">$18,767.00</p>
-                    </div>`;
+                    <tr>
+                        <td class="imgproduct"><img src=${orderProducts[i].image[0]} alt=${orderProducts[i].name} class="list-img"></td>
+                        <td class="nameproduct"><p>${orderProducts[i].name}</p></td>
+                        <td class="qty"><p>${orderProducts[i].amount}</p></td>
+                        <td class="price"><p>${formatMoney(orderProducts[i].price)}</p></td>
+                    </tr>
+                    `;
+                 }
 
-                /************FIN CODIGO QUE IRA DENTRO DEL FOR PARA RECORRER ARREGLO DE PRODUCTOS *************** */
                 variable +=`
-                    <div class="totalamount">
+                </tbody>
+                </div>
+                <div class="totalamount">
                         <p class="total">
-                            <strong>TOTAL: $ 98000.00 ARS</strong>
+                            <strong>TOTAL: ${formatMoney(totalPrice)}</strong>
                         </p>
-                    </div>
+                    
                 </div>
 
-                </div>
+                
             </div>
         </div>
     </body>
-</html>`
+</html> `
+return variable;
+
 }
-export const sendEmail //exportar emailAfterBuy
+
+module.exports= {
+    ShopConfirm
+}

@@ -1,12 +1,11 @@
 import {useEffect, useState} from 'react'
 import {useDispatch , useSelector} from 'react-redux';
-import { editProduct, getAllProducts } from '../../actions/index.js'
+import { editProduct, getAllProducts, getCategories, getBrands } from '../../actions/index.js'
 import s from '../../assets/styles/Products.module.css'
 import s2 from '../../assets/styles/CategoryForm.module.css';
 import DataTable from 'react-data-table-component';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faTrashAlt, faEdit } from '@fortawesome/free-solid-svg-icons'
-import imgnotfound from "../../assets/img/notfound.gif";
 
 const Products = () => {
     const dispatch = useDispatch();
@@ -15,15 +14,24 @@ const Products = () => {
     }) 
     const brands = useSelector(state=>state.productsReducer.brands);
     const categories = useSelector(state=>state.productsReducer.categories);
+
     const [data,setData]= useState({
         name:'',
         price: '',
         stock: '',
         condition: '',
-        thumbnail: '',        
+        image:'',
+        thumbnail: '',
+        attributes:[],
+        brands:'',
+        categories: [],       
     })
-    const [images,setImages]=useState([]);
-    const [image,setImage]=useState('');
+    const [attrib,setAtrrib]=useState({
+        name:'',
+        value:''
+    })
+    /* const [images,setImages]=useState([]);
+    const [image,setImage]=useState(''); */
     
 
     const [search, setSearch] = useState('')
@@ -57,67 +65,84 @@ const Products = () => {
     }
     useEffect(() => {
         dispatch(getAllProducts(null,true))
+        dispatch(getCategories());
+        dispatch(getBrands())
     }, [dispatch])
+
+    let handleChange= (e)=>{
+        e.preventDefault();
+        let name= e.target.name;
+        let value= e.target.value;
+        setData({
+            ...data,
+            [name]: value
+        })
+    }
+
+    let handleAtt= (e)=>{
+        e.preventDefault();
+        let name= e.target.name;
+        let value= e.target.value;
+        setAtrrib({
+            ...attrib,
+            [name]: value
+        })
+    }
+    let addDetail = (e)=>{
+        e.preventDefault();
+        setData({
+            ...data,
+            attributes: [...data.attributes,attrib]
+        })
+        setAtrrib({
+            name:'',
+            value:''
+        })
+    }
     return (
         <div className={s.Container}>
-            {/* <div className={s.modal}>
-                <form className={s.editProd}>
-                    <div>
-                        <div className={s.formGroup}>
-
-
-                        </div>
-                        <div className={s.formGroup}>
-
-                        </div>
-                        <div className={s.formGroup}>
-
-                        </div>
-                        <div className={s.formGroup}>
-
-                        </div>
-                        <div className={s.formGroup}>
-
-                        </div>
-                        <div className={s.formGroup}>
-
-                        </div>
-                        <div className={s.formGroup}>
-
-                        </div>
-                    </div>
-
-                </form>
-
-            </div> */}
             <form className={s.Form}>
                 <h2 className={s.Title}>Registro de Productos</h2>
                 <div className={s.formGroup}>
-                    <input id="name" name="name" type="text" placeholder="Ingrese el nombre"></input>
+                    <input id="name" name="name" type="text" placeholder="Type a name" onChange={handleChange}/>
                 </div>
                 <div className={s.formGroup}>
-                    <input id="price" name="price" type="text" placeholder="Ingrese el precio"></input>
+                    <input id="price" name="price" type="text" placeholder="Type the price" onChange={handleChange}></input>
                 </div>
                 <div className={s.formGroup}>
-                    <input id="stock" name="stock" type="text" placeholder="Ingrese el Stock"></input>
+                    <input id="stock" name="stock" type="text" placeholder="Type the Stock" onChange={handleChange}></input>
                 </div>
                 <div className={s.formGroup}>
-                    <select name="condition">
+                    <select name="condition" onChange={handleChange}>
+                        <option value="">Select a condition</option>
                         <option value="new">New</option>
                         <option value="used">Used</option>
                     </select>
                 </div>
-                <div className={s.formDetail}>
-                    <input id="image" name="image" type="text" placeholder="Ingrese la imagen"></input>
-                    <button>ADDImage</button>
+                {/* <div className={s.formDetail}> */}
+                <div className={s.formGroup}>
+                    <input id="image" name="image" type="text" placeholder="Type an URL image" onChange={handleChange}></input>
+                    {/* <button>ADDImage</button> */}
                 </div>
                 <div className={s.formGroup}>
-                    <input id="thumbnail" name="thubnail" type="text" placeholder="Ingrese un thubnail"></input>
+                    <input id="thumbnail" name="thumbnail" type="text" placeholder="Type a small image" onChange={handleChange}></input>
+                </div>
+                <div className={s.formGroup}>
+                    <select name='category' /* onChange={handleChangeCategory} */>
+                        <option value=''>Select Category</option>
+                        {categories.map(el=>(<option key={el.idCategory} value={el.name}>{el.name}</option>))}
+                    </select>
+                </div>
+                <div className={s.formGroup}>
+                <select name='brands' onChange={handleChange}>
+                    <option value=''>Select Brand</option>
+                    {brands.map(el=>(<option key={el.idBrand} value={el.name}>{el.name}</option>))}
+                </select>
                 </div>
                 <div className={s.formDetail}>
-                    <input id="att" name="att" type="text" placeholder="Ingrese el atributo"></input>
-                    <input id="desc" name="desc" type="text" placeholder="Ingrese la descripcion"></input>
-                    <button>ADD</button>
+                    <input id="att" name="name" type="text" value={attrib.name} placeholder="Attribute" onChange={handleAtt}></input>
+                    <input id="desc" name="value" type="text" value={attrib.value} placeholder="Description" onChange={handleAtt}></input>
+                    <button onClick={addDetail}>ADD</button>
                 </div>
                 <div className={s.formGroup}>
                     <button className={s.button}>Registrar</button>
@@ -131,7 +156,7 @@ const Products = () => {
                     setSearchres(
                         products.filter(p=>{
                             console.log(p)
-                            return p.name.includes(name) 
+                            return p.name.toLowerCase().includes(name.toLowerCase()) 
                         })
                     )
                 }}/>

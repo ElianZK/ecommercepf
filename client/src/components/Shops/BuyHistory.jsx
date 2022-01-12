@@ -30,8 +30,8 @@ export default function BuyHistory() {
 
             <h2 className={s.title}>SHOPPING HISTORY</h2>
 
-                {orders?.map((e)=>{return(
-                    <div className={s.card} key={e.id}>
+                {orders?.map((e, index)=>{return(
+                    <div className={s.card} key={e.index}>
 
                         <div className={s.headerContainer}>
                             <h2 className={s.cardDate}>Date: {e.creationDate.substr(0,10)}</h2>

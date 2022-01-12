@@ -2,9 +2,7 @@ import React,{useState, useEffect}  from 'react';
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { clearRegisterInfo, createUser, login, loginWithNormalAccount } from '../actions';
-
-import { signInWithGoogle } from '../config/firebase-config';
+import { clearRegisterInfo, createUser } from '../actions';
 
 import Swal from 'sweetalert2';
 
