@@ -1,8 +1,12 @@
 const {Cart, User, Order, Product, Details} = require("../../../../db");
 const Stripe = require("stripe");
+//const { default: ShopConfirm } = require("../../EmailsFunctions/ShopConfirm");
 require('dotenv').config();
 const {STRIPE_CONN} = process.env;
 const stripe = new Stripe(STRIPE_CONN);
+
+const {ShopConfirm} = require('../../EmailsFunctions/ShopConfirm')
+const {SendEmails} = require('../../EmailsFunctions/SendEmails')
 
 const postUserOrder = async(req, res,next)=>{
   try {
@@ -48,6 +52,7 @@ const postUserOrder = async(req, res,next)=>{
       where:{
         OrderId:order.idOrder
       }
+      
     })
     //! console.log("ORDERPRODUCTS: ",orderProducts.map(el=>el.toJSON()));
 
@@ -62,7 +67,7 @@ const postUserOrder = async(req, res,next)=>{
 
       if(databaseProduct.stock >= productsInfo[i].amount){
         //*Si el producto tiene stock para permitir la compra, entonces sigo analizando y lo guardo para modificarlo una vez que me asegure que la orden de compra se puede hacer,
-        console.log("databaseinfo",productsInfo[i])
+        
         availableProducts.push({databaseProduct, product, amount:productsInfo[i].amount,price: productsInfo[i].price})
       }else{
         //*Si no, rompo el bucle y envío un error avisando que no hay suficiente cantidad de dicho producto
@@ -93,7 +98,10 @@ const postUserOrder = async(req, res,next)=>{
     if(payment.status){
       await order.update({status:"completed"})
     }
-    
+
+    let codehtml= ShopConfirm(productsInfo,totalPrice,address);
+    SendEmails(email, 'Confirmación de compra', codehtml)
+    //console.log(`orderProducts`, orderProducts)
     return res.status(200).json({user, order, orderProducts})
 
   } catch (error) {

@@ -14,14 +14,12 @@ import NavMenu from './NavMenu'
 import {getProductsCartUser} from '../actions/index'
 
 const Nav = ({isAdmin,filters, setFilters}) => {
-    const user = useSelector(state => {
-        return state.usersReducer.loginInfo.user;
-    });
+    const user = useSelector(state => state.usersReducer.loginInfo.user);
     const dispatch = useDispatch();
     const navigate = useNavigate();
    
     const cart = useSelector(state => state.ordenReducer.cart)
-    let totalItems = cart && [].concat(cart).reduce((accumulator, currentValue) => Number(accumulator) + Number(currentValue.amount), 0)
+    let totalItems = cart && cart.reduce((accumulator, currentValue) => Number(accumulator) + Number(currentValue.amount), 0)
     const User = JSON.parse(localStorage.getItem("user"));
     const idUser = !User?null:User.idUser;
     useEffect(() => {

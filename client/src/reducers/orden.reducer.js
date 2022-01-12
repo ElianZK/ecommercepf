@@ -19,7 +19,7 @@ import{ ADD_TO_CART,
 const initialState ={
     cart: JSON.parse(localStorage.getItem("cart")) || [],
     orders: [],
-    orderId: []
+    
 }
 
 
@@ -81,13 +81,12 @@ export function ordenReducer(state = initialState, action){
             return {
             ...state,
             cart: [...state.cart]
-        		};
+        };
 
         	
         case SET_ORDER_PRODUCTS:
             return {
             ...state,
-            orderId: action.payload.orderId,
             orders: action.payload.orders
         }
 
