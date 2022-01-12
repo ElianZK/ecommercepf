@@ -29,6 +29,8 @@ const PostUsers = async(req, res, next) =>{
             }
         });
 
+        console.log("holaaaa");
+
         //compruebo si es true o false mi created
         if (!created) {
             return res.json({

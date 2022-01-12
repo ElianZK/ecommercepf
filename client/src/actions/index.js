@@ -44,8 +44,8 @@ import { GET_ALL_PRODUCTS,
 import axios from 'axios';
 
 
-//const SERVER = 'http://localhost:3001';
-const SERVER = 'https://e-commerce-pf.herokuapp.com';
+const SERVER = 'http://localhost:3001';
+// const SERVER = 'https://e-commerce-pf.herokuapp.com';
 
 
     export function getAllProducts(data,all=false) {
@@ -218,6 +218,7 @@ const SERVER = 'https://e-commerce-pf.herokuapp.com';
     export function createUser(body, from="user") {
         return async function(dispatch){
             try{
+                console.log(body)
                 const res = await axios.post(`${SERVER}/users/create`, {...body, from})
 
                 console.log(res.data);
