@@ -12,12 +12,34 @@ import { useNavigate } from "react-router-dom";
 import { setOrderProducts, clearCart } from "../../actions";
 import s from "../../assets/styles/Checkout.module.css";
 import { formatMoney } from "accounting";
-import validate from '/'
-
 
 const stripePromise = loadStripe(
   "pk_test_51KE0nYFfD78XPAGcGPPH7JVRgUrvShCe00gJQTJ8do8OhF6s205GYs2OrB7qBEdQVhQj3Xh0YtjqE6pAuBQSyomS00FxVwsPvF"
 );
+
+export function validate(state) {
+  let errors = {};
+
+  if (!state.name) {
+    errors.name = "name is required";
+  } else if (!/^\w{3,20}$/.test(state.name)) {
+    errors.name = "Invalid name";
+  } else if (!state.email) {
+    errors.email = "email is required";
+  } else if (!state.country) {
+    errors.country = "country is required";
+  } else if (!state.city) {
+    errors.city = "city is required";
+  } else if (!state.street) {
+    errors.street = "street is required";
+  } else if (!state.postalCode) {
+    errors.postalCode = "postalCode is required";
+  
+  } else if (!state.phone) {
+    errors.phone = "phone is required";
+  }
+  return errors;
+}
 
 export default function Checkout() {
   const dispatch = useDispatch();
@@ -25,16 +47,14 @@ export default function Checkout() {
   const User = JSON.parse(localStorage.getItem("user"));
   const idUser = !User ? null : User.idUser;
   const cart = useSelector((state) => state.ordenReducer.cart);
-
-  //const token=localStorage.getItem('token')
-
+  const [errors, setErrors] = useState({});
   const [state, setState] = useState({
     name: User.name,
     phone: User.phone,
-    country: "",
-    city: "",
     email: User.email,
     address: {
+      country: "",
+      city: "",
       street: "",
       postalCode: "",
     },
@@ -58,10 +78,16 @@ export default function Checkout() {
   }
 
   function handleChange(e) {
-    validate(setState({
+    setState({
       ...state,
       [e.target.name]: e.target.value,
-    }));
+    });
+    setErrors(
+      validate({
+        ...state,
+        [e.target.name]: e.target.value,
+      })
+    );
   }
 
   const Payment = () => {
@@ -69,7 +95,6 @@ export default function Checkout() {
     const elements = useElements();
 
     const handleSubmit = async (e) => {
-
       e.preventDefault();
       const { error, paymentMethod } = await stripe.createPaymentMethod({
         type: "card",
@@ -84,7 +109,7 @@ export default function Checkout() {
             country: state.country,
             postalCode: state.postalCode,
             city: state.city,
-            direction: state.street,
+            street: state.street,
           },
           totalPrice: Math.round(totalPrice),
           id: id,
@@ -99,16 +124,26 @@ export default function Checkout() {
             //navigate('/buyHistory') //q vaya a ordenes
             window.location = "/buyHistory";
           }
-        });
+        })
+        .catch((error) => console.log(error))
         dispatch(clearCart(User.idUser));
       } else {
         console.log(error);
       }
     };
+
     return (
       <form className={s.form_compra} onSubmit={handleSubmit}>
         <CardElement className={s.card} />
-        {state.email && state.address && <button className={s.btn}>Buy</button>}
+        {
+        state.email &&
+        state.name &&
+        state.phone && 
+        state.country &&
+        state.city &&
+        state.postalCode &&
+          <button className={s.btn}>CONFIRM YOUR SHOP</button>}
+        
       </form>
     );
   };
@@ -119,13 +154,12 @@ export default function Checkout() {
       <div className={s.container_pasarela}>
         <div className={s.pasarela_card}>
           {cart?.map((e) => {
-            /*aca va token*/
             return (
               <div key={e.idProduct} className={s.pasarela_cdtm}>
                 <div>
                   <img
                     className={s.image_pasarela}
-                    alt="imagen_pasarela"
+                    alt="imagen_product"
                     src={e.image}
                   ></img>
                 </div>
@@ -135,11 +169,11 @@ export default function Checkout() {
                   </div>
 
                   <div>
-                    <p className={s.unidades_pasarela}>Unidades: {e.amount}</p>
+                    <p className={s.unidades_pasarela}>Quantity: {e.amount}</p>
                   </div>
                   <div>
                     <p className={s.precio_pasarela}>
-                      <span className={s.peso_pasarela}></span>{" "}
+                      <span className={s.peso_pasarela}>Price: </span>{" "}
                       {formatMoney(e.price)}
                     </p>
                   </div>
@@ -172,88 +206,100 @@ export default function Checkout() {
           </p>
         </div>
       </div>
+
       {buys ? (
         <div className={s.contenedor_facturacion}>
-          <p className={s.facturacion_pasarela}>Facturación</p>
-          <p className={s.direccion_pasarela}>Address Shipping</p>
+          <p className={s.facturacion_pasarela}>SHIPPING ADDRESS</p>
+          <p className={s.direccion_pasarela}></p>
           <div className={s.datos_personales_pasarela}>
             <div>
               <label>Name</label>
-              <input
+              <input id='name'
                 type="text"
-                required
+                required="required"
                 autoComplete="name"
                 name="name"
                 value={state.name}
-                onChange={(e) => handleChange(e)}
+                onChange={handleChange}
+                className={errors.name && "danger"}
               />
+              {errors.name && <p className={s.danger}>{errors.name}</p>}
             </div>
             <div>
               <label>Phone</label>
-              <input
+              <input id='phone'
                 type="text"
-                required
+                required="required"
                 autoComplete="phone"
                 name="phone"
                 value={state.phone}
-                onChange={(e) => handleChange(e)}
+                onChange={handleChange}
+                className={errors.phone && "danger"}
               />
+              {errors.phone && <p className={s.danger}>{errors.phone}</p>}
             </div>
             <div>
               <label>Email</label>
-              <input
+              <input id='email'
                 type="text"
-                required
+                required="required"
                 autoComplete="email"
                 name="email"
                 value={state.email}
-                onChange={(e) => handleChange(e)}
+                onChange={handleChange}
+                className={errors.email && "danger"}
               />
+              {errors.email && <p className={s.danger}>{errors.email}</p>}
             </div>
 
             <div>
               <label>Country</label>
-              <input
+              <input id='country'
                 type="text"
-                required
-                autoComplete="country-name"
+                required="required"
                 name="country"
                 value={state.country}
-                onChange={(e) => handleChange(e)}
+                onChange={handleChange}
+                className={errors.country && "danger"}
               />
+              {errors.country && <p className={s.danger}>{errors.country}</p>}
             </div>
             <div>
               <label>City</label>
-              <input
+              <input id='city'
                 type="text"
-                required
-                autoComplete="city"
+                required='required'
                 name="city"
                 value={state.city}
-                onChange={(e) => handleChange(e)}
+                onChange={handleChange}
+                className={errors.city && "danger"}
               />
+              {errors.city && <p className={s.danger}>{errors.city}</p>}
             </div>
             <div>
               <label>Street</label>
-              <input
+              <input id='direction'
                 type="text"
-                required
-                autoComplete="street-address"
-                name="address"
-                value={state.address.street}
-                onChange={(e) => handleChange(e)}
+                required='required'
+                name="direction"
+                value={state.direction}
+                onChange={handleChange}
+                className={errors.direction && "danger"}
               />
+              {errors.direction && <p className={s.danger}>{errors.direction}</p>}
             </div>
             <div>
               <label>Postal Code</label>
-              <input
+              <input id='postalCode'
                 type="number"
-                required
-                autoComplete="postal-code"
+                min={1}
+                required='required'
                 name="postalCode"
-                value={state.address.postalCode}
-                onChange={(e) => handleChange(e)}
+                value={state.postalCode}
+                onChange={handleChange}
+                className={errors.postalCode && "danger"}
               />
+              {errors.postalCode && <p className={s.danger}>{errors.postalCode}</p>}
             </div>
           </div>
           <div>

@@ -42,7 +42,7 @@ export default function BuyHistory() {
                             <ul className={s.stateAmount}>
                                 <li className={e.status=='completed'?`${s.status}`:`${s.statusfail}`}>{e.status.toUpperCase()}</li>
                                 <li className={s.amount}>
-                                    Total: {formatMoney(e.totalPrice*10)}
+                                    Total: {formatMoney(e.totalPrice)}
                                 </li>
                             </ul>
 
