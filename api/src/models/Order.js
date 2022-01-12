@@ -37,6 +37,10 @@ module.exports = (sequelize) => {
         status: {
             type: DataTypes.ENUM("created","processing","canceled","completed","rejected"),
             allowNull: false,
+        },
+        dispatched:{
+          type:DataTypes.ENUM("processing", "sent", "recieved"),
+          defaultValue:"processing"
         }
     },{
       createdAt: 'creationDate',

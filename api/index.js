@@ -5,7 +5,7 @@ let { Category, Order, Product, User, Cart, Details, Brand, CategoryBrand, Revie
 
 const startServer= async()=>{
   try {
-    
+     
     await Brand.sync({force:false});
     await Category.sync({force:false});
     await CategoryBrand.sync({force:false});

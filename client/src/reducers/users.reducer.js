@@ -4,10 +4,9 @@ import{
     LOGIN,
     LOGOUT,
     ERROR_LOGIN,
-    //RESET,
-    RESET,
     UPDATE_USER,
     DELETE_USER,
+    GET_USER_INFO,
 } from '../actions/actionsTypes'
 
 const initialState = {
@@ -27,7 +26,6 @@ const initialState = {
 }
 
 export function usersReducer(state = initialState, action){ 
-    console.log(action);
     switch(action.type){
         case LOGIN:
             return{
@@ -59,10 +57,6 @@ export function usersReducer(state = initialState, action){
 
         case UPDATE_USER:{
             const {user} = action.payload;
-
-            console.log(user)
-            console.log(action.payload.from)
-
             if(action.payload.from === "profile"){
                 return{
                     ...state,
@@ -77,10 +71,16 @@ export function usersReducer(state = initialState, action){
 
         case DELETE_USER:{
             return{
-                ...state
+                ...state,
+                users:action.payload
             }
         }
-
+        case GET_USER_INFO:
+            return{
+                ...state,
+                users:action.payload
+            }
+        
         default:
             return state;
     }
