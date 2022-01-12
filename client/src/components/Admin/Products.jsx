@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react'
 import {useDispatch , useSelector} from 'react-redux';
-import { editProduct, getAllProducts, getCategories, getBrands } from '../../actions/index.js'
+import { createProduct, editProduct, getAllProducts, getCategories, getBrands } from '../../actions/index.js'
 import s from '../../assets/styles/Products.module.css'
 import s2 from '../../assets/styles/CategoryForm.module.css';
 import DataTable from 'react-data-table-component';
@@ -99,6 +99,10 @@ const Products = () => {
             value:''
         })
     }
+
+    let handlerRegister = ()=>{
+        dispatch(createProduct(data))
+    }
     return (
         <div className={s.Container}>
             <form className={s.Form}>
@@ -145,7 +149,7 @@ const Products = () => {
                     <button onClick={addDetail}>ADD</button>
                 </div>
                 <div className={s.formGroup}>
-                    <button className={s.button}>Registrar</button>
+                    <button className={s.button} onClick={handlerRegister}>Registrar</button>
                 </div>
             </form>
             <div className={s.containerSearch}>

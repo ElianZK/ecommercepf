@@ -9,7 +9,7 @@ const CheckType = async(req, res) =>{
         const user = await User.findOne({where: {
             idUser
         }})
-    
+        
         let {type} = user.dataValues;
     
         if(type === "user"){
