@@ -62,7 +62,6 @@ function App() {
           setIsAdmin(access && !!idUser)
       })
   }, [idUser]); */
-
   return (
     <div className="App">
       <Nav isAdmin={isAdmin} filters={filters} setFilters={setFilters}/>

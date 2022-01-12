@@ -497,7 +497,7 @@ const SERVER = 'http://localhost:3001';
         }
       if (userId) {
           let exits=false;
-          let aux= cart?.map(p=>{
+          let aux= Array.isArray(cart)?cart.map(p=>{
               if(p.idProduct===product.idProduct){
                 exits=true;
                 return {
@@ -506,7 +506,7 @@ const SERVER = 'http://localhost:3001';
                 }
               }
               return p;
-          })
+          }):[]
 
           if(!exits) aux=[...aux, product]
 

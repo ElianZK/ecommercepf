@@ -38,7 +38,7 @@ function ShopConfirm(orderProducts,totalPrice,address){
             }
             .descr{
                 background-color: #fff;
-                width: 70%;
+                width: 60%;
                 min-height: 90vh;
                 height: auto;
             }
