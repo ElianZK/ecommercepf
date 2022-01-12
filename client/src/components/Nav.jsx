@@ -14,9 +14,7 @@ import NavMenu from './NavMenu'
 import {getProductsCartUser} from '../actions/index'
 
 const Nav = ({isAdmin,filters, setFilters}) => {
-    const user = useSelector(state => {
-        return state.usersReducer.loginInfo.user;
-    });
+    const user = useSelector(state => state.usersReducer.loginInfo.user);
     const dispatch = useDispatch();
     const navigate = useNavigate();
    
