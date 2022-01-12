@@ -13,7 +13,8 @@ import Cart from './components/Shops/Cart';
 import Profile from './components/Profile.jsx';
 import BuyHistory from './components/Shops/BuyHistory'
 import UsersForm from './components/Admin/usersForm';
-import Checkout from './components/Shops/Checkout'
+import Checkout from './components/Shops/Checkout';
+import OrdersPannel from './components/Admin/Orders';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from './actions';
@@ -75,6 +76,7 @@ function App() {
         <Route exact path="/products" element={<Products />} />
         <Route exact path="/buyHistory" element={<BuyHistory/>} />
         <Route exact path="/checkout" element={<Checkout />} />
+        <Route exact path="/admin/orders" element={<OrdersPannel />} />
 
         <Route exact path="/profile" element={<Profile/>} />
 

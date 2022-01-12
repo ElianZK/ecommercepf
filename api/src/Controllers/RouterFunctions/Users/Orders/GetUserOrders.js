@@ -24,7 +24,7 @@ const getUserOrders = async(req, res,next)=>{
         include: [Product]
       
       })
-      
+       
       res.status(200).json({user, orders})
     }else{
       //[En caso de tener un id de Orden, muestro tanto la orden como los productos asociados a esa orden
