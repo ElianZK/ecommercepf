@@ -77,13 +77,13 @@ function Filters({setFilters, setPage}){
         {brands.map(el=>(<option key={el.idBrand} value={el.name}>{el.name}</option>))}
       </select>
 
-      <form onSubmit={handleFormSubmit} >
+      {/* <form onSubmit={handleFormSubmit} > */}
         <label>MinPrice</label>
         <input type="number" name="minPrice" min={0} onChange={e=>handlePriceSet(e)}/>
         <label>MaxPrice</label>
         <input type="number" name="maxPrice" min={0} onChange={handlePriceSet}/>
-        <button type="submit">Set</button>
-      </form>
+        <button onClick={handleFormSubmit}>Set</button>
+      {/* </form> */}
 
       <select name='sort' onChange={handleChangeFilters}>
         <option value=''>Sorts</option>

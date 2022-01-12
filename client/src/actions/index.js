@@ -1,93 +1,222 @@
-import {
-  GET_ALL_PRODUCTS,
-  GET_PRODUCT_BY_NAME,
-  GET_PRODUCT_ID,
-  GET_ALL_CATEGORIES,
-  GET_ALL_BRANDS,
-  FILTER_PRODUCTS_BY_CATEGORY,
-  FILTER_PRODUCTS_BY_PRICE,
-  FILTER_PRODUCTS_BY_BRANDS,
-  SORT_PRODUCTS,
-  CREATE_CATEGORY,
-  CREATE_PRODUCT,
-  CREATE_BRANDS,
-  FILTERS_CLEAR,
-  REMOVE_CATEGORY,
-  REMOVE_BRANDS,
-  REMOVE_PRODUCT,
-  EDIT_CATEGORY,
-  EDIT_PRODUCT,
-  EDIT_BRANDS,
-  LOGIN,
-  LOGOUT,
-  //CREATE_USER,
-  ADD_TO_CART,
-  ADD_TO_CART_FROM_DB,
-  DELETE_ITEM_FROM_CART,
-  DELETE_ITEM_FROM_CART_LOCALSTORAGE,
-  DELETE_ALL_CART,
-  CART_FROM_LOCALSTORAGE_TO_DB,
-  CART_FROM_DB_TO_LOCALSTORAGE,
-  GET_PRODUCTS_CART,
-  CHANGE_QTY,
-  CLEAR_CART,
-  UPDATE,
-  CREATE_USER,
-  GET_USERS,
-  UPDATE_USER,
-  SET_ORDER_PRODUCTS,
-  CHECK_TYPE,
-  DELETE_USER,
-  CREATE_REVIEWS,
-  GET_REVIEWS,
-  GET_WISHLIST,
-  UPDATE_WISHLIST,
+import { GET_ALL_PRODUCTS, 
+    GET_PRODUCT_BY_NAME,
+    GET_PRODUCT_ID,
+    GET_ALL_CATEGORIES,
+    GET_ALL_BRANDS,
+    FILTER_PRODUCTS_BY_CATEGORY,
+    FILTER_PRODUCTS_BY_PRICE,
+    FILTER_PRODUCTS_BY_BRANDS,
+    SORT_PRODUCTS,
+    CREATE_CATEGORY,
+    CREATE_PRODUCT,
+    CREATE_BRANDS,
+    FILTERS_CLEAR,
+    REMOVE_CATEGORY,
+    REMOVE_BRANDS,
+    REMOVE_PRODUCT,
+    EDIT_CATEGORY,
+    EDIT_PRODUCT,
+    EDIT_BRANDS,
+    LOGIN,
+    LOGOUT,
+    //CREATE_USER,
+    ADD_TO_CART,
+    ADD_TO_CART_FROM_DB,
+    DELETE_ITEM_FROM_CART,
+    DELETE_ITEM_FROM_CART_LOCALSTORAGE,
+    DELETE_ALL_CART,
+    CART_FROM_LOCALSTORAGE_TO_DB,
+    CART_FROM_DB_TO_LOCALSTORAGE,
+    GET_PRODUCTS_CART,
+    CHANGE_QTY,
+    CLEAR_CART,
+    UPDATE,
+    CREATE_USER,
+    GET_USERS,
+    UPDATE_USER,
+    SET_ORDER_PRODUCTS,
+    CHECK_TYPE,
+    DELETE_USER,
+    CREATE_REVIEWS,
+    GET_REVIEWS,
+    GET_WISHLIST,
+    UPDATE_WISHLIST,
+    DELETE_REVIEW,
+    UPDATE_REVIEW,
 } from "./actionsTypes";
 import axios from "axios";
 
 const SERVER = "http://localhost:3001";
 //const SERVER = 'https://e-commerce-pf.herokuapp.com';
 
-export function getAllProducts(data, all = false) {
-  return async function (dispatch) {
-    try {
-      let products = null;
-      if (all) {
-        products = await axios.get(`${SERVER}/products?all=true`);
-      } else {
-        let {
-          offset = 0,
-          limit = 25,
-          search = null,
-          minPrice = 0,
-          maxPrice = null,
-          brand = null,
-          category = null,
-          sort = null,
-        } = data;
-        search = search ? `&search=${search}` : "";
-        minPrice = minPrice ? `&minPrice=${minPrice}` : "";
-        maxPrice = maxPrice ? `&maxPrice=${maxPrice}` : "";
-        brand = brand ? `&brand=${brand}` : "";
-        category = category ? `&category=${category}` : "";
-        sort = sort ? `&sort=${sort}` : "";
-        //console.log(`${SERVER}/products?offset=${offset}&limit=${limit}${maxPrice}${minPrice}${brand}${category}`)
-        products = await axios.get(
-          `${SERVER}/products?offset=${offset}&limit=${limit}${maxPrice}${minPrice}${brand}${category}${sort}${search}`
-        );
-      }
-      return dispatch({
-        type: GET_ALL_PRODUCTS,
-        payload: products.data,
-      });
-    } catch (err) {
-      return dispatch({
-        type: GET_ALL_PRODUCTS,
-        payload: [],
-      });
-    }
-  };
-}
+
+    export function getAllProducts(data,all=false) {
+        
+        return async function(dispatch){
+
+            try{
+                let products=null;
+                if(all){
+                    products = await axios.get(`${SERVER}/products?all=true`);
+                }else{
+                    let {offset=0, limit=25, search=null, minPrice=0,  maxPrice=null,brand = null, category=null, sort=null} = data;
+                    search= search? `&search=${search}`:'';
+                    minPrice= minPrice?`&minPrice=${minPrice}`: '';
+                    maxPrice=maxPrice?`&maxPrice=${maxPrice}`:'';
+                    brand=brand? `&brand=${brand}`:'';
+                    category=category? `&category=${category}`:'';
+                    sort= sort? `&sort=${sort}`:'';
+                    //console.log(`${SERVER}/products?offset=${offset}&limit=${limit}${maxPrice}${minPrice}${brand}${category}`)
+                    products = await axios.get(`${SERVER}/products?offset=${offset}&limit=${limit}${maxPrice}${minPrice}${brand}${category}${sort}${search}`);
+                }
+                return dispatch({
+                    type: GET_ALL_PRODUCTS,
+                    payload: products.data
+                });
+            }catch(err){
+                return dispatch({
+                    type: GET_ALL_PRODUCTS,
+                    payload: []
+            })}
+        }
+    };
+
+    export function getProductId(idProduct) {
+        return async function(dispatch){
+            try{
+                const detail= await axios.get(`${SERVER}/products/${idProduct}`)
+                return dispatch({
+                    type: GET_PRODUCT_ID,
+                    payload: detail.data
+                })     
+            }catch(err){
+                console.log(err)
+            }   
+        }
+    };
+
+    export function getCategories(){
+        return async function(dispatch){
+            try{
+                const categories= await axios.get(`${SERVER}/categories`)
+                return dispatch({
+                    type: GET_ALL_CATEGORIES,
+                    payload: categories.data
+                })
+            }catch(err){
+                console.log("no hay cateegorías", err)
+            }
+        }
+    };
+
+    export function getBrands(category=''){
+        return async function(dispatch){
+            try{
+              let aux=''  
+              if(!category)  aux=`?category=${category}`
+              const brands= await axios.get(`${SERVER}/brands${aux}`)
+              return dispatch({
+                  type: GET_ALL_BRANDS,
+                  payload: brands.data
+              })
+            }catch(err){
+                console.log(err)
+            }
+        }
+    };
+
+    export function createCategory(payload){
+        return async function (dispatch){
+            try{
+                const newCategory = await axios.post(`${SERVER}/categories`, payload)
+                return dispatch ({
+                    type: CREATE_CATEGORY,
+                    payload: newCategory
+                })
+            }catch(err){
+                console.log(err)
+            }
+        }
+    };
+
+    export function createProduct(payload){
+        return async function (dispatch){
+            try{
+                const newProduct = await axios.post(`${SERVER}/products` ,payload)
+                return dispatch ({
+                    type: CREATE_PRODUCT,
+                    payload: newProduct
+                })
+            }catch(err){
+                console.log(err)
+            }
+        }
+    };
+
+    export function createBrands(payload){
+        return async function (dispatch){
+            try{
+                const newBrands = await axios.post(`${SERVER}/brands` ,payload)
+                return dispatch ({
+                    type: CREATE_BRANDS,
+                    payload: newBrands
+                })
+            }catch(err){
+                console.log(err)
+            }
+        }
+    };
+
+    export function getProductByName(name) {
+        return async function(dispatch){
+            try{
+                const product = await axios.get(`${SERVER}/products?search=${name}`)
+                return dispatch({
+                    type: GET_PRODUCT_BY_NAME,
+                    payload: product.data
+                })
+            }catch(err){
+                return dispatch({
+                    type: GET_PRODUCT_BY_NAME,
+                    payload: []
+            })}
+        }
+    };
+
+    export function filterByCategory(payload){
+        return {
+            type: FILTER_PRODUCTS_BY_CATEGORY,
+            payload
+        }
+    };
+
+    export function filterByPrice(payload){ //ver si tengo ruta
+        return{
+            type: FILTER_PRODUCTS_BY_PRICE,
+            payload
+        }
+    };
+
+    export function filterProductByBrand(payload){
+        return{
+            type: FILTER_PRODUCTS_BY_BRANDS,
+            payload
+        }
+    };
+
+    export function sortProducts(payload){
+        return {
+            type: SORT_PRODUCTS,
+            payload
+        }
+    };
+
+    export function filtersClear(){
+        return {
+            type: FILTERS_CLEAR,
+        }
+    };
+  
 
 export function getProductId(idProduct) {
   return async function (dispatch) {
@@ -532,72 +661,67 @@ export function getProductsCartUser(userId) {
         /* dispatch({
                         type: CLEAR_CART
                     }) */
-        const localCart = JSON.parse(localStorage.getItem("cart")) || []; //orderId es el estado para la orden de ese usuario
-        //localStorage.removeItem("cart")
-        const res = await axios.put(`${SERVER}/users/cart/${userId}`, {
-          productsInfo: [...data.cart, ...localCart],
-        });
-        return dispatch({
-          type: GET_PRODUCTS_CART,
-          payload: res.data.cart,
-        });
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-}
-
-//para boton de carro y cantidades seleccionadas
-
-export const addToCart = (product, userId) => (dispatch) => {
-  console.log("jo", product);
-  if (!userId) {
-    let products = JSON.parse(localStorage.getItem("cart")) || [];
-    let productFind = false;
-    products = products.map((p) => {
-      if (p.idProduct === product.idProduct) {
-        productFind = true;
-        return {
-          ...p,
-          //qty: Number(p.qty) + 1,
-          amount:
-            Number(p.amount) + product.amount <= p.stock
-              ? Number(p.amount) + product.amount
-              : p.amount,
-        };
-      }
-      return p;
-    });
-
-    if (productFind === false) {
-      products.push(product);
-      console.log(products);
-    }
-    products = products.filter((p) => p.amount > 0);
-    localStorage.setItem("cart", JSON.stringify(products));
-    return dispatch({
-      type: ADD_TO_CART,
-      payload: products,
-    }); /* */
-  }
-  if (userId) {
-    const body = {
-      productsInfo: [{ ...product } /* id: product.idProduct, qty: 1  */],
+                    const localCart = JSON.parse(localStorage.getItem("cart")) || [] //orderId es el estado para la orden de ese usuario
+                    //localStorage.removeItem("cart")
+                    const res= await axios.put(`${SERVER}/users/cart/${userId}`,{productsInfo: [...data.cart,...localCart]})
+                     return dispatch ({
+                         type: GET_PRODUCTS_CART,
+                         payload: res.data.cart
+                     })
+                  }
+             }catch(err){
+                 console.log(err)
+             }
+         }
+     }
+    
+    
+    //para boton de carro y cantidades seleccionadas
+    
+    export const addToCart = (product, userId) => (dispatch) => {
+        console.log('jo',product)
+        if (!userId) {
+            let products = JSON.parse(localStorage.getItem("cart")) || [];
+          let productFind = false;
+          products = products.map((p) => {
+              
+            if (p.idProduct === product.idProduct ) {
+                  productFind = true;
+              return {
+                    ...p,
+                    //qty: Number(p.qty) + 1,
+                    amount: Number(p.amount) + product.amount<=p.stock?Number(p.amount) + product.amount:p.amount,
+                }; 
+            }
+            return p;
+          });
+          
+           if (productFind===false){ 
+              products.push(product);
+              console.log(products)
+          }
+          products= products.filter(p=>p.amount>0)
+          localStorage.setItem("cart", JSON.stringify(products));
+          return dispatch({ 
+              type: ADD_TO_CART,
+              payload: products });/* */
+        }
+      if (userId) {
+          const body = {productsInfo: [{...product}/* id: product.idProduct, qty: 1  */]};
+          console.log('lo',product.idProduct)
+          return axios
+            .put(`${SERVER}/users/cart/${userId}`, body) //fatlta autenci usuario
+            .then((response) => {
+                console.log("putproductadd",response)
+                localStorage.setItem("cart", JSON.stringify(response.data.cart));
+              dispatch({ 
+                  type: ADD_TO_CART_FROM_DB,
+                  payload: response.data.cart 
+                });
+            })
+            .catch((error) => console.error(error));
+        } 
     };
-    console.log("lo", product.idProduct);
-    return axios
-      .put(`${SERVER}/users/cart/${userId}`, body) //fatlta autenci usuario
-      .then((response) => {
-        console.log("putproductadd", response);
-        dispatch({
-          type: ADD_TO_CART_FROM_DB,
-          payload: response.data.cart,
-        });
-      })
-      .catch((error) => console.error(error));
-  }
-};
 
 export function deleteItemFromCart(idProduct, userId) {
   console.log("Id a eliminar", idProduct);
@@ -839,50 +963,77 @@ export function deleteItemFromWishList(idUser, idProduct) {
     } catch (error) {
       console.log("deleteItemToWishList action error: ", error);
     }
-  };
+  }
 }
-//   export const getAllFavourites = () => async (dispatch) => {
-//     try {
-//       const { data } = await axios.get(`/users/favs`, { headers });
-//       dispatch({ type: GET_FAVOURITES, payload: data });
-//     } catch (error) {
-//       console.error(error);
-//     }
-//   };
+    //   export const getAllFavourites = () => async (dispatch) => {
+    //     try {
+        //       const { data } = await axios.get(`/users/favs`, { headers });
+        //       dispatch({ type: GET_FAVOURITES, payload: data });
+    //     } catch (error) {
+        //       console.error(error);
+    //     }
+    //   };
+    
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    
+    //CreateReview crea una puntuacion y comentario 
+    export function createReview(id,review){
+        console.log('object :>> ', id);
+        return dispatch => {
+            axios.post(`http://localhost:3001/product/${id}/review`,review)
+            .then((result) => {
+                return dispatch({
+                    type:CREATE_REVIEWS,
+                    payload: result.data
+                })
+            }).catch((err) => {
+                console.log('err :>> ', err);
+            });
+        }
 
-///////////////////////////////////////////////////////////////////////////////////////////
+    }
 
-//CreateReview crea una puntuacion y comentario
-export function createReview(id, review) {
-  console.log("object :>> ", id);
-  return (dispatch) => {
-    axios
-      .post(`http://localhost:3001/product/${id}/review`, review)
-      .then((result) => {
-        return dispatch({
-          type: CREATE_REVIEWS,
-          payload: result.data,
-        });
-      })
-      .catch((err) => {
-        console.log("err :>> ", err);
-      });
-  };
-}
+    //obtengo todos mis comentarios por ID de producto
+    export function get_Review(id){
+        return dispatch => {
+            axios.get(`http://localhost:3001/product/${id}/review`)
+            .then((result) => {
+                return dispatch({
+                    type:GET_REVIEWS,
+                    payload:result.data
+                })
+            }).catch((err) => {
+                console.log('err :>> ', err);
+            });
+        }
+    }
 
-//obtengo todos mis comentarios por ID de producto
-export function get_Review(id) {
-  return (dispatch) => {
-    axios
-      .get(`http://localhost:3001/product/${id}/review`)
-      .then((result) => {
-        return dispatch({
-          type: GET_REVIEWS,
-          payload: result.data,
-        });
-      })
-      .catch((err) => {
-        console.log("err :>> ", err);
-      });
-  };
-}
+    export function eliminar_review(prod,id){
+        return dispatch => {
+            axios.delete(`http://localhost:3001/product/${prod}/review/${id}`)
+            .then((result) => {
+                console.log('result :>> ', result.data);
+                return dispatch({
+                    type:DELETE_REVIEW,
+                    payload:result.data
+                })
+            }).catch((err) => {
+                console.log('err :>> ', err);
+            });
+        }
+    }
+
+    export function update_review(prod,id,values){
+        return dispatch => {
+            axios.put(`http://localhost:3001/product/${prod}/review/${id}`,values)
+            .then((result) => {
+                console.log('result :>> ', result.data);
+                return dispatch({
+                    type:UPDATE_REVIEW,
+                    payload:result.data
+                })
+            }).catch((err) => {
+                console.log('err :>> ', err);
+            });
+        }
+    }

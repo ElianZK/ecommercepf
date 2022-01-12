@@ -1,11 +1,14 @@
 import {
     CREATE_REVIEWS,
-    GET_REVIEWS
+    GET_REVIEWS,
+    DELETE_REVIEW,
+    UPDATE_REVIEW
 } from '../actions/actionsTypes';
 
 const initialState = {
     create_review :{},
-    getreview:[]
+    getreview:[],
+    update_review:{}
 }
 
 export default function usersReducer(state = initialState, action){
@@ -24,6 +27,20 @@ export default function usersReducer(state = initialState, action){
             getreview: action.payload
         }
     }
+
+    if (action.type ===DELETE_REVIEW ) {
+        // console.log('object gget revi :>> ', action.payload);
+        return {
+            ...state,
+            getreview: state.getreview.filter(e=> e.idReviews!== action.payload.idReviews)
+        }
+    }
+    // if (action.type ===UPDATE_REVIEW) {
+    //     return {
+    //         ...state,
+    //         update_review:action.payload
+    //     }
+    // }
 
     return state
 

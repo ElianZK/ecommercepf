@@ -19,7 +19,7 @@ const Nav = ({isAdmin,filters, setFilters}) => {
     const navigate = useNavigate();
    
     const cart = useSelector(state => state.ordenReducer.cart)
-    let totalItems = cart && cart.reduce((accumulator, currentValue) => Number(accumulator) + Number(currentValue.amount), 0)
+    let totalItems = cart && [].concat(cart).reduce((accumulator, currentValue) => Number(accumulator) + Number(currentValue.amount), 0)
     const User = JSON.parse(localStorage.getItem("user"));
     const idUser = !User?null:User.idUser;
     useEffect(() => {
@@ -38,7 +38,7 @@ const Nav = ({isAdmin,filters, setFilters}) => {
 
                 <div className={s.buttons}>
                     {/* {user.idUser ? <> */}
-                        <NavMenu/>
+                        <NavMenu isAdmin={isAdmin}/>
                         {/* <h1>{user.name}</h1> */}
                         {/* <button className={s.btn} onClick={() => {
                             localStorage.setItem("user", JSON.stringify({idUser: null}));

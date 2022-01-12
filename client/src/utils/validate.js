@@ -6,7 +6,6 @@ function validate(input) {
         errors.name = 'name is required';
     }else if(!/^\w{3,20}$/.test(input.name)){
         errors.name = 'Invalid name'
-    
     }else if(!input.address){
         errors.address = 'address is required';
     }
@@ -15,5 +14,3 @@ function validate(input) {
     }
     return errors;
 }
-
-export default validate

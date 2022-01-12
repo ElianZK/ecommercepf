@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react'
 import {useDispatch , useSelector} from 'react-redux';
-import { editProduct, getAllProducts } from '../../actions/index.js'
+import { editProduct, getAllProducts, getCategories } from '../../actions/index.js'
 import s from '../../assets/styles/Products.module.css'
 import s2 from '../../assets/styles/CategoryForm.module.css';
 import DataTable from 'react-data-table-component';
@@ -13,14 +13,18 @@ const Products = () => {
     const products = useSelector((state) => {
         return state.productsReducer.allProducts.rows;
     }) 
-    const [data,setData]= useState([])
-    const [name,setName]=useState('');
-    const [price,setPrice]=useState('');
-    const [stock,setStock]=useState('');
-    const [condition,setCondition]=useState('');
+    const brands = useSelector(state=>state.productsReducer.brands);
+    const categories = useSelector(state=>state.productsReducer.categories);
+    const [data,setData]= useState({
+        name:'',
+        price: '',
+        stock: '',
+        condition: '',
+        image:'',
+        thumbnail: '',        
+    })
     const [images,setImages]=useState([]);
     const [image,setImage]=useState('');
-    const [thumbnail,setThumbnail]=useState('');
     
 
     const [search, setSearch] = useState('')
@@ -54,62 +58,54 @@ const Products = () => {
     }
     useEffect(() => {
         dispatch(getAllProducts(null,true))
+        dispatch(getCategories());
     }, [dispatch])
+
+    let handleChange= (e)=>{
+        e.preventDefault();
+        let name= e.target.name;
+        let value= e.target.value;
+        
+    }
     return (
         <div className={s.Container}>
-            {/* <div className={s.modal}>
-                <form className={s.editProd}>
-                    <div>
-                        <div className={s.formGroup}>
-
-
-                        </div>
-                        <div className={s.formGroup}>
-
-                        </div>
-                        <div className={s.formGroup}>
-
-                        </div>
-                        <div className={s.formGroup}>
-
-                        </div>
-                        <div className={s.formGroup}>
-
-                        </div>
-                        <div className={s.formGroup}>
-
-                        </div>
-                        <div className={s.formGroup}>
-
-                        </div>
-                    </div>
-
-                </form>
-
-            </div> */}
             <form className={s.Form}>
                 <h2 className={s.Title}>Registro de Productos</h2>
                 <div className={s.formGroup}>
-                    <input id="name" name="name" type="text" placeholder="Ingrese el nombre"></input>
+                    <input id="name" name="name" type="text" placeholder="Type a name"></input>
                 </div>
                 <div className={s.formGroup}>
-                    <input id="price" name="price" type="text" placeholder="Ingrese el precio"></input>
+                    <input id="price" name="price" type="text" placeholder="Type the price"></input>
                 </div>
                 <div className={s.formGroup}>
-                    <input id="stock" name="stock" type="text" placeholder="Ingrese el Stock"></input>
+                    <input id="stock" name="stock" type="text" placeholder="Type the Stock"></input>
                 </div>
                 <div className={s.formGroup}>
                     <select name="condition">
+                        <option value="">Select a condition</option>
                         <option value="new">New</option>
                         <option value="used">Used</option>
                     </select>
                 </div>
-                <div className={s.formDetail}>
-                    <input id="image" name="image" type="text" placeholder="Ingrese la imagen"></input>
-                    <button>ADDImage</button>
+                {/* <div className={s.formDetail}> */}
+                <div className={s.formGroup}>
+                    <input id="image" name="image" type="text" placeholder="Type an URL image"></input>
+                    {/* <button>ADDImage</button> */}
                 </div>
                 <div className={s.formGroup}>
-                    <input id="thumbnail" name="thubnail" type="text" placeholder="Ingrese un thubnail"></input>
+                    <input id="thumbnail" name="thubnail" type="text" placeholder="Type a small image"></input>
+                </div>
+                <div className={s.formGroup}>
+                    <select name='category' /* onChange={handleChangeCategory} */>
+                        <option value=''>Select Category</option>
+                        {categories.map(el=>(<option key={el.idCategory} value={el.name}>{el.name}</option>))}
+                    </select>
+                </div>
+                <div className={s.formGroup}>
+                <select name='brand' /* onChange={handleChangeFilters} */>
+                    <option value=''>Select Brand</option>
+                    {brands.map(el=>(<option key={el.idBrand} value={el.name}>{el.name}</option>))}
+                </select>
                 </div>
                 <div className={s.formDetail}>
                     <input id="att" name="att" type="text" placeholder="Ingrese el atributo"></input>

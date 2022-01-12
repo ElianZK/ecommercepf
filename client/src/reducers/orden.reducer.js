@@ -77,10 +77,13 @@ export function ordenReducer(state = initialState, action){
 
 
         case UPDATE: 
-            console.log(state.cart)
             return {
             ...state,
+<<<<<<< HEAD
             cart: [...state.cart]
+=======
+            cart: action.payload
+>>>>>>> origin/develop-fran
         };
 
         	
