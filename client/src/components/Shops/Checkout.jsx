@@ -62,7 +62,7 @@ export default function Checkout() {
     });
   }
 
-  const Payment = () => {
+  /* const Payment = () => {
     const stripe = useStripe();
     const elements = useElements();
 
@@ -85,30 +85,60 @@ export default function Checkout() {
           },
           totalPrice: Math.round(totalPrice),
           id: id,
-        };
-        dispatch(setOrderProducts(pay, User.idUser)); //aca deberia ir la ruta post
-        Swal.fire({
-          icon: "success",
-          text: "Thank you for your purchase , you will receive an email with the details",
-          showConfirmButton: true,
-        }).then((result) => {
-          if (result.value) {
-            //navigate('/buyHistory') //q vaya a ordenes
-            window.location = "/buyHistory";
-          }
-        });
-        dispatch(clearCart(User.idUser));
-      } else {
-        console.log(error);
-      }
-    };
-    return (
-      <form className={s.form_compra} onSubmit={handleSubmit}>
-        <CardElement className={s.card} />
-        {state.email && state.address && <button className={s.btn}>Buy</button>}
-      </form>
-    );
-  };
+        }; */
+        
+        const Payment = () => {
+            const stripe = useStripe();
+            const elements = useElements();
+
+            const handleSubmit = async(e) => {
+            e.preventDefault();
+            const {error, paymentMethod} = await stripe.createPaymentMethod({
+                type:"card",
+                card: elements.getElement(CardElement)
+            })
+                    if(!error) {
+                        const {id} = paymentMethod;
+                        let pay = {
+                            productsInfo: buys,
+                            email: state.email,
+                            //country: state.country,
+                            //phone: state.phone,
+                            address: {
+                                country: state.country,
+                                postalCode: state.postalCode,
+                                city: state.city,
+                                street:state.street
+                            },
+                            totalPrice: Math.round(totalPrice),
+                            id: id
+                        }
+                dispatch(setOrderProducts(pay, User.idUser)) //aca deberia ir la ruta post
+                    Swal.fire({
+                        icon: 'success',
+                        text: "Thank you for your purchase , you will receive an email with the details",
+                        showConfirmButton: true,
+                     }).then((result)=>{
+                        if(result.value){
+                           //navigate('/buyHistory') //q vaya a ordenes
+                           window.location='/buyHistory'
+                        }
+                     });
+                dispatch(clearCart(User.idUser))
+                
+                } else {
+                    console.log(error); 
+                }
+        }
+            return <form className= {s.form_compra}  
+                            onSubmit={handleSubmit}>
+                        <CardElement className={s.card}/>     
+                        {state.email && state.address &&
+                        <button className={s.btn}>
+                                Buy
+                            </button>}
+                    </form>       
+        }
 
   return (
     <div className={s.container}>
