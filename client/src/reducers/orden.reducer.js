@@ -93,7 +93,7 @@ export function ordenReducer(state = initialState, action) {
                 orderId: action.payload.orderId,
                     orders: action.payload.orders
             }
-
+ 
         case ADMIN_FILTER_ORDERS_BY_STATE:
                 let sort;
                 if (action.payload === '') sort = state.orders;
