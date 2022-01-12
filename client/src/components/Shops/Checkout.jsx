@@ -105,7 +105,7 @@ export default function Checkout(){
                                 country: state.country,
                                 postalCode: state.postalCode,
                                 city: state.city,
-                                direction:'esto no es direccion!!!!!'
+                                street:state.street
                             },
                             totalPrice: Math.round(totalPrice),
                             id: id

@@ -21,14 +21,25 @@ const getUserOrders = async(req, res,next)=>{
         attributes:{
           exclude:["confirmationDate", "UserId"]
         },
-        include: [Product]
+        include: {
+          model:Product,
+          attributes:["idProduct", "name", "thumbnail"],
+        },
       
       })
-      
+      orders = orders.map(el=>{
+        let {products, ...otherData} = el.toJSON();
+        products = products.map(prod=>{
+          let {details,...prodData}= prod;
+          return {...prodData, amount:details.amount, price:details.price};
+        });
+        return {...otherData, products};
+      })
+
       res.status(200).json({user, orders})
     }else{
       //[En caso de tener un id de Orden, muestro tanto la orden como los productos asociados a esa orden
-      let order = await Order.findByPk(OrderId);
+      let order = await Order.findByPk(OrderId,{attributes:{exclude:["confirmationDate"]}});
       
       let orderProducts = await Details.findAll({
         where:{
@@ -39,12 +50,12 @@ const getUserOrders = async(req, res,next)=>{
         where:{
           idProduct: orderProducts.map(el=>el.toJSON().ProductId)
         },
-        attributes: ["price", "name", "idProduct", "thumbnail"]
+        attributes: ["name", "idProduct", "thumbnail"]
       })
       orderProducts = orderProducts.map(el=>{
-        el = el.toJSON();
+        let {ProductId, OrderId, ...useFullData} = el.toJSON();
         let product = products.find(element=> element.idProduct===el.ProductId).toJSON();
-        return {...el, price:product.price, name: product.name, thumbnail:product.thumbnail};
+        return {...useFullData, name: product.name, thumbnail:product.thumbnail, idProduct:product.idProduct};
       })
       
       res.status(200).json({user, order, orderProducts})
