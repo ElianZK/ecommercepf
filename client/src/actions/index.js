@@ -36,13 +36,10 @@ import { GET_ALL_PRODUCTS,
     GET_REVIEWS,
     GET_WISHLIST,
     UPDATE_WISHLIST,
-<<<<<<< HEAD
     DELETE_REVIEW,
     UPDATE_REVIEW,
-=======
     GET_ALL_ORDERS,
     GET_USER_INFO,
->>>>>>> 8cea0360307e142d52280d1d84a6c177bef38a2d
 } from "./actionsTypes";
 import axios from 'axios';
 
@@ -822,7 +819,6 @@ const SERVER = 'http://localhost:3001';
         }
     }
 
-<<<<<<< HEAD
     export function eliminar_review(prod,id){
         return dispatch => {
             axios.delete(`http://localhost:3001/product/${prod}/review/${id}`)
@@ -852,7 +848,6 @@ const SERVER = 'http://localhost:3001';
             });
         }
     }
-=======
 
 export function getAllOrders() {
     return async function (dispatch) {
@@ -901,4 +896,3 @@ export function getUserInfo(userId){
         })
     }
 }
->>>>>>> 8cea0360307e142d52280d1d84a6c177bef38a2d

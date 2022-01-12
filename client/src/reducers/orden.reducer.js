@@ -13,20 +13,6 @@ import {
     SET_ORDER_PRODUCTS,
     ADMIN_FILTER_ORDERS_BY_STATE,
     ADMIN_FILTER_ORDERS_BY_PRICE,
-
-<<<<<<< HEAD
-import{ ADD_TO_CART,
-        ADD_TO_CART_FROM_DB,
-        DELETE_ITEM_FROM_CART,
-        DELETE_ITEM_FROM_CART_LOCALSTORAGE,
-        GET_PRODUCTS_CART,
-        CHANGE_QTY,
-        CLEAR_CART,      
-        UPDATE,
-        SET_ORDER_PRODUCTS,
-        
-=======
->>>>>>> 8cea0360307e142d52280d1d84a6c177bef38a2d
 } from '../actions/actionsTypes'
 
 
@@ -93,13 +79,6 @@ export function ordenReducer(state = initialState, action) {
             };
 
 
-<<<<<<< HEAD
-        case UPDATE: 
-            return {
-            ...state,
-            cart: action.payload
-        };
-=======
         case UPDATE:
             console.log(state.cart)
             return {
@@ -107,15 +86,9 @@ export function ordenReducer(state = initialState, action) {
                 cart: [...state.cart]
             };
 
->>>>>>> 8cea0360307e142d52280d1d84a6c177bef38a2d
 
         case SET_ORDER_PRODUCTS:
             return {
-<<<<<<< HEAD
-            ...state,
-            orders: action.payload.orders
-        }
-=======
                 ...state,
                 orderId: action.payload.orderId,
                     orders: action.payload.orders
@@ -128,7 +101,6 @@ export function ordenReducer(state = initialState, action) {
                 if(action.payload === 'created') sort = state.orders.sort(o=>
                     o.status === 'created'
                 )
->>>>>>> 8cea0360307e142d52280d1d84a6c177bef38a2d
 
                 if(action.payload === 'completed') sort = state.orders.sort(o=>
                     o.status === 'completed'
