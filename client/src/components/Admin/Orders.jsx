@@ -29,39 +29,36 @@ export default function OrdersPannel (){
                 </select>
             </div>
             <div className={s.OrdersContainer}>
-               {orders.map(e=>{
+                {orders.map(e=>{
                     return( 
-                        <ul className={s.Overview}>
-                            
+                       
+                        <div className={s.Overview}>
                             <h3 className={s.Status}>{e.status.toUpperCase()}</h3>
-                            <li>Date: {e.creationDate.split('T')[0]}</li>
-
+                            <h4>Date: {e.creationDate.split('T')[0]}</h4>
                             <ul className={s.OverDetail}>
+                                <li className={s.Amount}>Total amount: {formatMoney(e.totalPrice)}</li>
                                 <li>Country: {e.address.country}</li>
                                 <li>City: {e.address.city}</li>
                                 <li>Postal Code: {e.address.postalCode}</li>
-                                <li>Total amount: {formatMoney(e.totalPrice)}</li>
                             </ul>
 
-                            <button> Order Detail </button>
-                            <div className={s.OrderDetail}>
+                            <h3>Order Detail</h3>
+                            <div className={s.DetailContainer}>
                                 {e.products.map(p=>{
                                     return(
-                                        <ul className={s.DetailContainer}>
-                                            <h3 className={s.DetailTitle}>{p.name}</h3>
-                                            <li className={s.DetailItems}>Price per unit: {formatMoney(p.price)}</li>
-                                            <li className={s.DetailItems}>Units: {p.details.amount}</li>
-                                        </ul>
-                                    )
-                                })}
+                                        <div className={s.Detail}>
+                                            <h3 className={s.DetailTitle}><Link to={`/detail/${p.idProduct}`}>{p.name}</Link></h3>
+                                            <p className={s.DetailItems}>Price per unit: {formatMoney(p.price)}</p>
+                                            <p className={s.DetailItems}>Units: {p.details.amount}</p>
+                                        </div>
+                                )
+                            })}
                             </div>
-                        </ul>
+                        </div>
                     )
-                }
-                )} 
+                })}
                
             </div>
-
 
         </div>
     )
