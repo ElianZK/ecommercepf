@@ -28,7 +28,9 @@ function App() {
   const dispatch = useDispatch();
   const [isAdmin, setIsAdmin] = useState(true);
 
-  const idUser = useSelector(state => state.usersReducer.loginInfo.user.idUser);
+  //const idUser = useSelector(state => state.usersReducer.loginInfo.user.idUser);
+  const user = JSON.parse(localStorage.getItem("user"));
+  const idUser = !user?null:user.idUser;
   const  [filters, setFilters] = useState({
     sort: '',
     category: '',
@@ -42,8 +44,7 @@ function App() {
   useEffect(async() => {
     await axios.post("http://localhost:3001/user/adminExists");
     //const user = JSON.parse(localStorage.getItem("user"));
-    const user = JSON.parse(localStorage.getItem("user"));
-    const idUser = !user?null:user.idUser;
+    
     if(user){
       dispatch(login(user))
     }else{

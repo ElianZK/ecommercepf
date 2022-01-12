@@ -3,12 +3,9 @@ import{ ADD_TO_CART,
         ADD_TO_CART_FROM_DB,
         DELETE_ITEM_FROM_CART,
         DELETE_ITEM_FROM_CART_LOCALSTORAGE,
-        CART_FROM_LOCALSTORAGE_TO_DB,
-        CART_FROM_DB_TO_LOCALSTORAGE,
         GET_PRODUCTS_CART,
         CHANGE_QTY,
-        CLEAR_CART,
-      
+        CLEAR_CART,      
         UPDATE,
         SET_ORDER_PRODUCTS,
         

@@ -69,6 +69,8 @@ const getProducts= async (req, res, next)=>{
     if(sort){
       if(sort === "Lower_price" || sort==="Highest_price"){
         options.sort.push(sort==="Lower_price"?["price","ASC"]:["price","DESC"]);
+      }else if(sort === "Desc_name" || sort==="Asc_name"){
+        options.sort.push(sort==="Asc_name"?["name","ASC"]:["name","DESC"]);
       }
     }
   

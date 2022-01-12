@@ -3,17 +3,17 @@ import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
-import {PersonAdd} from '@mui/icons-material/PersonAdd';
-import {Settings} from '@mui/icons-material/Settings';
+import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
+import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import { useSelector, useDispatch } from 'react-redux'
-import { logOut,  login } from '../actions';
-import { Link, useNavigate } from 'react-router-dom'
+import { login } from '../actions';
+import { useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2';
 import s from '../assets/styles/Nav.module.css'
 
 
@@ -23,7 +23,6 @@ export default function NavMenu({isAdmin}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const user = useSelector(state => {
-      console.log(state.usersReducer)
       return state.usersReducer.loginInfo.user;
   });
 
@@ -90,10 +89,10 @@ export default function NavMenu({isAdmin}) {
           <Avatar /> {user.name}
         </MenuItem>
         {user.idUser?<MenuItem onClick={()=>navigate("/buyHistory")} className={s.btnoptions}>
-          <Avatar /> My Shops
+          <ShoppingBagIcon /> My Shops
         </MenuItem>:null}
-        <MenuItem>
-          <Avatar /> Edit Profile
+        <MenuItem onClick={()=>navigate('/profile')}>
+          <Settings /> Edit Profile
         </MenuItem>
         <MenuItem onClick={() => {
                             localStorage.setItem("user", JSON.stringify({idUser: null}));

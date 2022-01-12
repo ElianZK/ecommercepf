@@ -18,15 +18,9 @@ import { GET_ALL_PRODUCTS,
     EDIT_PRODUCT,
     EDIT_BRANDS,
     LOGIN,
-    LOGOUT,
     //CREATE_USER,
     ADD_TO_CART,
     ADD_TO_CART_FROM_DB,
-    DELETE_ITEM_FROM_CART,
-    DELETE_ITEM_FROM_CART_LOCALSTORAGE,
-    DELETE_ALL_CART,
-    CART_FROM_LOCALSTORAGE_TO_DB,
-    CART_FROM_DB_TO_LOCALSTORAGE,
     GET_PRODUCTS_CART,
     CHANGE_QTY,
     CLEAR_CART,
@@ -36,7 +30,6 @@ import { GET_ALL_PRODUCTS,
     UPDATE_USER,
     SET_ORDER_PRODUCTS,
     CHECK_TYPE,
-    DELETE_USER,
     CREATE_REVIEWS,
     GET_REVIEWS,
     GET_WISHLIST,
@@ -315,9 +308,6 @@ const SERVER = 'http://localhost:3001';
                     },
                     error: false
                 }
-
-                console.log(data)
-
                 localStorage.setItem("user", JSON.stringify(data.user));
 
             localStorage.setItem("user", JSON.stringify(data.user));
@@ -353,25 +343,12 @@ const SERVER = 'http://localhost:3001';
             type: CHECK_TYPE,
             payload: {isAdmin: true}
         }
-        // return async function(dispatch){
-        //     console.log("petición con el id " + id);
-
-        //     try{
-        //         return dispatch({
-        //             isAdmin: true
-        //         })
-        //     }catch(e){
-        //         return dispatch({
-        //             isAdmin: false
-        //         })
-        //     }
-        // }
     }
 
     export function removeCategory(id){
         return async function(dispatch){
             try{
-                const categories= await axios.delete(`${SERVER}/categories/${id}`)
+                await axios.delete(`${SERVER}/categories/${id}`)
                 return dispatch({
                     type: REMOVE_CATEGORY,
                     payload: id
@@ -413,10 +390,7 @@ const SERVER = 'http://localhost:3001';
     export function editCategory(id, name){
         return async function(dispatch){
             try{
-                console.log('llamada recibida xD')
-                console.log(`${SERVER}/categories/${id}`)
                 axios.put(`${SERVER}/categories/${id}`,{name: name})
-                //console.log(edCategories)
                 return dispatch({
                     type: EDIT_CATEGORY,
                     payload: {id, name}
@@ -454,37 +428,15 @@ const SERVER = 'http://localhost:3001';
             }
         }   
     };
-
-//     //crea un usuario 'admin' o 'user'
-//     export function createUser(body) {
-//         console.log(body)
-//         return async function(dispatch){
-//             try{
-//                 const res = await axios.post(`${SERVER}/auth/users`, body)
-
-//                 console.log("tengo", res);
-
-//                 return dispatch({
-//                     type: CREATE_USER,
-//                     payload: res.data
-//                 })     
-//             }catch(e){
-//                 console.log("hubo un error", e);
-//             }
-//         }
-//     };
-// =======
-
-
     
    // me traigo el carro de productos tanto de usuarios como de invitados
 
      export function getProductsCartUser(userId){
-         console.log("getproductscart",userId)
+         //console.log("getproductscart",userId)
          return async function (dispatch){
                  try{
                  if(!userId){
-                     console.log("condicion nousuario cart")
+                     //console.log("condicion nousuario cart")
                      const itemsCart = JSON.parse(localStorage.getItem("cart")) || [];
                      return dispatch({
                          type: GET_PRODUCTS_CART,
@@ -515,8 +467,8 @@ const SERVER = 'http://localhost:3001';
     
     //para boton de carro y cantidades seleccionadas
     
-    export const addToCart = (product, userId) => (dispatch) => {
-        console.log('jo',product)
+    export const addToCart = (product, userId,cart) => (dispatch) => {
+        //console.log('jo',product)
         if (!userId) {
             let products = JSON.parse(localStorage.getItem("cart")) || [];
           let productFind = false;
@@ -535,7 +487,7 @@ const SERVER = 'http://localhost:3001';
           
            if (productFind===false){ 
               products.push(product);
-              console.log(products)
+              //console.log(products)
           }
           products= products.filter(p=>p.amount>0)
           localStorage.setItem("cart", JSON.stringify(products));
@@ -544,12 +496,27 @@ const SERVER = 'http://localhost:3001';
               payload: products });/* */
         }
       if (userId) {
-          const body = {productsInfo: [{...product}/* id: product.idProduct, qty: 1  */]};
-          console.log('lo',product.idProduct)
+          let exits=false;
+          let aux= cart?.map(p=>{
+              if(p.idProduct===product.idProduct){
+                exits=true;
+                return {
+                    ...p,
+                    amount: Number(p.amount)+Number(product.amount)
+                }
+              }
+              return p;
+          })
+
+          if(!exits) aux=[...aux, product]
+
+
+          const body = {productsInfo: aux}//[{...product}/* id: product.idProduct, qty: 1  */]};
+          //console.log('lo',product.idProduct)
           return axios
             .put(`${SERVER}/users/cart/${userId}`, body) //fatlta autenci usuario
             .then((response) => {
-                console.log("putproductadd",response)
+                //console.log("putproductadd",response)
                 localStorage.setItem("cart", JSON.stringify(response.data.cart));
               dispatch({ 
                   type: ADD_TO_CART_FROM_DB,
@@ -560,19 +527,18 @@ const SERVER = 'http://localhost:3001';
         } 
     };
   
-    
     export function deleteItemFromCart(idProduct, userId){
-        console.log("Id a eliminar", idProduct)
-        console.log("Id usuariocart a eliminar", userId)
+        //console.log("Id a eliminar", idProduct)
+        //console.log("Id usuariocart a eliminar", userId)
         return async (dispatch) =>{
             try{
                 if(!userId){
                     let cart = JSON.parse(localStorage.getItem("cart")) || [];
                     let itemFind = false;
                     cart = cart.map((p) => {
-                        console.log("map",p)
+                        //console.log("map",p)
                         if(p.idProduct === idProduct){
-                            console.log("item coincidente")
+                            //console.log("item coincidente")
                             itemFind = true;
                             return {
                                 ...p,
@@ -594,7 +560,7 @@ const SERVER = 'http://localhost:3001';
                 }
                 else{
                     const {data} = await axios.delete(`${SERVER}/users/cart/${userId}?idProduct=${idProduct}`)
-                    console.log("deleteitem",data.cart)
+                    //console.log("deleteitem",data.cart)
                     return dispatch ({
                         type: GET_PRODUCTS_CART,
                         payload: data.cart
@@ -607,14 +573,12 @@ const SERVER = 'http://localhost:3001';
         }
     }
     
-    
-
     export function changeAmount(products, userId){
         try{
             return async (dispatch) => {
                 if(userId){
                     const qtyProduct = await axios.put(`${SERVER}/users/cart/${userId}`,{productsInfo: products})
-                    console.log("changeamountuser",qtyProduct)
+                    //console.log("changeamountuser",qtyProduct)
                     return dispatch({
                         type: CHANGE_QTY,
                         payload: qtyProduct.data.cart
@@ -679,7 +643,7 @@ const SERVER = 'http://localhost:3001';
                     from
                 }
 
-                console.log("payload armado", payload)
+                //console.log("payload armado", payload)
 
                 return dispatch({
                     type: UPDATE_USER,
@@ -694,7 +658,7 @@ const SERVER = 'http://localhost:3001';
     export function deleteUser(id){
         return async function(dispatch){
             try{
-                console.log("voy a eliminar al user " + id);
+                //console.log("voy a eliminar al user " + id);
                 await axios.delete(`${SERVER}/users/${id}`);
 
                 const res = await axios.get(`${SERVER}/users`);
@@ -747,7 +711,7 @@ const SERVER = 'http://localhost:3001';
         return async function(dispatch){
             // console.log("getorder",idUser)
             const {data} = await axios.get(`${SERVER}/users/orders/${idUser}`)
-            console.log(data)
+            //console.log(data)
             
             return dispatch ({
                 type: SET_ORDER_PRODUCTS,
@@ -760,12 +724,6 @@ const SERVER = 'http://localhost:3001';
 
     }
     
-
-
-
-    
-
-
     export function getWishList(idUser){
       return async function(dispatch){
         if(!idUser) return;

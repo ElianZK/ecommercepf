@@ -8,7 +8,6 @@ import {
   useStripe,
 } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import { useNavigate } from "react-router-dom";
 import { setOrderProducts, clearCart } from "../../actions";
 import s from "../../assets/styles/Checkout.module.css";
 import { formatMoney } from "accounting";
