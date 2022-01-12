@@ -21,6 +21,8 @@ router.put('/:id',EditUsers);
 router.delete('/:id',DeleteUsers);
 router.post('/create', PostUsers);
 router.delete('/:id',DeleteUsers)
+
+// password routes
 router.patch('/forgotPassword', ForgotPassword);
 router.patch('/:id/passwordReset', ResetPassword);
 

@@ -23,6 +23,7 @@ import Dashboard from './components/Admin/Dashboard';
 
 //TODO: FALTA HACER LA RUTA DE ADMIN ACÁ CON LAS RUTAS INTERNAS. QUE EN LA DE ADMIN SE COMPRUEBE EL USUARIO 
 import EditReview from './components/EditReview';
+import ForgotPassword from './components/password/ForgotPassword';
 
 function App() {
   const dispatch = useDispatch();
@@ -84,6 +85,7 @@ function App() {
         <Route exact path="/products" element={isAdmin? <Products /> : <CantAccess/>} /> {/* admin */}
         <Route exact path="/userForm" element={isAdmin ? <UsersForm/> : <CantAccess/>} /> {/* admin */}
         <Route exact path="/product/:id/review/:idReview" element={<EditReview/>} />
+        <Route exact path="/users/forgotPassword" element={<ForgotPassword/>} />
       </Routes>
       
     </div>

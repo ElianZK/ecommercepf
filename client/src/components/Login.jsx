@@ -148,7 +148,7 @@ const Login = () => {
                         <FontAwesomeIcon className={s.iconInput} icon={faLock}/>
                     </div>
 
-                    <Link className={s.link} to="/reset_pass">¿Olvidaste tu contraseña?</Link>
+                    <Link className={s.link} to="/users/forgotPassword">¿Olvidaste tu contraseña?</Link>
 
                     <AccountsButtons access={mkLogin}/>
 

@@ -43,6 +43,7 @@ import { GET_ALL_PRODUCTS,
     UPDATE_WISHLIST,
     DELETE_REVIEW,
     UPDATE_REVIEW,
+    FORGOT_PASSWORD
 } from "./actionsTypes";
 import axios from 'axios';
 
@@ -853,7 +854,7 @@ const SERVER = 'http://localhost:3001';
             });
         }
     }
-
+    //elimina mi review
     export function eliminar_review(prod,id){
         return dispatch => {
             axios.delete(`http://localhost:3001/product/${prod}/review/${id}`)
@@ -868,7 +869,7 @@ const SERVER = 'http://localhost:3001';
             });
         }
     }
-
+    // actualiza mi review
     export function update_review(prod,id,values){
         return dispatch => {
             axios.put(`http://localhost:3001/product/${prod}/review/${id}`,values)
@@ -883,3 +884,32 @@ const SERVER = 'http://localhost:3001';
             });
         }
     }
+
+
+    //forgot password
+    export function forgot_password(values){
+        return dispatch => {
+            axios.patch(`http://localhost:3001/users/forgotPassword`, values)
+            .then((result) => {
+                return dispatch({
+                    type:FORGOT_PASSWORD,
+                    payload:result.data
+                })
+            }).catch((err) => {
+                console.log('err :>> ', err);
+            });
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
