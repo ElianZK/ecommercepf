@@ -11,6 +11,7 @@ import BrandForm from './components/Admin/BrandForm'
 import Products from './components/Admin/Products'
 import Cart from './components/Shops/Cart';
 import Profile from './components/Profile.jsx';
+import Error from './components/Error.jsx';
 import BuyHistory from './components/Shops/BuyHistory'
 import UsersForm from './components/Admin/usersForm';
 import Checkout from './components/Shops/Checkout';
@@ -78,7 +79,6 @@ function App() {
         <Route exact path="/register" element={<Register/>} />        
         <Route exact path="/addToCart" element={<Cart />} />
         <Route exact path="/cart" element={<Cart />} />
-        <Route exact path="/products" element={<Products />} />
         <Route exact path="/buyHistory" element={<BuyHistory/>} />
         <Route exact path="/checkout/:product" element={<Checkout />} />
 
@@ -91,6 +91,8 @@ function App() {
         <Route exact path="/userForm" element={isAdmin ? <UsersForm/> : <CantAccess/>} /> {/* admin */}
         <Route exact path="/admin/orders" element={isAdmin ? <OrdersPannel/> : <CantAccess/>} /> {/* admin */}
         <Route exact path="/product/:id/review/:idReview" element={<EditReview/>} />
+
+        <Route path="*" element={<Error/>}/>
       </Routes>
       
     </div>
