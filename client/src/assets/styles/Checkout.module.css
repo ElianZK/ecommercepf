@@ -7,7 +7,7 @@
     flex-direction: row;
     background-color: rgb(247, 245, 241);
     padding: 30px;
-    margin-top: 100px;
+    padding-top: 100px;
 }
 
  /* .container {
@@ -234,5 +234,11 @@
    }
    .contenedor_facturacion {
       width: 90%;
+   }
+
+   .pago{
+      /* display: flex;
+      justify-content: center; */
+      margin-left: -30%;
    }
 }

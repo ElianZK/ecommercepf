@@ -386,7 +386,7 @@ export default function Checkout() {
               {errors.postalCode && <p className={s.danger}>{errors.postalCode}</p>}
             </div>
           </div>
-          <div>
+          <div className={s.pago}>
             <Elements stripe={stripePromise}>
               <Payment />
             </Elements>

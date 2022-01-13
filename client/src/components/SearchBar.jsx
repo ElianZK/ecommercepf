@@ -12,14 +12,14 @@ import { useDispatch } from 'react-redux';
 export default function SearchBar({setFilters}){
   const dispatch = useDispatch();
   const [name, setName] = useState('');
-  const [auto,setAuto] = useState([])
+  //const [auto,setAuto] = useState([])
   let navigate = useNavigate();
   const products = useSelector((state) =>state.productsReducer.allProducts.productsInfo) 
   function handleChange(value){
       setName(value);
 
-      setAuto(products?.map(p=>{
-        return {label: p.name}}))
+      //setAuto(products?.map(p=>{
+        //return {label: p.name}}))
   }
 
   function handleSubmit(e){
@@ -29,7 +29,7 @@ export default function SearchBar({setFilters}){
         ...oldState,
         search: name
       }))
-      navigate(`/`);
+      //navigate(`/`);
     }else{
       Swal.fire({
           title: 'Error al realizar la busqueda',
@@ -62,12 +62,15 @@ export default function SearchBar({setFilters}){
     </Hint> */}
       <Autocomplete
       /* className={s.input} */
+        value={name}
         disablePortal
         id="combo-box-demo"
         options={Array.isArray(products)?products.map(p=>{
-          return {label: p.name}}):[]}
+          return {label: p.name.toLowerCase()}}):[]}
         sx={{ width: 500 }}
-        onChange={(event, newValue) => {setName(newValue?.label)}}
+        onChange={(event, value) => {
+          setName(value?.label)
+        }}
         renderInput={(params) => <TextField {...params} label="Product" />}
       />
       

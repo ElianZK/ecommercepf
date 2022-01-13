@@ -88,8 +88,11 @@ export default function NavMenu({isAdmin}) {
        {user.idUser? <MenuItem>
           <Avatar /> {user.name}
         </MenuItem>:null}
-        {isAdmin?<MenuItem onClick={()=>navigate("/dashboard")} className={s.btnoptionsres}>
+        {/* {isAdmin?<MenuItem onClick={()=>navigate("/dashboard")} className={s.btnoptionsres}>
           <Avatar /> Dashboard
+        </MenuItem>:null} */}
+        {user.idUser?<MenuItem onClick={()=>navigate("/wishList")} className={s.btnoptions}>
+          <ShoppingBagIcon /> My Favorites
         </MenuItem>:null}
         {user.idUser?<MenuItem onClick={()=>navigate("/buyHistory")} className={s.btnoptions}>
           <ShoppingBagIcon /> My Shops
