@@ -41,6 +41,8 @@ import { GET_ALL_PRODUCTS,
     GET_REVIEWS,
     GET_WISHLIST,
     UPDATE_WISHLIST,
+    GET_ALL_ORDERS,
+    SORT_ORDERS
 } from "./actionsTypes";
 import axios from 'axios';
 
@@ -849,3 +851,33 @@ const SERVER = 'http://localhost:3001';
             });
         }
     }
+
+
+    export function getAllOrders() {
+      return async function (dispatch) {
+          const allOrd = await axios.get(`${SERVER}/admin/orders`)
+          //console.log(allOrd)
+          return dispatch({
+              type: GET_ALL_ORDERS,
+              payload: allOrd.data.orders
+          })
+      }
+  }
+
+  export function updateOrderDispatched(orderId, status){
+    return async function (dispatch){
+      let updated = await axios.put(`${SERVER}/admin/order/${orderId}`, {dispatched:status});
+      // return dispatch({
+      //   type: UPDATE_ORDERS,
+      //   payload: {
+      //     id:orderId,
+      //     order:updated.data}
+      // })
+    }
+  }
+
+  export function sortOrders(payload){
+    return async function(dispatch){
+      dispatch({type:SORT_ORDERS, payload})
+    }
+  }
