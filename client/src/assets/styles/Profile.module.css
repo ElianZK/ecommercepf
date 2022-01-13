@@ -49,3 +49,58 @@
     /* background-color: aqua; */
     border-bottom: 1px solid black;
 }
+
+
+/* monitores SD */
+@media (min-width: 1024px) and (max-width: 1400px){
+
+}
+
+/* tablets */
+@media (min-width: 500px) and (max-width: 1023px){
+    .profile{
+        align-items: flex-start;
+    }
+
+    .photo{
+        border-radius: 50%;
+        width: 150px;
+    }    
+
+    .table{
+        width: 380px;
+        font-size: 13px;
+    }
+
+    .image{
+        height: 250px;
+    }
+
+    .btn{
+        width: 100px;
+        height: 40px;
+        border-radius: 10px;
+        cursor: pointer;
+        background-color: rgb(255, 217, 1);
+        transition: background-color .3s;
+    }
+}
+
+/* celulares */
+@media (min-width: 300px) and (max-width: 499px){
+    .profile{
+        height: 550px;
+        display: flex;
+        flex-direction: column;   
+    }
+
+    .table{
+        width: 280px;
+        font-size: 10px;
+    }
+
+    .photo{
+        border-radius: 50%;
+        width: 140px;
+    }    
+}
