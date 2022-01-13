@@ -24,6 +24,7 @@
    flex-shrink: 1;
    flex-wrap: wrap;
    margin-top: 10%;
+   padding-top: 80px;
 }
 
 .notfound {
@@ -63,4 +64,4 @@
    .container{
       padding-top: 50px;      
    }
-}
+} 

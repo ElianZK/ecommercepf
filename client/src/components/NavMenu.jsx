@@ -45,11 +45,11 @@ export default function NavMenu({isAdmin}) {
           <Typography sx={{ minWidth: 100 }} onClick={()=>navigate("/login")} className={s.btnoptions}>Log In</Typography>
           <Typography sx={{ minWidth: 100 }} onClick={()=>navigate("/register")} className={s.btnoptions}>Register</Typography>
         </>}
-        <Tooltip title="Account settings">
+        {user.idUser? <Tooltip title="Account settings">
           <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
             <Avatar src={user.image?user.image:null} sx={{ width: 32, height: 32 }}>{user.image?null:user.name?.charAt(0)}</Avatar>
           </IconButton>
-        </Tooltip>
+        </Tooltip>:null}
       </Box>
       <Menu
         anchorEl={anchorEl}
@@ -105,7 +105,7 @@ export default function NavMenu({isAdmin}) {
                             // vuelve null a mi byhistory
                             localStorage.setItem("byhistory", JSON.stringify(null));
                             dispatch(login({idUser: null}));
-                            window.location=window.location;
+                            window.location='/';
                         }}>
           <Logout /> Log out
         </MenuItem>

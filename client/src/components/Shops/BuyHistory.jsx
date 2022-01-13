@@ -6,10 +6,6 @@ import {getOrderProducts} from '../../actions/index'
 import { formatMoney } from 'accounting';
 import { getProductsCartUser,getProductId } from '../../actions';
 
- 
-
-
-
 export default function BuyHistory() {
 
     const dispatch = useDispatch()

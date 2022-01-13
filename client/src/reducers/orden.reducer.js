@@ -105,7 +105,7 @@ export function ordenReducer(state = initialState, action) {
                   //!console.log("A VER: ",sort , "MODO: ", action.payload.payload, action.payload)
                 return{
                   ...state,
-                  orderadici:[...sort]
+                  orderadici:sort
                 };
 
         case ADMIN_FILTER_ORDERS_BY_PRICE:

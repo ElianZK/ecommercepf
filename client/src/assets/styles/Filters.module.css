@@ -6,7 +6,6 @@
    height: 100px;
    background-color: rgb(221, 210, 172);
    position: fixed;
-   margin-bottom: 30px;
    border-bottom: solid 2px gray;
    display: flex;
    flex-direction: column;
@@ -39,42 +38,6 @@
       
    }
 }
-/* @media (min-width:415px) {
-   *{
-      box-sizing: border-box;
-   }
-   .container{
-      width: 100%;
-      min-height: 100px;
-      background-color: rgb(221, 210, 172);
-      position: fixed;
-      margin-top:-7%;
-      margin-bottom: 30px;
-      border-bottom: solid 2px gray;
-      display: flex;
-      justify-content: space-around;
-      padding: 10px 0px;
-      flex-wrap: wrap;
-      z-index: 100;
-   }
-   
-   .container select, .container input{
-      width: 100px;
-      height: 20px;
-      font-size: 12px;
-      margin: 5px 10px;
-      margin-top: 0px;
-      
-   }
-   
-   
-
-   .pagination{
-     width: 100%;
-     display: flex;
-     justify-content: center;
-     padding-top: 5px;
-   } */
 
 /* tablets */
 @media (min-width: 500px) and (max-width: 1023px){
