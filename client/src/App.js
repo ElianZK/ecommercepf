@@ -21,6 +21,7 @@ import { clearProduct, login } from './actions';
 import CantAccess from './components/Admin/CantAccess';
 import axios from 'axios';
 import Dashboard from './components/Admin/Dashboard';
+import WishList from './components/Shops/WishList';
 
 //TODO: FALTA HACER LA RUTA DE ADMIN ACÁ CON LAS RUTAS INTERNAS. QUE EN LA DE ADMIN SE COMPRUEBE EL USUARIO 
 import EditReview from './components/EditReview';
@@ -49,7 +50,6 @@ function App() {
   useEffect(async() => {
     await axios.post("http://localhost:3001/user/adminExists");
     const user = JSON.parse(localStorage.getItem("user"));
-    
     if(user){
       dispatch(login(user))
     }else{
@@ -78,6 +78,7 @@ function App() {
         <Route exact path="/register" element={<Register/>} />        
         <Route exact path="/addToCart" element={<Cart />} />
         <Route exact path="/cart" element={<Cart />} />
+        <Route exact path="/wishList" element={<WishList/>} />
         <Route exact path="/products" element={<Products />} />
         <Route exact path="/buyHistory" element={<BuyHistory/>} />
         <Route exact path="/checkout/:product" element={<Checkout />} />
