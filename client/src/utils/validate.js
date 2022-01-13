@@ -1,4 +1,4 @@
-function Validate(input) {
+function validate(input) {
     let errors = {};
 
 
@@ -14,9 +14,8 @@ function Validate(input) {
         errors.address = 'address is required';
     }
     else if(!input.email){
-        errors.email = 'email is required'
-    } else if(!input.email){
-        errors.email = 'Invalid email'
+    
+        errors.email = 'email is required';
     }
     return errors;
 }

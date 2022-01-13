@@ -1,4 +1,5 @@
-import { GET_ALL_PRODUCTS, 
+import { 
+    GET_ALL_PRODUCTS, 
     GET_PRODUCT_BY_NAME,
     GET_PRODUCT_ID,
     GET_ALL_CATEGORIES,
@@ -43,7 +44,8 @@ import { GET_ALL_PRODUCTS,
     UPDATE_WISHLIST,
     DELETE_REVIEW,
     UPDATE_REVIEW,
-    FORGOT_PASSWORD
+    FORGOT_PASSWORD,
+    RESET_PASSWORD
 } from "./actionsTypes";
 import axios from 'axios';
 
@@ -114,7 +116,9 @@ const SERVER = 'http://localhost:3001';
     export function getBrands(category=''){
         return async function(dispatch){
             try{
-              const brands= await axios.get(`${SERVER}/brands?category=${category}`)
+              let aux=''  
+              if(!category)  aux=`?category=${category}`
+              const brands= await axios.get(`${SERVER}/brands${aux}`)
               return dispatch({
                   type: GET_ALL_BRANDS,
                   payload: brands.data
@@ -888,21 +892,37 @@ const SERVER = 'http://localhost:3001';
 
     //forgot password
     export function forgot_password(values){
+        console.log('values :>> ', values);
         return dispatch => {
-            axios.patch(`http://localhost:3001/users/forgotPassword`, values)
+            axios.patch(`http://localhost:3001/users/forgotPassword?`, values)
             .then((result) => {
+                console.log('result.data :>> ', result.data);
                 return dispatch({
                     type:FORGOT_PASSWORD,
                     payload:result.data
                 })
             }).catch((err) => {
-                console.log('err :>> ', err);
+                console.error('err :>> ', err);
             });
         }
     }
 
 
-
+    export function reset_password(id, token,values){
+        console.log('values :>> ', values);
+        return dispatch => {
+            axios.put(`http://localhost:3001/users/passwordReset/${id}/${token}`, values)
+            .then((result) => {
+                console.log('result.data :>> ', result.data);
+                return dispatch({
+                    type:RESET_PASSWORD,
+                    payload:result.data
+                })
+            }).catch((err) => {
+                console.error('err :>> ', err);
+            });
+        }
+    }
 
 
 

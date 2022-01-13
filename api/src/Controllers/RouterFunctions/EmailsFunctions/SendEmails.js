@@ -1,13 +1,8 @@
-const {Router} = require('express');
-const router = Router();
 const sgMail = require('@sendgrid/mail')
 
 sgMail.setApiKey(process.env.HERN_EMAIL)
 
-
-router.post('/mail',  (req, res, next) =>{
-    const { to, subject, html, sandboxMode = false} = req.body;
-    
+function SendEmails(to, subject, html, sandboxMode = false){    
     const msg = {
         to, 
         from: 'fcosantiagoc@gmail.com',
@@ -21,19 +16,25 @@ router.post('/mail',  (req, res, next) =>{
         }
     };
     try{
+    //console.log("email", sgMail)
         sgMail.send(msg)
         .then((response) => {
-
-            res.status(202).send({ success: true });
+            console.log(response[0].statusCode)
+            
+            //res.status(202).send({ success: true });
+            console.log("Email enviado")
         })
         .catch((error) => {
-            res.status(400).send(error)
+            //res.status(400).send(error)
+            console.log(error)
         })
         console.log(msg)
-        
-    } catch (error) {
-        return res.status(500);
+      } catch (error) {
+        //return res.status(500);
+        console.log(error)
     }
-}),
+}
 
-module.exports = router
+module.exports ={
+    SendEmails
+}

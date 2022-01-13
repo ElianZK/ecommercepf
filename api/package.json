@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@sendgrid/mail": "^7.6.0",
+    "accounting": "^0.4.1",
     "axios": "^0.24.0",
     "bcrypt": "^5.0.1",
     "dotenv": "^10.0.0",

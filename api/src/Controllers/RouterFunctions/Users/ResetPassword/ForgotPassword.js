@@ -1,7 +1,7 @@
 const { User } = require('../../../../db');
-// const jwt = require('jsonwebtoken');
-// const { SECRET_JWT_SEED } = process.env;
-const {sendEmail} = require('../../HtmlMain/sendEmailForgot')
+const jwt = require('jsonwebtoken');
+const { SECRET_JWT_SEED } = process.env;
+const {sendEmail} = require('../../EmailsFunctions/sendEmailForgot')
 
 
 const ForgotPassword = async (req, res, next)=> {
@@ -13,12 +13,13 @@ const ForgotPassword = async (req, res, next)=> {
             }
         })
         if (!user) {
-            res.status(404).json({message:"Invalid email"});
+            res.json({message:"Invalid email"});
         }
-        // let token = await generarJWT( user )
-        // await sendEmail(user, token);
-        await sendEmail(user);
-        res.status(200).json({message: 'Check your email | Consultar su correo electrónico'});
+        let token = jwt.sign({user: user.email}, SECRET_JWT_SEED, {expiresIn:'15m'})
+
+        await sendEmail(user, token);
+        
+        res.status(200).json({message: 'Check your email'});
     } catch (error) {
         next(error)
     }
