@@ -1,14 +1,25 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect,} from 'react';
+import { useSelector } from 'react-redux';
 import s from '../assets/styles/SearchBar.module.css'
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
+import { getAllProducts} from '../actions/index.js'
+import { Hint } from 'react-autocomplete-hint';
+import { useDispatch } from 'react-redux';
 
 export default function SearchBar({setFilters}){
+  const dispatch = useDispatch();
   const [name, setName] = useState('');
+  const [auto,setAuto] = useState([])
   let navigate = useNavigate();
+  const products = useSelector((state) =>state.productsReducer.allProducts.productsInfo) 
+  function handleChange(value){
+      setName(value);
 
-  function handleChange(e){
-      setName(e.target.value);
+      setAuto(products?.map(p=>{
+        return {label: p.name}}))
   }
 
   function handleSubmit(e){
@@ -29,17 +40,36 @@ export default function SearchBar({setFilters}){
     };
     setName('');   
   }
-
+    useEffect(() => {
+      dispatch(getAllProducts())
+    }, [])
   return(
     <>
     <form className={s.container}>
-      <input
+      {/* <input
         className={s.input}
         type='text'
         value={name}
         onChange={handleChange}
+        list="browsers"
         placeholder='Product Name...'
-      />
+      /> */}
+      <Hint options={Array.isArray(products)?products.map(p=>p.name):[]}>
+        <input
+        className={s.input}
+            value={name}
+            onChange={handleChange} />
+    </Hint>
+      {/* <Autocomplete
+        disablePortal
+        id="combo-box-demo"
+        options={Array.isArray(products)?products.map(p=>{
+          return {label: p.name}}):[]}
+        sx={{ width: 300 }}
+        onChange={(event, newValue) => {()=>{handleChange(newValue.label)}}}
+        renderInput={(params) => <TextField {...params} label="Movie" />}
+      /> */}
+      
       <button
         className={s.btn}
         type='submit'

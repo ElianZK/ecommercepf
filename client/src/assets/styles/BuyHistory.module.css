@@ -18,7 +18,7 @@
     justify-content: center;
     align-items: center;
     color: #2d334a;
-    width: 800px;
+    width: 80%;
     /* border-left: 10px solid #2d334a;
     border-right: 10px solid #2d334a; */
     background-color: #e3f6f5;
@@ -36,7 +36,7 @@
     height:100%;
     border: 5px solid #2d334a;
     background-color: #e3f6f5;
-    overflow-y: auto;
+    /* overflow-y: auto; */
     padding-bottom: 50px;
     margin-bottom: 50px;
 }
@@ -137,7 +137,7 @@
     min-height: 170px;
     border-left:2px solid #272343;
     border-bottom-right-radius: 5px;
-    overflow-y: auto;
+    /* overflow-y: auto; */
 
 }
 
@@ -187,15 +187,55 @@
 }
 
 .btnDetail{
-    width: 150px;
+    width: 130px;
     height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
     background-color: yellow;
     border: solid 1px black;
     color: #000;
     font-weight: 400px;
     border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     margin-left: 100px;
+}
+@media (max-width: 650px) {
+    .btnDetail{
+        margin-left: 5px;
+        width: 80px;
+        height: auto;
+        display: flex;
+        justify-content: center;
+        text-align: center;
+    }
+    .status,.statusfail{
+        font-size: 18px;
+    }
+
+    .detailContainer li{
+        font-size: 15px;
+    }
+    .productName{
+        padding: 0 5px;
+        margin-bottom: 5px;
+    }
+    .productName p{
+        font-size: 16px;
+        
+    }
+
+    .productQty{
+        margin : 5px 0;
+    }
+
+    .headerContainer,.cardContainer{
+        min-width: 630px;
+    }
+    .card{
+        overflow-x: scroll;
+    }
+    .background h2{
+        text-align: center;
+    }
 }

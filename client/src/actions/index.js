@@ -40,6 +40,8 @@ import { GET_ALL_PRODUCTS,
     UPDATE_REVIEW,
     GET_ALL_ORDERS,
     GET_USER_INFO,
+    UPDATE_ORDER_STATUS,
+    UPDATE_ORDERS,
     BUY_PRODUCT,
 } from "./actionsTypes";
 import axios from 'axios';
@@ -79,6 +81,16 @@ const SERVER = 'http://localhost:3001';
             })}
         }
     };
+
+    /* export function AutoComplete(name){
+        return async function(dispatch){
+            products = await axios.get(`${SERVER}/products?name=${name}`);
+            return dispatch({
+                type: SET_AUTOCOMPLETE,
+                payload: detail.data
+            })
+        }
+    } */
 
     export function getProductId(idProduct) {
         return async function(dispatch){
@@ -850,6 +862,18 @@ const SERVER = 'http://localhost:3001';
         }
     }
 
+
+  export function updateOrderDispatched(orderId, status){
+    return async function (dispatch){
+      let updated = await axios.put(`${SERVER}/admin/order/${orderId}`, {dispatched:status});
+      return dispatch({
+        type: UPDATE_ORDERS,
+        payload: {
+          id:orderId,
+          status}
+      })
+    }
+  }
     export function eliminar_review(prod,id){
         return dispatch => {
             axios.delete(`http://localhost:3001/product/${prod}/review/${id}`)
@@ -883,31 +907,18 @@ const SERVER = 'http://localhost:3001';
 export function getAllOrders() {
     return async function (dispatch) {
         const {data} = await axios.get(`${SERVER}/admin/orders`)
-        let orders = data.orders.map(o=>{
-            console.log('ORDERSSS',o)
-            let user = data.data[0].filter(d=>{
-                console.log('USERRR', d)
-                console.log(d.idUser,o.UserId)
-                console.log(d.idUser === o.UserId)
-                return(d.idUser === o.UserId)
-                
-            })
-            return {
-                ...o,
-                user: user[0]
-            }
-        })
+        console.log("DAT: ", data);
         return dispatch({
             type: GET_ALL_ORDERS,
-            payload: orders
+            payload: data.orders
         })
     }
 }
 
-export function adminFilterOrdersByState(payload){
+export function adminFilterOrdersByState(value){
     return{
         type: ADMIN_FILTER_ORDERS_BY_STATE,
-        payload
+        payload: value
     }
 }
 
@@ -927,3 +938,4 @@ export function getUserInfo(userId){
         })
     }
 }
+
