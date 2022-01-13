@@ -24,7 +24,7 @@
     width: 40rem;
     height: 20rem;
     margin: auto;
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
     background-color: #d4cfcf50;
     border-radius: 10px;
     
@@ -167,6 +167,7 @@
     margin: auto;
     margin-top: 2rem;
     padding: 0.2rem 0;
+    margin-bottom: 60px;
     
  }
  .facturacion_pasarela {
@@ -215,4 +216,23 @@
 
  .danger{
    border: 2px solid crimson;
+}
+
+
+@media (max-width:700px) {
+   .container_pasarela{
+      width: 90%;
+      height: auto;
+      padding: 20px 0;
+   }
+   .datos_personales_pasarela label {
+      width: 45%;
+   }
+
+   .datos_personales_pasarela input{
+      max-width: 55%;
+   }
+   .contenedor_facturacion {
+      width: 90%;
+   }
 }
