@@ -62,10 +62,7 @@ const Products = () => {
             sortable: false,
         },
     ]
-    let editProduct = (data) => {
-        alert('edit product'+data.name)    
-        console.log(data)
-    }
+    
     useEffect(() => {
         dispatch(getAllProducts(null,true))
         dispatch(getCategories());
@@ -122,6 +119,15 @@ const Products = () => {
             timer: 3000
           })
     }
+
+    let editProduct = (row) => {
+        setEdit(true)
+        setData(row)
+    }
+    let cancelEdit = ()=>{
+        setEdit(false);
+        setData(initialState)
+    }
     return (
         <div className={s.Container}>
             <form className={s.Form}>
@@ -168,11 +174,14 @@ const Products = () => {
                     <button onClick={addDetail}>ADD</button>
                 </div>
                 <div className={s.formGroup}>
-                    <button className={s.button} onClick={handlerRegister}>Registrar</button>
+                    <button className={s.button} onClick={handlerRegister}>{edit?'Actualizar':'Registrar'}</button>
                 </div>
+                {edit?<div className={s.formGroup}>
+                    <button className={s.button} onClick={handlerRegister}>Cancelar</button>
+                </div>:null}
             </form>
             <div className={s.containerSearch}>
-            <button className={s.button} onClick={handlerRegister}>Registrar Nuevo Producto</button>
+            <button className={s.button} onClick={()=>cancelEdit}>Registrar Nuevo Producto</button>
             <input name="name" placeholder="Ingrese su busqueda" onChange={(e)=>{
                     let name= e.target.value;
                     setSearch(name)

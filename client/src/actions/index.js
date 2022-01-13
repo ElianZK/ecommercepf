@@ -80,6 +80,16 @@ const SERVER = 'http://localhost:3001';
         }
     };
 
+    /* export function AutoComplete(name){
+        return async function(dispatch){
+            products = await axios.get(`${SERVER}/products?name=${name}`);
+            return dispatch({
+                type: SET_AUTOCOMPLETE,
+                payload: detail.data
+            })
+        }
+    } */
+
     export function getProductId(idProduct) {
         return async function(dispatch){
             try{
