@@ -432,10 +432,10 @@ const SERVER = 'http://localhost:3001';
         }
     };
 
-    export function editProduct(id, name, price, stock, sold_quantity, condition, image, thumbnail, attribute, categories, brands) {
+    export function editProduct(payload) {
         return async function(dispatch){
             try{
-                const edProduct= await axios.put(`${SERVER}/products/${id}`, {name: name, price: price, stock: stock, sold_quantity: sold_quantity, condition: condition, image: image, thumbnail: thumbnail, attribute: attribute, categories: categories, brands: brands})
+                const edProduct= await axios.put(`${SERVER}/products/${payload.idProduct}`, payload);
                 return dispatch({
                     type: EDIT_PRODUCT,
                     payload: edProduct
