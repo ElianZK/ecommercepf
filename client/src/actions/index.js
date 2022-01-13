@@ -877,7 +877,7 @@ const SERVER = 'http://localhost:3001';
 
     export function update_review(prod,id,values){
         return dispatch => {
-            axios.put(`http://localhost:3001/product/${prod}/review/${id}`,values)
+            axios.put(`${SERVER}/product/${prod}/review/${id}`,values)
             .then((result) => {
                 console.log('result :>> ', result.data);
                 return dispatch({
