@@ -6,7 +6,7 @@
     z-index: 150;
 }
 .input{
-    height: 30px;
+    height: 100%;
     width: 100%;
     background-color: rgb(235, 238, 225);
     border: 2px solid rgb(35, 126, 245);
@@ -15,10 +15,11 @@
 }
 
 .btn{
-    height: 30px;
-    width: 40px;
+    height: 3rem;
+    width: 30%;
     background-color: rgb(35, 126, 245);
-    border: 2px solid rgb(188, 226, 221);   
+    border: 2px solid rgb(188, 226, 221); 
+    margin-top: 0.2rem;
 }
 
 .btn:hover{
@@ -31,7 +32,7 @@
 
 @media (max-width:1000px) {
     .container{
-        width: 70%;
+        width: 50%;
         justify-content: center;
     }
     

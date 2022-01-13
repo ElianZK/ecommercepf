@@ -17,6 +17,7 @@ export default function CatForm (){
     })
     const [edit, setEdit] = useState(false)
     const [remove, setRemove] = useState(false)
+    const [add, setAdd] = useState(false)
     const [error, setError] = useState({
         name: 'Introduzca un nombre para continuar',
     })
@@ -88,11 +89,13 @@ export default function CatForm (){
         dispatch(getCategories())
         setEdit(false)
         setRemove(false)
-    },[dispatch,category, edit, remove])
+        setAdd(false)
+    },[dispatch,category, edit, remove, add])
 
     function handleSubmit(e){
         e.preventDefault();
         dispatch(createCategory(category))
+        setAdd(true)
         Swal.fire({
             title: 'Categoria agregada',
             text: `La categoria ${category.name} ha sido registrada correctamente.`,
