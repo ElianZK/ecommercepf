@@ -35,7 +35,7 @@ export default function NavMenu({isAdmin}) {
 
   return (
     <React.Fragment>
-      <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+      <Box className={s.Box} sx={{ display: 'flex', alignItems: 'center', justifyContent:'stretch', textAlign: 'center' }}>
       <Typography sx={{ minWidth: 100 }} onClick={()=>navigate("/")} className={s.btnoptions}>Home</Typography>
         {user.idUser ?<>
           {isAdmin?<Typography sx={{ minWidth: 100 }} onClick={()=>navigate("/dashboard")} className={s.btnoptions}>Dashboard</Typography>:null}
@@ -45,13 +45,13 @@ export default function NavMenu({isAdmin}) {
           <Typography sx={{ minWidth: 100 }} onClick={()=>navigate("/login")} className={s.btnoptions}>Log In</Typography>
           <Typography sx={{ minWidth: 100 }} onClick={()=>navigate("/register")} className={s.btnoptions}>Register</Typography>
         </>}
-        {user.idUser?<Tooltip title="Account settings">
+        <Tooltip title="Account settings">
           <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
             <Avatar src={user.image?user.image:null} sx={{ width: 32, height: 32 }}>{user.image?null:user.name?.charAt(0)}</Avatar>
           </IconButton>
-        </Tooltip>:null}
+        </Tooltip>
       </Box>
-      {user.idUser?<Menu
+      <Menu
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
@@ -85,9 +85,12 @@ export default function NavMenu({isAdmin}) {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem>
+       {user.idUser? <MenuItem>
           <Avatar /> {user.name}
-        </MenuItem>
+        </MenuItem>:null}
+        {isAdmin?<MenuItem onClick={()=>navigate("/dashboard")} className={s.btnoptionsres}>
+          <Avatar /> Dashboard
+        </MenuItem>:null}
         {user.idUser?<MenuItem onClick={()=>navigate("/buyHistory")} className={s.btnoptions}>
           <ShoppingBagIcon /> My Shops
         </MenuItem>:null}
@@ -104,7 +107,7 @@ export default function NavMenu({isAdmin}) {
           <Logout /> Log out
         </MenuItem>
         <Divider />
-      </Menu>:null}
+      </Menu>
     </React.Fragment>
   );
 }
