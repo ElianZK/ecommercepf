@@ -16,22 +16,67 @@ const getProducts= async (req, res, next)=>{
       sort
     } = req.query;
 
+    const options = {product:[], through:[], sort:[]};
 
     if(all){
-      let products= await Product.findAndCountAll({ include:{
-        model: CategoryBrand,
-        as: "relation",
-        /* where:{
+      let {count, rows} = await Product.findAndCountAll({
+        where:{
           [Op.and]:[
-            ...options.through
+            ...options.product
           ]
-        } */
-      }})
-      return res.json(products).status(200)
+        },
+        attributes:{
+        },
+        include:{
+          model: CategoryBrand,
+          as: "relation",
+          where:{
+            [Op.and]:[
+              ...options.through
+            ]
+          }
+        },
+        order:[
+          ...options.sort
+        ],
+      })
+      let info = [];
+      for(let i=0; i<rows.length;i++){
+        let resProduct = rows[i].toJSON();
+        let brandAndCategory = await CategoryBrand.findByPk(resProduct.idRelation);
+
+        let brand = await Brand.findOne({
+          where:{
+            idBrand: brandAndCategory.BrandId
+          },
+          attributes:{
+            exclude:["idBrand"]
+          }
+        })
+        let category = await Category.findOne({
+          where:{
+            idCategory: brandAndCategory.CategoryId
+          },
+          attributes:{
+            exclude:["idCategory"]
+          }
+        })
+        info.push({brand:brand.toJSON(), category:category.toJSON()});
+      }
+      let productsInfo = rows.map((el, i)=>{
+        let {idRelation, relation, ...otherData}= el.toJSON()
+        return {...otherData, brand:info[i].brand.name, category:info[i].category.name};
+      })
+
+
+      return res.status(200).json({count, rows:productsInfo})
     }
+
+     //| FILTRO FLEXIBLE
+
     if(limit>50) next({message: "The requested limit is higher than the allowed. Maximum allowed is 50", status:400})
     
-    const options = {product:[], through:[], sort:[]}; 
+     
     //[Filter by Search
     if(search){
       options.product.push({name:{[Op.iLike]:`%${search}%`}});

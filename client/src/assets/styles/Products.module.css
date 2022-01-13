@@ -36,6 +36,7 @@
 .formGroup{
     display: flex;
     flex-direction: column;
+    justify-content: center;
     margin-top: 20px;
     width: 70%;
 }
@@ -53,6 +54,42 @@
     border-radius: 3px;
     padding: 0 20px;
     text-align: center;
+}
+.imagesContainer{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width:100%;
+  max-height: 400px;
+  overflow: hidden;
+  overflow-y: auto;
+  margin:5px 0 ;
+}
+.imagesContainer input{
+  width:100%;
+  margin:5px 0;
+}
+.sumbtn{
+  margin:0;
+  width:100%;
+  color:black;
+  background:#ffd803;
+  cursor:pointer;
+  text-align: center;
+  justify-self: center;
+}
+.sumbtn:hover{
+  color:black;
+  background:#ffd803;
+}
+.attrContainer{
+max-height: 480px;
+overflow-y: auto;
+text-align: center;
+}
+.attrContainer input{
+ margin:5px 0;
 }
 .formDetail{
     display: flex;
