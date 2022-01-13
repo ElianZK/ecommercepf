@@ -13,10 +13,10 @@ const Products = () => {
     const products = useSelector((state) => {
         return state.productsReducer.allProducts.rows;
     }) 
+    const [edit,setEdit] =useState(false)
     const brands = useSelector(state=>state.productsReducer.brands);
     const categories = useSelector(state=>state.productsReducer.categories);
-
-    const [data,setData]= useState({
+    const initialState={
         name:'',
         price: '',
         stock: '',
@@ -26,7 +26,8 @@ const Products = () => {
         attributes:[],
         brands:'',
         categories: [],       
-    })
+    }
+    const [data,setData]= useState(initialState)
     const [attrib,setAtrrib]=useState({
         name:'',
         value:''
@@ -63,6 +64,7 @@ const Products = () => {
     ]
     let editProduct = (data) => {
         alert('edit product'+data.name)    
+        console.log(data)
     }
     useEffect(() => {
         dispatch(getAllProducts(null,true))
@@ -170,7 +172,7 @@ const Products = () => {
                 </div>
             </form>
             <div className={s.containerSearch}>
-
+            <button className={s.button} onClick={handlerRegister}>Registrar Nuevo Producto</button>
             <input name="name" placeholder="Ingrese su busqueda" onChange={(e)=>{
                     let name= e.target.value;
                     setSearch(name)
