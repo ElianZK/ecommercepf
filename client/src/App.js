@@ -81,7 +81,6 @@ function App() {
         <Route exact path="/products" element={<Products />} />
         <Route exact path="/buyHistory" element={<BuyHistory/>} />
         <Route exact path="/checkout/:product" element={<Checkout />} />
-        <Route exact path="/admin/orders" element={<OrdersPannel />} />
 
         <Route exact path="/profile" element={<Profile/>} />
 
@@ -90,6 +89,7 @@ function App() {
         <Route exact path="/addBrand" element={isAdmin? <BrandForm/> : <CantAccess/>} /> {/* admin */}
         <Route exact path="/products" element={isAdmin? <Products /> : <CantAccess/>} /> {/* admin */}
         <Route exact path="/userForm" element={isAdmin ? <UsersForm/> : <CantAccess/>} /> {/* admin */}
+        <Route exact path="/admin/orders" element={isAdmin ? <OrdersPannel/> : <CantAccess/>} /> {/* admin */}
         <Route exact path="/product/:id/review/:idReview" element={<EditReview/>} />
       </Routes>
       
