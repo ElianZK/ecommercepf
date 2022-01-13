@@ -40,12 +40,13 @@ import { GET_ALL_PRODUCTS,
     UPDATE_REVIEW,
     GET_ALL_ORDERS,
     GET_USER_INFO,
+    UPDATE_ORDER_STATUS
 } from "./actionsTypes";
 import axios from 'axios';
 
 
-//const SERVER = 'http://localhost:3001';
-const SERVER = 'https://e-commerce-pf.herokuapp.com';
+const SERVER = 'http://localhost:3001';
+// const SERVER = 'https://e-commerce-pf.herokuapp.com';
 
 
     export function getAllProducts(data,all=false) {
@@ -894,6 +895,16 @@ export function getUserInfo(userId){
         return dispatch({
             type: GET_USER_INFO,
             payload: user
+        })
+    }
+}
+
+export function updateOrderStatus(id,status){
+    return async function dispatch(payload){
+        const updated = await axios.put(`${SERVER}/admin/order/${id}`,{dispatched:status})
+        return dispatch({
+            type: UPDATE_ORDER_STATUS,
+            payload:updated.data
         })
     }
 }

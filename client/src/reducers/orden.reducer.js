@@ -13,6 +13,7 @@ import {
     SET_ORDER_PRODUCTS,
     ADMIN_FILTER_ORDERS_BY_STATE,
     ADMIN_FILTER_ORDERS_BY_PRICE,
+    UPDATE_ORDER_STATUS
 } from '../actions/actionsTypes'
 
 
@@ -20,7 +21,7 @@ import {
 const initialState = {
     cart: JSON.parse(localStorage.getItem("cart")) || [],
     orders: [],
-    
+    orderadici:[],
 }
 
 
@@ -95,38 +96,51 @@ export function ordenReducer(state = initialState, action) {
             }
  
         case ADMIN_FILTER_ORDERS_BY_STATE:
+                
                 let sort;
+        
                 if (action.payload === '') sort = state.orders;
 
-                if(action.payload === 'created') sort = state.orders.sort(o=>
-                    o.status === 'created'
+                if(action.payload === 'processing') sort = state.orders.filter(o=>
+                    o.dispatched.includes('processing') 
                 )
 
-                if(action.payload === 'completed') sort = state.orders.sort(o=>
-                    o.status === 'completed'
+                if(action.payload === 'sent') sort = state.orders.filter(o=>
+                    o.dispatched.includes('sent')
                 )
 
-                if(action.payload === 'rejected') sort = state.orders.sort(o=>
-                    o.status === 'rejected'
+                if(action.payload === 'recived') sort = state.orders.filter(o=>
+                    o.dispatched === 'recived'
                 )
+                console.log(sort)
                 return{
                     ...state,
-                    orders:sort
-                }
+                    orderadici:[...sort]
+                };
+
         case ADMIN_FILTER_ORDERS_BY_PRICE:
             let sortPrice;
-            if(action.payload === 'All') sortPrice = state.orders;
-            if(action.payload === 'H-price') sortPrice = state.orders.map((a,b)=>b.totalPrice - a.totalPrice);
-            if(action.payload === 'L-price') sortPrice = state.orders.map((a,b)=>a.totalPrice - b.totalPrice);
+            if(action.payload === '') sortPrice = state.orders;
+            if(action.payload === 'H-price') sortPrice = state.orderadici.sort((a,b)=>b.totalPrice - a.totalPrice)
+            if(action.payload === 'L-price') sortPrice = state.orderadici.sort((a,b)=>a.totalPrice - b.totalPrice)
+            console.log(sortPrice)
             return {
                 ...state,
-                orders:sortPrice
+                orderadici:[...sortPrice]
             }
 
             case GET_ALL_ORDERS:
                 return {
                     ...state,
-                    orders: action.payload
+                    orders: action.payload,
+                    orderadici:action.payload,
+                }
+
+            case UPDATE_ORDER_STATUS:
+                return{
+                    ...state,
+                    orders:action.payload,
+                   
                 }
 
                 default:
