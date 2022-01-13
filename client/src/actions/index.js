@@ -41,7 +41,7 @@ import { GET_ALL_PRODUCTS,
     GET_ALL_ORDERS,
     GET_USER_INFO,
     UPDATE_ORDER_STATUS,
-    UPDATE_ORDERS
+    UPDATE_ORDERS,
     BUY_PRODUCT,
 } from "./actionsTypes";
 import axios from 'axios';
