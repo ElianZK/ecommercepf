@@ -47,6 +47,9 @@ export default function Checkout() {
   const User = JSON.parse(localStorage.getItem("user"));
   const idUser = !User ? null : User.idUser;
   const cart = useSelector((state) => state.ordenReducer.cart);
+  const product = useSelector((state) => state.ordenReducer.product);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [buys, setBuys] = useState([]);
   const [errors, setErrors] = useState({});
   const [state, setState] = useState({
     name: User.name,
@@ -60,22 +63,27 @@ export default function Checkout() {
     },
   });
 
-  let totalPrice = 0;
-  let iva = 0;
-  let buys = [];
-  for (const i in cart) {
-    buys.push({
-      idProduct: cart[i].idProduct,
-      name: cart[i].name,
-      image: cart[i].image,
-      price: Number(cart[i].price),
-      amount: Number(cart[i].amount),
-    });
-    totalPrice += cart[i].price * cart[i].amount;
-    //iva = (totalPrice*0.21)
-    // console.log("comp",buys)
-    // console.log("iva",iva)
-  }
+  useEffect(() => {
+    if(cart?.length > 0){
+      for (const i in cart) {
+        buys.push({
+          idProduct: cart[i].idProduct,
+          name: cart[i].name,
+          image: cart[i].image,
+          price: Number(cart[i].price),
+          amount: Number(cart[i].amount),
+        });
+
+        setTotalPrice(prev => prev + cart[i].price * cart[i].amount);
+        // totalPrice += cart[i].price * cart[i].amount;
+        //iva = (totalPrice*0.21)
+        // console.log("comp",buys)
+        // console.log("iva",iva)
+      }
+
+      console.log(buys);
+    }
+  }, [cart]);
 
   function handleChange(e) {
     setState({
@@ -103,7 +111,7 @@ export default function Checkout() {
       if (!error) {
         const { id } = paymentMethod;
         let pay = {
-          productsInfo: buys,
+          productsInfo: product ? [product] : buys,
           email: state.email,
           address: {
             country: state.country,
@@ -114,7 +122,7 @@ export default function Checkout() {
           totalPrice: Math.round(totalPrice),
           id: id,
         };
-        dispatch(setOrderProducts(pay, User.idUser)); //aca deberia ir la ruta post
+        dispatch(setOrderProducts(pay, User.idUser,product !== null ? true : false)); //aca deberia ir la ruta post
         Swal.fire({
           icon: "success",
           text: "Thank you for your purchase , you will receive an email with the details",
@@ -122,11 +130,12 @@ export default function Checkout() {
         }).then((result) => {
           if (result.value) {
             //navigate('/buyHistory') //q vaya a ordenes
+            if(product === null)dispatch(clearCart(User.idUser));
             window.location = "/buyHistory";
           }
         })
         .catch((error) => console.log(error))
-        dispatch(clearCart(User.idUser));
+        ///if(product === null)
       } else {
         console.log(error);
       }
@@ -152,36 +161,72 @@ export default function Checkout() {
     <div className={s.container}>
       <h1 className={s.title}>Order Summary</h1>
       <div className={s.container_pasarela}>
-        <div className={s.pasarela_card}>
-          {cart?.map((e) => {
-            return (
-              <div key={e.idProduct} className={s.pasarela_cdtm}>
+      {!product ? (<>
+          <div className={s.pasarela_card}>
+            {cart?.map((e) => {
+              /*aca va token*/
+              return (
+                <div key={e.idProduct} className={s.pasarela_cdtm}>
+                  <div>
+                    <img
+                      className={s.image_pasarela}
+                      alt="imagen_pasarela"
+                      src={e.image}
+                    ></img>
+                  </div>
+
+                  <div className={s.pasarela_info}>
+                    <div>
+                      <p className={s.titulo_pasarela}>{e.name}</p>
+                    </div>
+
+                    <div>
+                      <p className={s.unidades_pasarela}>Unidades: {e.amount}</p>
+                    </div>
+
+                    <div>
+                      <p className={s.precio_pasarela}>
+                        <span className={s.peso_pasarela}></span>{" "}
+                        {formatMoney(e.price)}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </>) : (<>
+          <div className={s.pasarela_card}>
+            {product != null ? (<>
+              <div key={product.idProduct} className={s.pasarela_cdtm}>
                 <div>
                   <img
                     className={s.image_pasarela}
-                    alt="imagen_product"
-                    src={e.image}
+                    alt="imagen_pasarela"
+                    src={product.image}
                   ></img>
                 </div>
+
                 <div className={s.pasarela_info}>
                   <div>
-                    <p className={s.titulo_pasarela}>{e.name}</p>
+                    <p className={s.titulo_pasarela}>{product.name}</p>
                   </div>
 
                   <div>
-                    <p className={s.unidades_pasarela}>Quantity: {e.amount}</p>
+                    <p className={s.unidades_pasarela}>Unidades: {product.amount}</p>
                   </div>
+
                   <div>
                     <p className={s.precio_pasarela}>
-                      <span className={s.peso_pasarela}>Price: </span>{" "}
-                      {formatMoney(e.price)}
+                      <span className={s.peso_pasarela}></span>{" "}
+                      {formatMoney(product.price)}
                     </p>
                   </div>
                 </div>
               </div>
-            );
-          })}
-        </div>
+            </>) : null}
+          </div>
+        </>)}
         <div className={s.datos_pasarela}>
           <p className={s.neto_pasarela}>
             Sub-Total:{" "}
@@ -190,18 +235,12 @@ export default function Checkout() {
               {formatMoney(totalPrice.toFixed(2))}{" "}
             </span>{" "}
           </p>
-          <p className={s.neto_pasarela}>
-            iva:{" "}
-            <span className={s.subtotal_pasarela}>
-              {" "}
-              {formatMoney((totalPrice * 0.21).toFixed(2))}
-            </span>{" "}
-          </p>
+          
           <p className="total_pasarela">
             {" "}
             Total Amount:
             <span className="total_numero_pasarela">
-              {formatMoney(Math.round(totalPrice + iva))}
+              {formatMoney(Math.round(totalPrice))}
             </span>
           </p>
         </div>
