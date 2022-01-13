@@ -3,7 +3,8 @@ import { useSelector } from 'react-redux';
 import s from '../assets/styles/SearchBar.module.css'
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
-//import {AutoComplete} from '../actions/index'
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
 import { getAllProducts} from '../actions/index.js'
 import { Hint } from 'react-autocomplete-hint';
 import { useDispatch } from 'react-redux';
@@ -14,10 +15,11 @@ export default function SearchBar({setFilters}){
   const [auto,setAuto] = useState([])
   let navigate = useNavigate();
   const products = useSelector((state) =>state.productsReducer.allProducts.productsInfo) 
-  function handleChange(e){
-      setName(e.target.value);
+  function handleChange(value){
+      setName(value);
 
-      setAuto(products?.map(p=>p.name))
+      setAuto(products?.map(p=>{
+        return {label: p.name}}))
   }
 
   function handleSubmit(e){
@@ -58,7 +60,15 @@ export default function SearchBar({setFilters}){
             value={name}
             onChange={handleChange} />
     </Hint>
-
+      {/* <Autocomplete
+        disablePortal
+        id="combo-box-demo"
+        options={Array.isArray(products)?products.map(p=>{
+          return {label: p.name}}):[]}
+        sx={{ width: 300 }}
+        onChange={(event, newValue) => {()=>{handleChange(newValue.label)}}}
+        renderInput={(params) => <TextField {...params} label="Movie" />}
+      /> */}
       
       <button
         className={s.btn}
