@@ -3,24 +3,23 @@
 }
 .container{
    width: 100%;
-   min-height: 100px;
+   height: 100px;
    background-color: rgb(221, 210, 172);
    position: fixed;
    margin-bottom: 30px;
    border-bottom: solid 2px gray;
    display: flex;
+   flex-direction: column;
    justify-content: space-around;
-   padding: 20px 0px;
-   flex-wrap: wrap;
+   align-items: center;
    z-index: 100;
 }
 
 .container select, .container input{
-   width: 150px;
-   height: 30px;
-   font-size: 12px;
+   width: 155px;
+   height: 35px;
+   font-size: 16px;
    margin: 5px 10px;
-   margin-top: 15px;
    
 }
 
@@ -28,16 +27,37 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  padding-top: 15px;
 }
 
-@media (max-width:1230px) {
-   .container{
-      padding: 40px 0;
+/* monitores SD */
+@media (min-width: 1024px) and (max-width: 1400px){
+   .container select, .container input{
+      width: 125px;
+      height: 20px;
+      font-size: 12px;
+      margin: 5px 10px;
+      
    }
 }
-@media (max-width:1037px) {
-   /* .container{
-      padding: 20px 0;
-   } */
+
+/* tablets */
+@media (min-width: 500px) and (max-width: 1023px){
+   .container select, .container input{
+      width: 75px;
+      height: 20px;
+      font-size: 10px;
+      margin: 5px 10px;
+      
+   }
+}
+
+/* celulares */
+@media (min-width: 300px) and (max-width: 499px){
+   .container select, .container input{
+      width: 62px;
+      height: 25px;
+      font-size: 10px;
+      margin: 5px 10px;
+      
+   }
 }
