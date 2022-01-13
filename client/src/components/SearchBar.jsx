@@ -11,4 +11,42 @@ export default function SearchBar({setFilters}){
       setName(e.target.value);
   }
 
-  
+  function handleSubmit(e){
+    e.preventDefault()
+    if(name){
+      setFilters(oldState=>({
+        ...oldState,
+        search: name
+      }))
+      navigate(`/`);
+    }else{
+      Swal.fire({
+          title: 'Error al realizar la busqueda',
+          text: 'Debe ingresar un nombre, para poder realizar la búsqueda',
+          icon: 'error',
+          confirmButtonText: 'Cool'
+      });
+    };
+    setName('');   
+  }
+
+  return(
+    <>
+    <form className={s.container}>
+      <input
+        className={s.input}
+        type='text'
+        value={name}
+        onChange={handleChange}
+        placeholder='Product Name...'
+      />
+      <button
+        className={s.btn}
+        type='submit'
+        onClick={(e) => handleSubmit(e)}>
+        Search
+      </button>      
+    </form>
+    </>
+  )
+}
