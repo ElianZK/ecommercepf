@@ -1,12 +1,12 @@
 
 .container{
-    width: 30%;
+    width: 150px;
     display: flex;
     justify-content: space-between;
 }
 .input{
     height: 30px;
-    width: 80%;
+    width: 110px;
     background-color: rgb(235, 238, 225);
     border: 2px solid rgb(35, 126, 245);
     padding: 0 10px;
@@ -14,8 +14,8 @@
 }
 
 .btn{
-    height: 35px;
-    width: 29%;
+    height: 30px;
+    width: 40px;
     background-color: rgb(35, 126, 245);
     border: 2px solid rgb(188, 226, 221);   
 }

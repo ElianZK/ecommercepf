@@ -35,7 +35,7 @@ export default function NavMenu({isAdmin}) {
 
   return (
     <React.Fragment>
-      <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+      <Box className={s.Box} sx={{ display: 'flex', alignItems: 'center', justifyContent:'stretch', textAlign: 'center' }}>
       <Typography sx={{ minWidth: 100 }} onClick={()=>navigate("/")} className={s.btnoptions}>Home</Typography>
         {user.idUser ?<>
           {isAdmin?<Typography sx={{ minWidth: 100 }} onClick={()=>navigate("/dashboard")} className={s.btnoptions}>Dashboard</Typography>:null}

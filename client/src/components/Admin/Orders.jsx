@@ -9,15 +9,12 @@ import s from '../../assets/styles/Orders.module.css'
 export default function OrdersPannel (){
     const dispatch = useDispatch()
     const orders =  useSelector(state => state.ordenReducer.orderadici);
-    console.log("------",orders)
     useEffect(() => {
         dispatch(getAllOrders())
     },[dispatch]);
 
-
     function handleFilterStatus(e){
         e.preventDefault()
-        // dispatch(getAllOrders())
         dispatch(adminFilterOrdersByState(e.target.value))
     }
 
@@ -25,26 +22,27 @@ export default function OrdersPannel (){
         e.preventDefault()
         dispatch(adminFilterOrdersByPrice(e.target.value))
     }
-
-    function handleChangeStatus (e){
-
-    }
     
     return (
         <div className={s.Container}>
+
             <div className={s.Filters}>
+
                 <select onChange={handleFilterStatus}>
                     <option value="">Filter by send status</option>
                     <option value="processing">processing</option>
                     <option value="sent">sent</option>
                     <option value="recived">recived</option>
                 </select>
+
                 <select onChange={handleFilterPrice}>
                     <option value="">Filter by price</option>
                     <option value="H-price">Descendant price</option>
                     <option value="L-price">Ascendant price</option>
                 </select>
+
             </div>
+            
             <div className={s.OrdersContainer}>
                 {orders?.map((e,i)=>{
                     return( 
@@ -53,14 +51,12 @@ export default function OrdersPannel (){
                             <h4>Date: {e.creationDate.split('T')[0]}</h4>
                             <ul className={s.OverDetail}>
                                 <li className={s.Amount}>Total amount: {formatMoney(e.totalPrice)}</li>
-                                {console.log("TOTALPRICE",e.totalPrice)}
                                 <li>Name: {e.user.name}</li>
                                 <li>Last Name: {e.user.lastname}</li>
                                 <li>Country: {e.address.country}</li>
                                 <li>City: {e.address.city}</li>
                                 <li>Postal Code: {e.address.postalCode}</li>
                             </ul>
-                        
                             <h3>Order Detail</h3>
                             <div className={s.DetailContainer}>
                                 {e.products.map((p,j)=>{
@@ -71,13 +67,12 @@ export default function OrdersPannel (){
                                             <p className={s.DetailItems}>Units: {p.details.amount}</p>
                                             <p className={s.DetailItems}>Subtotal: {formatMoney(p.details.amount * p.price)}</p>
                                         </div>
-                                )
-                            })}
+                                    )
+                                })}
                             </div>
                         </div>
                     )
                 })}
-               
             </div>
 
         </div>

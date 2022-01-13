@@ -106,3 +106,108 @@
       height: 480px;
    }
 }
+
+@media(min-width:415px){
+
+   .card{
+      width: 40%;
+      height: 12%;
+      border: solid 1px gray;
+      border-radius: 15px;
+      flex-wrap: wrap;
+      margin: 0 20px;
+      margin-bottom: 20px;
+   }
+   .container{
+      width: 100%;
+      height: 100%;
+      border: solid 1px gray;
+      border-radius: 15px;
+      flex-wrap: wrap;
+      overflow: hidden;/* 
+      margin-bottom: 80px; */
+   }
+   .container:hover > .imgcont{
+      height: 60%;
+   }
+   .container:hover > .actions{
+      height: 25%;
+   }
+   .container:hover{
+      /* transform: scale(1.05); */
+      box-shadow: 0px 0px 20px black;
+      position: relative;
+      animation: extender .9s;
+      height: 480px;
+   }
+   
+   
+   .namecont{
+      width: 100%;
+      height: 100%;
+      background-color: rgb(221, 215, 215);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color:#fff;
+      flex-shrink: 1;
+      flex-wrap: wrap;
+      border-top: solid 1px gray;
+   }
+   
+   .name{
+      width: 98%;
+      height: 100%;
+      text-align: center;
+      color: black;
+   }
+   
+   .imgcont{
+      width: 100%;
+      height: 130px;
+      background-color: #fff;
+      display: flex;
+      justify-content: center;
+   }
+   .img{
+      max-height: 100%;
+   }
+   
+   .actions{
+      width: 100%;
+      height: 35%;
+      background-color: rgb(221, 215, 215);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      padding-bottom: 5px;
+   }
+   .price{
+      position: relative;
+      /* top: -10px; */
+      font-weight: 400;
+      font-size: 120%;
+      /* margin-bottom: 10px; */
+   }
+   
+   .price span{
+      font-size: 20px;
+   }
+   
+   .btn{
+       background-color: #FFD803;
+       width: 90%;
+       height: 30px;
+       border: solid 1px gray;
+       border-radius: 15px;
+       margin-top: 5px;
+   }
+   
+   .btn:hover{
+      background-color: #e2c105;
+   }
+   
+
+}

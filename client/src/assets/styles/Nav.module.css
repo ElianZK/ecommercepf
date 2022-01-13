@@ -83,3 +83,123 @@
     margin: 0;
     color: aliceblue;
 }
+
+
+
+/* ------------------------------------------------------------------------------------- */
+/*                                   MOBILE DESIGN                                    -*/
+/* --------------------------------------------------------------------------------- */
+
+
+@media (min-width: 415px) {
+    .container{
+        height: 8%;
+        background-color: #2D334A;
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        z-index: 100;
+        color: #fff;
+        
+    }
+    .options{
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        height: 100%;
+        justify-content:stretch;
+        align-items: center;
+    }
+    .logo{
+        height: 70%;
+        cursor: pointer;
+    }
+    .search{
+        height: 40px;
+        width: 200px;
+        text-align: center;
+    }
+    
+    .buttons{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+    .nav_links{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .btn{
+        width: 150px;
+        height: 40px;
+        border-radius: 10px;
+        cursor: pointer;
+        background-color: rgb(230, 230, 230);
+        transition: background-color .3s;
+    }
+    
+    .btn:hover{
+        background-color: rgb(197, 197, 197);
+        transition: background-color .3s;
+    }
+    
+    .btn:active{
+        background-color: rgb(146, 146, 146);
+        transition: background-color .3s;
+    }
+
+    .Box{
+        height: 100%;
+        width: auto;
+        display:flex; 
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-size: 25px;
+    }
+    
+    .btnoptions {
+        height: 25px;
+        font-size: 15px;
+        cursor: pointer;
+        text-align: center;
+    }
+    .group{
+        width: 100%;
+        height: 80px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    
+    .profile{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .profile:hover{
+        cursor: pointer;
+    }
+    
+    .photo{
+        width: 50px;
+        height: 50px;
+    
+        border-radius: 50px;
+    }
+    
+    .name{
+        margin: 0;
+        color: aliceblue;
+    }
+
+}
