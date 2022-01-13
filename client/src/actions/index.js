@@ -733,7 +733,7 @@ const SERVER = 'http://localhost:3001';
         return async function(dispatch){
             console.log(oneP)
             const postOrder = await axios.post(`${SERVER}/users/order/${idUser}`, pay)
-            if(!oneP)clearCart(idUser)
+            // if(oneP === false)clearCart(idUser)
             return dispatch ({
                 type: SET_ORDER_PRODUCTS,
                 payload: postOrder

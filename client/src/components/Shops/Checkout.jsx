@@ -44,7 +44,7 @@ export default function Checkout() {
   }, [totalPrice]);
 
   useEffect(() => {
-    if(cart.length > 0){
+    if(cart && cart.length > 0){
       for (const i in cart) {
         buys.push({
           idProduct: cart[i].idProduct,
@@ -167,6 +167,7 @@ export default function Checkout() {
         }).then((result)=>{
           if(result.value){
             //navigate('/buyHistory') //q vaya a ordenes
+            dispatch(clearCart(User.idUser))  
             window.location='/buyHistory'
           }
         });
@@ -189,7 +190,6 @@ export default function Checkout() {
       <h1 className={s.title}>Order Summary</h1>
 
       <div className={s.container_pasarela}>
-        
         {!product ? (<>
           <div className={s.pasarela_card}>
             {cart?.map((e) => {
