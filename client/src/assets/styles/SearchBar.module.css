@@ -6,7 +6,7 @@
 }
 .input{
     height: 30px;
-    width: 80%;
+    width: 100%;
     background-color: rgb(235, 238, 225);
     border: 2px solid rgb(35, 126, 245);
     padding: 0 10px;
@@ -26,4 +26,19 @@
     color:rgb(48, 46, 46);
     border: 2px solid rgb(35, 214, 245);
 
+}
+
+@media (max-width:1000px) {
+    .container{
+        width: 70%;
+        justify-content: center;
+    }
+    
+    .btn{
+        width: 100px;
+    }
+
+    .input{
+        width: 100%;
+    }
 }

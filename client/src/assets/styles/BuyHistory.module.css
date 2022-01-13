@@ -235,5 +235,7 @@
     .card{
         overflow-x: scroll;
     }
-    
+    .background h2{
+        text-align: center;
+    }
 }

@@ -27,9 +27,10 @@
 }
 
 .buttons{
-    width: 420px;
+    width: auto;
     display: flex;
-    justify-content: space-around;
+    justify-content: flex-end;
+    padding-right: 50px;
 }
 .btn{
     width: 150px;
@@ -115,4 +116,24 @@
     .logo{
         height: 25px;
     }
+
+    .buttons{
+        padding-right: 10px;
+    }
+}
+@media (min-width:751px) {
+    .btnoptionsres{
+        display: none;
+    }
+    
+}
+@media (max-width:750px){ 
+    .btnoptions{
+        display: none;
+    }
+
+    .btnoptionsres{
+        display: block;
+    }
+    
 }
