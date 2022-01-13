@@ -8,7 +8,7 @@ const {SendEmails} = require('../../EmailsFunctions/SendEmails')
 const putOrder = async (req,res,next)=>{
   try{
     const {OrderId} = req.params;
-    const { dispatched} = req.body;
+    const { dispatched,email} = req.body;
     
     //[Busco la orden
     let order = await Order.findByPk(OrderId);

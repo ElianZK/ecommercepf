@@ -863,10 +863,10 @@ const SERVER = 'http://localhost:3001';
     }
 
 
-  export function updateOrderDispatched(orderId, status){
-      console.log("actualizacion de order")
+  export function updateOrderDispatched(orderId, status,email){
+      console.log("actualizacion de order", email)
     return async function (dispatch){
-      let updated = await axios.put(`${SERVER}/admin/order/${orderId}`, {dispatched:status});
+      let updated = await axios.put(`${SERVER}/admin/order/${orderId}`, {dispatched:status,email});
       return dispatch({
         type: UPDATE_ORDERS,
         payload: {
