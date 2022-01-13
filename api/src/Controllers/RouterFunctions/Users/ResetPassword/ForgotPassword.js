@@ -3,7 +3,7 @@ const { User } = require('../../../../db');
 // const { SECRET_JWT_SEED } = process.env;
 const { generarJWT } = require('../../../../helpers/jwt');
 const sgMail = require('@sendgrid/mail');
-const { SENDGRID_API_KEY } = process.env;
+const { SENDGRID_API_KEY,REACT_APP_LINK } = process.env;
 
 function sendEmail(user) {
     sgMail.setApiKey(SENDGRID_API_KEY);
@@ -12,7 +12,7 @@ function sendEmail(user) {
         from: "silcoro3@outlook.com", // your email
         subject: "Reset password requested | Restablecer contraseña solicitada",
         html: `
-        <a href="http://localhost:3001/users/${user.idUser}/passwordReset">HAZ CLIC AQUÍ para Cambiar PASSWORD el usuario con el correo ${user.email}</a>
+        <a href="${REACT_APP_LINK}/users/${user.idUser}/passwordReset">HAZ CLIC AQUÍ para Cambiar PASSWORD el usuario con el correo ${user.email}</a>
         `
     };
     sgMail.send(msg)

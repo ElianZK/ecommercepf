@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const { GetUser } = require('../Controllers/RouterFunctions/Users/GetUser');
 const { CheckType } = require('../Controllers/RouterFunctions/Users/CheckType');
-const { Changepassword } = require('../Controllers/RouterFunctions/Users/changePassword');
+const { Changepassword } = require('../Controllers/RouterFunctions/Users/ChangePassword');
 const { AdminExists } = require('../Controllers/RouterFunctions/Users/AdminExists');
 
 const router = Router();

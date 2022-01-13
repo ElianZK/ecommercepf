@@ -47,8 +47,8 @@ import { GET_ALL_PRODUCTS,
 import axios from 'axios';
 
 
-const SERVER = 'http://localhost:3001';
-// const SERVER = 'https://e-commerce-pf.herokuapp.com';
+//const SERVER = 'http://localhost:3001';
+const SERVER = 'https://e-commerce-pf.herokuapp.com';
 
 
     export function getAllProducts(data,all=false) {
@@ -682,7 +682,7 @@ const SERVER = 'http://localhost:3001';
         return async function(dispatch){
             try{
                 const res = await axios.put(`${SERVER}/users/${id}`, {...user, from});
-                await axios.put("http://localhost:3001/user/"+id, {value: false});
+                await axios.put(`${SERVER}/user/${id}`, {value: false});
 
                 const payload = {
                     user: res.data,
@@ -775,7 +775,7 @@ const SERVER = 'http://localhost:3001';
       return async function(dispatch){
         if(!idUser) return;
         try {
-          let response = await axios.get(`http://localhost:3001/users/wishlist/${idUser}`);
+          let response = await axios.get(`${SERVER}/users/wishlist/${idUser}`);
           dispatch({
             type:GET_WISHLIST,
             payload: response.data.wishList
@@ -788,7 +788,7 @@ const SERVER = 'http://localhost:3001';
     export function addItemToWishList(idUser,idProduct){
       return async function(dispatch){
         try {
-          let response = await axios.post(`http://localhost:3001/users/wishlist/${idUser}/${idProduct}`);
+          let response = await axios.post(`${SERVER}/users/wishlist/${idUser}/${idProduct}`);
           if(response.data.created){
             dispatch({
               type: UPDATE_WISHLIST,
@@ -806,7 +806,7 @@ const SERVER = 'http://localhost:3001';
     export function deleteItemFromWishList(idUser,idProduct){
       return async function(dispatch){
         try {
-          let response = await axios.delete(`http://localhost:3001/users/wishlist/${idUser}/${idProduct}`);
+          let response = await axios.delete(`${SERVER}/users/wishlist/${idUser}/${idProduct}`);
           if(response.data.deleted){
             dispatch({
               type: UPDATE_WISHLIST,
@@ -834,7 +834,7 @@ const SERVER = 'http://localhost:3001';
     export function createReview(id,review){
         console.log('object :>> ', id);
         return dispatch => {
-            axios.post(`http://localhost:3001/product/${id}/review`,review)
+            axios.post(`${SERVER}/product/${id}/review`,review)
             .then((result) => {
                 return dispatch({
                     type:CREATE_REVIEWS,
@@ -850,7 +850,7 @@ const SERVER = 'http://localhost:3001';
     //obtengo todos mis comentarios por ID de producto
     export function get_Review(id){
         return dispatch => {
-            axios.get(`http://localhost:3001/product/${id}/review`)
+            axios.get(`${SERVER}/product/${id}/review`)
             .then((result) => {
                 return dispatch({
                     type:GET_REVIEWS,
@@ -877,7 +877,7 @@ const SERVER = 'http://localhost:3001';
   }
     export function eliminar_review(prod,id){
         return dispatch => {
-            axios.delete(`http://localhost:3001/product/${prod}/review/${id}`)
+            axios.delete(`${SERVER}/product/${prod}/review/${id}`)
             .then((result) => {
                 console.log('result :>> ', result.data);
                 return dispatch({

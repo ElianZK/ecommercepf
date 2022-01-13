@@ -1,3 +1,6 @@
+*{
+   box-sizing: border-box;
+}
 .container{
    min-height: 100vh;
    display: flex;
@@ -5,7 +8,7 @@
    /* background-color: #ededed; */
    background-color: rgb(218, 211, 193);
    padding: 30px;
-   margin-top: 100px;
+   padding-top: 100px;
 }
 .container .data{
    /**/ display: flex;
@@ -149,21 +152,6 @@ padding: 0px 10px;
    }
    
    .subcontainer{
-      width: 70%;
-      height:500px;
-      margin-bottom: 50px;
-   }
-
-   .btnfav{
-      position: relative;
-      top: -60px;
-      left: -70px;
-   }
-}
-
-@media (max-width:720px) {
-   
-   .subcontainer{
       width: 90%;
       height:500px;
       margin-bottom: 50px;
@@ -175,3 +163,4 @@ padding: 0px 10px;
       left: -70px;
    }
 }
+

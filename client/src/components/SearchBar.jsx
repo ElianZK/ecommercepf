@@ -8,6 +8,8 @@ import Autocomplete from '@mui/material/Autocomplete';
 import { getAllProducts} from '../actions/index.js'
 import { Hint } from 'react-autocomplete-hint';
 import { useDispatch } from 'react-redux';
+function getWindowDimensions() {
+  const { innerWidth: width, innerHeight: height } = window;
 
 export default function SearchBar({setFilters}){
   const dispatch = useDispatch();
@@ -16,10 +18,7 @@ export default function SearchBar({setFilters}){
   let navigate = useNavigate();
   const products = useSelector((state) =>state.productsReducer.allProducts.productsInfo) 
   function handleChange(value){
-      setName(value);
-
-      //setAuto(products?.map(p=>{
-        //return {label: p.name}}))
+      setName(value); 
   }
 
   function handleSubmit(e){
@@ -29,7 +28,7 @@ export default function SearchBar({setFilters}){
         ...oldState,
         search: name
       }))
-      //navigate(`/`);
+      navigate(`/`);
     }else{
       Swal.fire({
           title: 'Error al realizar la busqueda',

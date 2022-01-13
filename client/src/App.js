@@ -29,7 +29,7 @@ import EditReview from './components/EditReview';
 
 function App() {
   const dispatch = useDispatch();
-  const [isAdmin, setIsAdmin] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const idUser = useSelector(state => state.usersReducer.loginInfo.user.idUser);
   /* const user = JSON.parse(localStorage.getItem("user"));
@@ -43,13 +43,15 @@ function App() {
     maxPrice: null,
     search: ''
   })
+  //const SERVER = 'http://localhost:3001';
+ const SERVER = 'https://e-commerce-pf.herokuapp.com';
 
   useEffect(() => {
     dispatch(clearProduct());
   }, []);
 
   useEffect(async() => {
-    await axios.post("http://localhost:3001/user/adminExists");
+    await axios.post(`${SERVER}/user/adminExists`);
     const user = JSON.parse(localStorage.getItem("user"));
     if(user){
       dispatch(login(user))
@@ -62,7 +64,7 @@ function App() {
 
   useEffect(() => {
     console.log(`idUser`, idUser)
-      axios.get("http://localhost:3001/user/type/" + idUser)
+      axios.get(`${SERVER}/user/type/${idUser}`)
       .then(res => {
           let { access } = res.data;
   
@@ -79,12 +81,12 @@ function App() {
         <Route exact path="/register" element={<Register/>} />        
         <Route exact path="/addToCart" element={<Cart />} />
         <Route exact path="/cart" element={<Cart />} />
-        <Route exact path="/wishList" element={<WishList/>} />
-        <Route exact path="/products" element={<Products />} />
-        <Route exact path="/buyHistory" element={<BuyHistory/>} />
-        <Route exact path="/checkout/:product" element={<Checkout />} />
+        {idUser?<Route exact path="/wishList" element={<WishList/>} />:null}
+        {/* <Route exact path="/products" element={<Products />} /> */}
+        {idUser? <Route exact path="/buyHistory" element={<BuyHistory/>} />:null}
+        {idUser? <Route exact path="/checkout/:product" element={<Checkout />} />:null}
 
-        <Route exact path="/profile" element={<Profile/>} />
+        {idUser? <Route exact path="/profile" element={<Profile/>} />:null}
 
         <Route exact path="/dashboard" element={isAdmin? <Dashboard/> : <CantAccess/>} />
         <Route exact path="/addCategory" element={isAdmin? <CatForm/> : <CantAccess/>} /> {/* admin */}
