@@ -8,7 +8,7 @@ const generarJWT = ( user ) => {
     return new Promise((resolve, reject)=>{
         let payload = { sub:user.idUser }
         jwt.sign(payload, SECRET_JWT_SEED,{
-            expiresIn: '1h'
+            expiresIn: '5m'
         },(err, token) =>{
             if (err) {
                 reject('No se pudo generar token')
@@ -27,10 +27,6 @@ const generarJWT = ( user ) => {
 // console.log(`object----->`, jwt.encode(payload, SECRET_JWT_SEED))
 //     return jwt.encode(payload, SECRET_JWT_SEED)
 // }
-
-
-
-
 
 module.exports={
     generarJWT

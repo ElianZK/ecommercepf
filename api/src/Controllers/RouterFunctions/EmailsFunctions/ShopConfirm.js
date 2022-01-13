@@ -91,6 +91,14 @@ function ShopConfirm(orderProducts,totalPrice,address){
                     <p>¡Gracias por comprar con nosotros!</p>
                 </div>
                 <div class="detalle center" >
+                    <h3><strong>ID del pedido</strong> 5fce7e785a1543df9247d673</h3>
+                    <h4>Forma de pago</h4>
+                    <p>Tarjeta</p>
+                    <p>**** **** **** 5563</p>
+                    <p><strong>Country</strong> Oaxaca</p>
+                    <p><strong>City</strong> Ixtepec</p>
+                    <p><strong>Street</strong> Magisterial #21</p>
+                    <p><strong>Postal Code</strong> 70000</p>
                     
                     <h4>Forma de pago</h4>
                     <p>Tarjeta</p>

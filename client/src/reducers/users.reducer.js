@@ -7,6 +7,8 @@ import{
     UPDATE_USER,
     DELETE_USER,
     GET_USER_INFO,
+    FORGOT_PASSWORD,
+    RESET_PASSWORD
 } from '../actions/actionsTypes'
 
 const initialState = {
@@ -22,7 +24,10 @@ const initialState = {
 
     updateInfo: null,
 
-    registerInfo: null
+    registerInfo: null,
+
+    forgot_password:'',
+    reset_password:''
 }
 
 export function usersReducer(state = initialState, action){ 
@@ -81,6 +86,21 @@ export function usersReducer(state = initialState, action){
                 users:action.payload
             }
         
+
+        case FORGOT_PASSWORD:{
+            return{
+                ...state,
+                forgot_password:action.payload
+            }
+        }
+
+        case RESET_PASSWORD:{
+            return{
+                ...state,
+                reset_password:action.payload
+            }
+        }
+
         default:
             return state;
     }

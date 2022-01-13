@@ -165,10 +165,10 @@ const Login = () => {
                         
                     </div>
 
-                    <Link className={s.link} to="/reset_pass">¿Olvidaste tu contraseña?</Link>
-                  <form>
+                    <Link className={s.link} to="/users/forgotPassword">¿Olvidaste tu contraseña?</Link>
+
                     <AccountsButtons access={mkLogin}/>
-                  </form>
+                 
 
                     <button name="login" className={`${s.normalSubmit} ${s.btnText}`} type="submit">Ingresar</button>
 

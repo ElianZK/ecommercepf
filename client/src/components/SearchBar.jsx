@@ -8,8 +8,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import { getAllProducts} from '../actions/index.js'
 import { Hint } from 'react-autocomplete-hint';
 import { useDispatch } from 'react-redux';
-function getWindowDimensions() {
-  const { innerWidth: width, innerHeight: height } = window;
+
 
 export default function SearchBar({setFilters}){
   const dispatch = useDispatch();

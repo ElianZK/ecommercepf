@@ -1,4 +1,5 @@
-import { GET_ALL_PRODUCTS, 
+import { 
+    GET_ALL_PRODUCTS, 
     GET_PRODUCT_BY_NAME,
     GET_PRODUCT_ID,
     GET_ALL_CATEGORIES,
@@ -43,6 +44,8 @@ import { GET_ALL_PRODUCTS,
     UPDATE_ORDER_STATUS,
     UPDATE_ORDERS,
     BUY_PRODUCT,
+    FORGOT_PASSWORD,
+    RESET_PASSWORD
 } from "./actionsTypes";
 import axios from 'axios';
 
@@ -875,6 +878,7 @@ const SERVER = 'https://e-commerce-pf.herokuapp.com';
       })
     }
   }
+    //elimina mi review
     export function eliminar_review(prod,id){
         return dispatch => {
             axios.delete(`${SERVER}/product/${prod}/review/${id}`)
@@ -889,7 +893,7 @@ const SERVER = 'https://e-commerce-pf.herokuapp.com';
             });
         }
     }
-
+    // actualiza mi review
     export function update_review(prod,id,values){
         return dispatch => {
             axios.put(`${SERVER}/product/${prod}/review/${id}`,values)
@@ -939,4 +943,47 @@ export function getUserInfo(userId){
         })
     }
 }
+
+    //forgot password
+    export function forgot_password(values){
+        console.log('values :>> ', values);
+        return dispatch => {
+            axios.patch(`http://localhost:3001/users/forgotPassword?`, values)
+            .then((result) => {
+                console.log('result.data :>> ', result.data);
+                return dispatch({
+                    type:FORGOT_PASSWORD,
+                    payload:result.data
+                })
+            }).catch((err) => {
+                console.error('err :>> ', err);
+            });
+        }
+    }
+
+
+    export function reset_password(id, token,values){
+        console.log('values :>> ', values);
+        return dispatch => {
+            axios.put(`http://localhost:3001/users/passwordReset/${id}/${token}`, values)
+            .then((result) => {
+                console.log('result.data :>> ', result.data);
+                return dispatch({
+                    type:RESET_PASSWORD,
+                    payload:result.data
+                })
+            }).catch((err) => {
+                console.error('err :>> ', err);
+            });
+        }
+    }
+
+
+
+
+
+
+
+
+
 
