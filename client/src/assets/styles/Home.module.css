@@ -1,7 +1,7 @@
 .container{
    display: flex;
    flex-direction: column;
-   padding-top: 100px;
+   padding-top: 0px;
    background-color: rgb(230, 220, 189);
 }
 .search{
