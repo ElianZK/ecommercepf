@@ -34,7 +34,13 @@ const Login = () => {
         email: "",
         password: ""
     });
-    
+    //[Para ingresar con presionar el enter
+    const handleKeyDown=(e)=>{
+      //! console.log(e.keyCode); // 13 return 
+      if (e.keyCode === 13){
+         dispatch(loginWithNormalAccount(inputs))
+      }
+    }
     const mkLogin = async (e,type)=>{
         e.preventDefault();
                 
@@ -114,11 +120,14 @@ const Login = () => {
     return (
         <div className={s.container}>
             <div className={s.wrapLogin}>
-                <form className={s.form} onSubmit={e => {
+                <form 
+                  className={s.form} 
+                  onSubmit={e => {
                     e.preventDefault();
-
                     dispatch(loginWithNormalAccount(inputs));
-                }}>
+                }}
+                  onKeyDown={handleKeyDown}
+                >
                     <h2 className={s.title}>Login</h2>
                     <div className={s.formGroup}>
                         <i className={s.iconInput} ><FontAwesomeIcon  icon={faEnvelope}/></i>
@@ -157,8 +166,9 @@ const Login = () => {
                     </div>
 
                     <Link className={s.link} to="/reset_pass">¿Olvidaste tu contraseña?</Link>
-
+                  <form>
                     <AccountsButtons access={mkLogin}/>
+                  </form>
 
                     <button name="login" className={`${s.normalSubmit} ${s.btnText}`} type="submit">Ingresar</button>
 
