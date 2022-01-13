@@ -42,6 +42,7 @@ import { GET_ALL_PRODUCTS,
     GET_USER_INFO,
     UPDATE_ORDER_STATUS,
     UPDATE_ORDERS
+    BUY_PRODUCT,
 } from "./actionsTypes";
 import axios from 'axios';
 
@@ -80,6 +81,16 @@ const SERVER = 'http://localhost:3001';
             })}
         }
     };
+
+    /* export function AutoComplete(name){
+        return async function(dispatch){
+            products = await axios.get(`${SERVER}/products?name=${name}`);
+            return dispatch({
+                type: SET_AUTOCOMPLETE,
+                payload: detail.data
+            })
+        }
+    } */
 
     export function getProductId(idProduct) {
         return async function(dispatch){
@@ -220,6 +231,7 @@ const SERVER = 'http://localhost:3001';
     export function createUser(body, from="user") {
         return async function(dispatch){
             try{
+                console.log(body)
                 const res = await axios.post(`${SERVER}/users/create`, {...body, from})
 
                 console.log(res.data);
@@ -316,7 +328,6 @@ const SERVER = 'http://localhost:3001';
                 }
                 localStorage.setItem("user", JSON.stringify(data.user));
 
-            localStorage.setItem("user", JSON.stringify(data.user));
                 return dispatch({
                     type: LOGIN,
                     payload: {
@@ -457,7 +468,7 @@ const SERVER = 'http://localhost:3001';
                         type: CLEAR_CART
                     }) */
                     const localCart = JSON.parse(localStorage.getItem("cart")) || [] //orderId es el estado para la orden de ese usuario
-                    //localStorage.removeItem("cart")
+                    localStorage.removeItem("cart")
                     const res= await axios.put(`${SERVER}/users/cart/${userId}`,{productsInfo: [...data.cart,...localCart]})
                      return dispatch ({
                          type: GET_PRODUCTS_CART,
@@ -577,6 +588,34 @@ const SERVER = 'http://localhost:3001';
             }catch(err){
                 console.log({msg: 'Item not remove'}, err)
             }
+        }
+    }
+
+    export function buyProduct(idProduct){
+        return async (dispatch) => {
+            const res = await axios.get(`${SERVER}/products/${idProduct}`);
+
+            const product = {
+                idProduct: res.data[0].idProduct,
+                name: res.data[0].name,
+                price: res.data[0].price,
+                stock: res.data[0].stock,
+                image: res.data[0].image,
+                amount: 1,
+                totalPrice: res.data[0].price
+            };
+
+            return dispatch({
+                type: BUY_PRODUCT,
+                payload: product
+            })
+        }
+    }
+
+    export function clearProduct(){
+        return {
+            type: BUY_PRODUCT,
+            payload: null
         }
     }
     
@@ -702,10 +741,11 @@ const SERVER = 'http://localhost:3001';
         }
     } 
 
-    export function setOrderProducts(pay, idUser){
+    export function setOrderProducts(pay, idUser,oneP){
         return async function(dispatch){
+            console.log(oneP)
             const postOrder = await axios.post(`${SERVER}/users/order/${idUser}`, pay)
-            clearCart(idUser)
+            //if(!oneP)clearCart(idUser)
             return dispatch ({
                 type: SET_ORDER_PRODUCTS,
                 payload: postOrder

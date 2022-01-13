@@ -17,7 +17,7 @@ import Checkout from './components/Shops/Checkout';
 import OrdersPannel from './components/Admin/Orders';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { login } from './actions';
+import { clearProduct, login } from './actions';
 import CantAccess from './components/Admin/CantAccess';
 import axios from 'axios';
 import Dashboard from './components/Admin/Dashboard';
@@ -41,6 +41,10 @@ function App() {
     maxPrice: null,
     search: ''
   })
+
+  useEffect(() => {
+    dispatch(clearProduct());
+  }, []);
 
   useEffect(async() => {
     await axios.post("http://localhost:3001/user/adminExists");
@@ -76,7 +80,7 @@ function App() {
         <Route exact path="/cart" element={<Cart />} />
         <Route exact path="/products" element={<Products />} />
         <Route exact path="/buyHistory" element={<BuyHistory/>} />
-        <Route exact path="/checkout" element={<Checkout />} />
+        <Route exact path="/checkout/:product" element={<Checkout />} />
         <Route exact path="/admin/orders" element={<OrdersPannel />} />
 
         <Route exact path="/profile" element={<Profile/>} />

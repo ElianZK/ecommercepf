@@ -13,6 +13,7 @@ const postUserOrder = async(req, res,next)=>{
     const {UserId} = req.params;
     //!console.log("PARAMS: ",req.params)
     const {address, totalPrice, email, id, productsInfo} = req.body;
+    console.log(`productsInfo`, productsInfo)
     let idProduct = productsInfo.map(el=>el.idProduct)
     //[Obtengo el usuario
     let user = await User.findByPk(UserId);

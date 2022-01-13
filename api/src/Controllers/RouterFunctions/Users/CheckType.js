@@ -10,6 +10,8 @@ const CheckType = async(req, res) =>{
             idUser
         }})
         
+        console.log(user);
+
         let {type} = user.dataValues;
     
         if(type === "user"){

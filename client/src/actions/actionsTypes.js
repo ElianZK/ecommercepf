@@ -35,6 +35,8 @@ export const CLEAR_CART = 'CLEAR_CART'; // todo
 export const GET_PRODUCTS_CART='GET_PRODUCTS_CART';
 export const CHANGE_QTY = 'CHANGE_QTY';
 
+export const BUY_PRODUCT = 'BUY_PRODUCT';
+
 export const SET_ORDER_PRODUCTS = 'SET_ORDER_PRODUCTS';
 
 

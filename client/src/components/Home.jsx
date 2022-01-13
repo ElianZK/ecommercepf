@@ -60,7 +60,7 @@ const Home = ({filters,setFilters}) => {
 
     return (
         <div className={s.container}>
-            {Array.isArray(products)&&products.length>0?<Filters setFilters={setFilters} setPage={setPage} Pagination={Pagination} page={page} handleChange={handleChange} nButtons={nButtons}/>:null}
+            {Array.isArray(products)?<Filters setFilters={setFilters} setPage={setPage} Pagination={Pagination} page={page} handleChange={handleChange} nButtons={nButtons}/>:null}
             
             {filters.search?<div className={s.search}><p>Resultados de busqueda de: <strong>{filters.search}</strong></p><button onClick={handleCloseSearch}>X</button></div>:null}
             <div className={s.cards}>

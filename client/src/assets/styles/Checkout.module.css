@@ -22,7 +22,7 @@
  
  .container_pasarela {
     width: 40rem;
-    height: 25rem;
+    height: 20rem;
     margin: auto;
     overflow-y: scroll;
     background-color: #d4cfcf50;
@@ -55,19 +55,25 @@
  }
  .pasarela_cdtm {
     display:flex;
-    margin-top: 2rem;
-    margin-left: 2.5rem;
+    margin-top: 1rem;
+    margin-left: 2rem;
     margin-right: 1.5rem;
     
  }
  .pasarela_info {
-    margin-left: 3rem;
+    margin-left: 2.5rem;
+    font-weight: bold;
+    color:#5a5959;
+    font-size: 15px;
+    padding-bottom: 0.8rem;
  }
  .title {
+    display:flex;
+    align-items: flex-end;
     color: #5c5959;
     font-weight: bold;
     padding-bottom: 1rem;
-    margin-right: 550px;
+    
  }
 
  .image_pasarela{
@@ -77,12 +83,12 @@
 
  
  .unidades_pasarela {
-    color: rgb(63, 60, 60);
-    font-weight: 500;
+    color: orangered;
+    font-weight: 450;
  }
  .peso_pasarela {
-    color: rgb(20, 60, 134);
-    font-weight: 500;
+    color: blue;
+    font-weight: 600;
  }
  .precio_pasarela {
     color: #5a5959;
@@ -167,8 +173,9 @@
  font-size: 1.5rem;
  font-weight: bold;
  color: #413e3e;
- margin-top: 3rem;
+ margin-top: 2rem;
  margin-bottom: 1rem;
+ margin-left: 2rem;
  }
  .direccion_pasarela {
     font-size: 1.1rem;
@@ -205,3 +212,7 @@
      padding: 0.3rem;
      padding-left: 0.3rem;
  }
+
+ .danger{
+   border: 2px solid crimson;
+}

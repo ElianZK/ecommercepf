@@ -5,7 +5,7 @@ import {faHeart as Heartwhite } from '@fortawesome/free-regular-svg-icons';
 import {faHeart as HeartFill } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { getProductId, addToCart, update, getWishList, addItemToWishList, deleteItemFromWishList} from '../actions/index.js'
+import { getProductId, addToCart, update, getWishList, addItemToWishList, deleteItemFromWishList, buyProduct} from '../actions/index.js'
 //import { Slide } from 'react-slideshow-image'
 import { Carousel } from 'react-responsive-carousel';
 //import {Carousel} from 'react-bootstrap';
@@ -45,7 +45,9 @@ const Details = () => {
         filterhistory = byhistory.filter(e => e.products.find(p => p.idProduct===idproduct))
     }
    
-    
+    useEffect(() => {
+        console.log(product)
+    }, [product]);
 
     const columns = [
     {
@@ -132,19 +134,8 @@ function handleChangeamount(e){
         {product?<div className={s.container}>
             <div className={s.data}>
                 <div className={`${s.subcontainer} ${s.imgcontainer}`}>
-                    {/* <Slide easing="ease">
-                        <div className={s.images}>
-                            {product.image.map((image, i)=>(
-                            <div key={i} className={s.image}><img  src={image} alt="Producto"/></div>))}
-                        </div>
-                    </Slide> */}
-                    <Carousel axis="vertical" autoPlay={true} interval={6000} showIndicators={true} infiniteLoop={true} centerMode={true} centerSlidePercentage={true}>
-                    {product.image.map((image, i)=>(<div className={s.itemimage}>
-                            <div key={i} /* className={s.image} */><img  src={image} alt={`Producto ${i}`} className={s.image}/></div>
-                            </div>
-                        ))}
-
-                    </Carousel>
+                            <div  className={s.image}><img  src={product.image[0]} alt={`Producto`} className={s.image}/></div>
+                          
                 </div>
                 <div className={`${s.subcontainer} ${s.details}`}>
                     <button className={s.btnfav} onClick={e=>addToFavourites(e)}><FontAwesomeIcon icon={fav?HeartFill:Heartwhite} /></button>
@@ -156,7 +147,12 @@ function handleChangeamount(e){
                         <label>Disponibles: {product.stock}</label>
                     </div>:<div><span>No disponible por el momento</span></div>}
                     <p className={s.salesnum}><strong>{product.sold_quantity} </strong>Ventas realizadas</p>
-                    <button className={`${s.btn}`}>Comprar ahora</button>
+                    <button className={`${s.btn}`} onClick={() => {
+                        console.log("voy a comprar el producto")
+
+                        dispatch(buyProduct(product.idProduct));
+                        navigate("/checkout/one")
+                    }}>Comprar ahora</button>
                     <button 
                         className={`${s.btn}`} onClick={handleAddToCart}>Agregar al carrito</button>
 
