@@ -18,7 +18,6 @@ export default function OrdersPannel (){
     
     function handleFilterStatus(e){
         e.preventDefault()
-        // dispatch(getAllOrders())
         dispatch(adminFilterOrdersByState(e.target.value))
     }
 
@@ -34,16 +33,23 @@ export default function OrdersPannel (){
     return (
         <div className={s.Container}>
             <div className={s.Filters}>
-                <select onChange={handleFilterStatus}>
+                <select onChange={e=>handleFilterStatus(e)}>
                     <option value="">Filter by Shipping Status:</option>
                     <option value="processing">Processing</option>
                     <option value="sent">Sent</option>
-                    <option value="recived">Recived</option>
+                    <option value="recieved">Recieved</option>
                 </select>
                 <select onChange={handleFilterPrice}>
                     <option value="">Filter by price:</option>
-                    <option value="H-price">Lower price</option>
-                    <option value="L-price">Higher price</option>
+                    <option value="H-price">Higher price</option>
+                    <option value="L-price">Lower price</option>
+                </select>
+                <select onChange={e=>handleFilterStatus(e)}>
+                    <option value="">Filter by Order Status:</option>
+                    <option value="processing">Processing</option>
+                    <option value="completed">Completed</option>
+                    <option value="rejected">Rejected</option>
+                    <option value="canceled">Canceled</option>
                 </select>
             </div>
             <div className={s.OrdersContainer}>

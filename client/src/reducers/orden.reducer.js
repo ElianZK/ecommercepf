@@ -13,7 +13,8 @@ import {
     SET_ORDER_PRODUCTS,
     ADMIN_FILTER_ORDERS_BY_STATE,
     ADMIN_FILTER_ORDERS_BY_PRICE,
-    UPDATE_ORDER_STATUS
+    UPDATE_ORDER_STATUS,
+    UPDATE_ORDERS
 } from '../actions/actionsTypes'
 
 
@@ -98,24 +99,20 @@ export function ordenReducer(state = initialState, action) {
         case ADMIN_FILTER_ORDERS_BY_STATE:
                 
                 let sort;
-        
-                if (action.payload === '') sort = state.orders;
-
-                if(action.payload === 'processing') sort = state.orders.filter(o=>
-                    o.dispatched.includes('processing') 
-                )
-
-                if(action.payload === 'sent') sort = state.orders.filter(o=>
-                    o.dispatched.includes('sent')
-                )
-
-                if(action.payload === 'recived') sort = state.orders.filter(o=>
-                    o.dispatched === 'recived'
-                )
-                console.log(sort)
+                //Shipping status
+                  if(action.payload === '') sort = state.orders;
+                  if(action.payload === 'processing') sort = state.orders.filter(o=>o.dispatched==='processing' )
+                  if(action.payload === 'sent') sort = state.orders.filter(o=>o.dispatched==='sent')
+                  if(action.payload === 'recieved') sort = state.orders.filter(o=>o.dispatched === 'recieved')
+                //Order Status
+                  if(action.payload === 'processing') sort = state.orders.filter(o=>o.status==='processing')
+                  if(action.payload === 'rejected') sort = state.orders.filter(o=>o.status==='rejected')
+                  if(action.payload === 'canceled') sort = state.orders.filter(o=>o.status === 'canceled' ) 
+                  if(action.payload === 'completed') sort = state.orders.filter(o=>o.status === 'completed')
+                  //!console.log("A VER: ",sort , "MODO: ", action.payload.payload, action.payload)
                 return{
-                    ...state,
-                    orderadici:[...sort]
+                  ...state,
+                  orderadici:[...sort]
                 };
 
         case ADMIN_FILTER_ORDERS_BY_PRICE:
@@ -135,6 +132,16 @@ export function ordenReducer(state = initialState, action) {
                     orders: [...action.payload],
                     orderadici:[...action.payload],
                 }
+            case UPDATE_ORDERS:
+              return {
+                ...state,
+                orderadici: [...state.orderadici.map(el=>{
+                  if(el.idOrder===action.payload.id){
+                    return {...el, dispatched:action.payload.status}
+                  }
+                  return el
+                })]
+              }
 
 
                 default:

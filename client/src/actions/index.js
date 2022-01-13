@@ -40,7 +40,8 @@ import { GET_ALL_PRODUCTS,
     UPDATE_REVIEW,
     GET_ALL_ORDERS,
     GET_USER_INFO,
-    UPDATE_ORDER_STATUS
+    UPDATE_ORDER_STATUS,
+    UPDATE_ORDERS
 } from "./actionsTypes";
 import axios from 'axios';
 
@@ -825,12 +826,12 @@ const SERVER = 'http://localhost:3001';
   export function updateOrderDispatched(orderId, status){
     return async function (dispatch){
       let updated = await axios.put(`${SERVER}/admin/order/${orderId}`, {dispatched:status});
-      // return dispatch({
-      //   type: UPDATE_ORDERS,
-      //   payload: {
-      //     id:orderId,
-      //     order:updated.data}
-      // })
+      return dispatch({
+        type: UPDATE_ORDERS,
+        payload: {
+          id:orderId,
+          status}
+      })
     }
   }
     export function eliminar_review(prod,id){
@@ -874,10 +875,10 @@ export function getAllOrders() {
     }
 }
 
-export function adminFilterOrdersByState(payload){
+export function adminFilterOrdersByState(value){
     return{
         type: ADMIN_FILTER_ORDERS_BY_STATE,
-        payload
+        payload: value
     }
 }
 
