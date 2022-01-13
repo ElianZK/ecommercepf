@@ -8,7 +8,7 @@ import {
   useStripe,
 } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { setOrderProducts, clearCart } from "../../actions";
 import s from "../../assets/styles/Checkout.module.css";
 import { formatMoney } from "accounting";
@@ -44,11 +44,21 @@ export function validate(state) {
 export default function Checkout() {
   const dispatch = useDispatch();
 
+  const params = useParams();
+
+  useEffect(() => {
+    console.log(params.product)
+  }, [])
+
   const User = JSON.parse(localStorage.getItem("user"));
   const idUser = !User ? null : User.idUser;
+  
   const cart = useSelector((state) => state.ordenReducer.cart);
-  const product = useSelector((state) => state.ordenReducer.product);
   const [totalPrice, setTotalPrice] = useState(0);
+
+  const product = useSelector((state) => state.ordenReducer.product);
+  const [totalPriceProduct, setTotalPriceProduct] = useState(0);
+  
   const [buys, setBuys] = useState([]);
   const [errors, setErrors] = useState({});
   const [state, setState] = useState({
@@ -85,6 +95,20 @@ export default function Checkout() {
     }
   }, [cart]);
 
+  useEffect(() => {
+    if(product){
+      setTotalPriceProduct(prev => prev + product.price);
+    }
+  }, [product]);
+
+  useEffect(() => {
+    console.log(totalPrice);
+  }, [totalPrice]);
+
+  useEffect(() => {
+    console.log(totalPriceProduct);
+  }, [totalPriceProduct]);
+  
   function handleChange(e) {
     setState({
       ...state,
@@ -109,6 +133,7 @@ export default function Checkout() {
         card: elements.getElement(CardElement),
       });
       if (!error) {
+        console.log(buys);
         const { id } = paymentMethod;
         let pay = {
           productsInfo: product ? [product] : buys,
@@ -119,7 +144,7 @@ export default function Checkout() {
             city: state.city,
             street: state.street,
           },
-          totalPrice: Math.round(totalPrice),
+          totalPrice: Math.round(params.product === "x" ? totalPrice : totalPriceProduct),
           id: id,
         };
         dispatch(setOrderProducts(pay, User.idUser,product !== null ? true : false)); //aca deberia ir la ruta post
@@ -195,6 +220,24 @@ export default function Checkout() {
               );
             })}
           </div>
+
+          <div className={s.datos_pasarela}>
+            <p className={s.neto_pasarela}>
+              Sub-Total:{" "}
+              <span className={s.subtotal_pasarela}>
+                {" "}
+                {formatMoney(totalPrice.toFixed(2))}{" "}
+              </span>{" "}
+            </p>
+            
+            <p className="total_pasarela">
+              {" "}
+              Total Amount:
+              <span className="total_numero_pasarela">
+                {formatMoney(Math.round(totalPrice))}
+              </span>
+            </p>
+          </div>
         </>) : (<>
           <div className={s.pasarela_card}>
             {product != null ? (<>
@@ -226,24 +269,26 @@ export default function Checkout() {
               </div>
             </>) : null}
           </div>
-        </>)}
-        <div className={s.datos_pasarela}>
-          <p className={s.neto_pasarela}>
-            Sub-Total:{" "}
-            <span className={s.subtotal_pasarela}>
+
+          <div className={s.datos_pasarela}>
+            <p className={s.neto_pasarela}>
+              Sub-Total:{" "}
+              <span className={s.subtotal_pasarela}>
+                {" "}
+                {formatMoney(totalPriceProduct.toFixed(2))}{" "}
+              </span>{" "}
+            </p>
+            
+            <p className="total_pasarela">
               {" "}
-              {formatMoney(totalPrice.toFixed(2))}{" "}
-            </span>{" "}
-          </p>
-          
-          <p className="total_pasarela">
-            {" "}
-            Total Amount:
-            <span className="total_numero_pasarela">
-              {formatMoney(Math.round(totalPrice))}
-            </span>
-          </p>
-        </div>
+              Total Amount:
+              <span className="total_numero_pasarela">
+                {formatMoney(Math.round(totalPriceProduct))}
+              </span>
+            </p>
+          </div>
+        </>)}
+        
       </div>
 
       {buys ? (

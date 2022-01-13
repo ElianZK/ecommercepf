@@ -20,7 +20,7 @@ function ProductCard({ id , name , price , image, data,add}) {
                   console.log("voy a comprar el producto")
 
                   dispatch(buyProduct(id));
-                  navigate("/checkout")
+                  navigate("/checkout/one")
                }}>Comprar ahora</button>
                <button className={`${s.btn}`} onClick={()=>add(data)}>Agregar al carrito</button>
             </div>

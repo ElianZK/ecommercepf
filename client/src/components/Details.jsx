@@ -151,7 +151,7 @@ function handleChangeamount(e){
                         console.log("voy a comprar el producto")
 
                         dispatch(buyProduct(product.idProduct));
-                        navigate("/checkout")
+                        navigate("/checkout/one")
                     }}>Comprar ahora</button>
                     <button 
                         className={`${s.btn}`} onClick={handleAddToCart}>Agregar al carrito</button>
