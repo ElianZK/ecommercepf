@@ -78,7 +78,7 @@ export function ordenReducer(state = initialState, action) {
             console.log(state.cart)
             return {
                 ...state,
-                cart: [...state.cart]
+                cart: action.payload
             };
 
 

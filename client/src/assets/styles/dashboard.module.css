@@ -1,13 +1,13 @@
 .container{
-    padding-top: 250px;
+    padding-top: 200px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .panel{
-    width: 540px;
-    height: 500px;
+    width: 720px;
+    height: 600px;
 
     background-color: rgb(255, 217, 1);
     border-radius: 40px;
@@ -40,4 +40,60 @@
 .bold{
     font-size: 2em;
     font-weight: bold;
+}
+
+
+/* monitores SD */
+@media (min-width: 1024px) and (max-width: 1400px){
+    .container{
+        padding-top: 120px;
+    }
+}
+
+/* tablets */
+@media (min-width: 500px) and (max-width: 1023px){
+    .container{
+        padding-top: 120px;
+    }
+
+    .panel{
+        width: 450px;
+        height: 400px;
+    }
+    
+    .button{
+        width: 120px;
+        height: 120px;
+    
+        border-radius: 30px;
+    }
+
+    .bold{
+        font-size: 1.5em;
+        font-weight: bold;
+    }
+}
+
+/* celulares */
+@media (min-width: 300px) and (max-width: 499px){
+    .container{
+        padding-top: 80px;
+    }
+
+    .panel{
+        width: 320px;
+        height: 420px;
+    }
+
+    .button{
+        width: 120px;
+        height: 120px;
+    
+        border-radius: 20px;
+    }
+
+    .bold{
+        font-size: 1.3em;
+        font-weight: bold;
+    }
 }

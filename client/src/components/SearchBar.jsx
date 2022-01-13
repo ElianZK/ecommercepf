@@ -54,21 +54,22 @@ export default function SearchBar({setFilters}){
         list="browsers"
         placeholder='Product Name...'
       /> */}
-      <Hint options={Array.isArray(products)?products.map(p=>p.name):[]}>
+      {/* <Hint options={Array.isArray(products)?products.map(p=>p.name):[]}>
         <input
         className={s.input}
             value={name}
             onChange={handleChange} />
-    </Hint>
-      {/* <Autocomplete
+    </Hint> */}
+      <Autocomplete
+      /* className={s.input} */
         disablePortal
         id="combo-box-demo"
         options={Array.isArray(products)?products.map(p=>{
           return {label: p.name}}):[]}
-        sx={{ width: 300 }}
-        onChange={(event, newValue) => {()=>{handleChange(newValue.label)}}}
-        renderInput={(params) => <TextField {...params} label="Movie" />}
-      /> */}
+        sx={{ width: 500 }}
+        onChange={(event, newValue) => {setName(newValue?.label)}}
+        renderInput={(params) => <TextField {...params} label="Product" />}
+      />
       
       <button
         className={s.btn}

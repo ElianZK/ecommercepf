@@ -1,8 +1,9 @@
 
 .container{
-    width: 150px;
+    width: 600px;
     display: flex;
     justify-content: space-between;
+    z-index: 150;
 }
 .input{
     height: 30px;

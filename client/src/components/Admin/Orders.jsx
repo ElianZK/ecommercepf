@@ -26,8 +26,8 @@ export default function OrdersPannel (){
         dispatch(adminFilterOrdersByPrice(e.target.value))
     }
 
-    const changeStatus= (e, idOrder)=>{
-      dispatch(updateOrderDispatched(idOrder, e.target.value));
+    const changeStatus= (e, idOrder,email)=>{
+      dispatch(updateOrderDispatched(idOrder, e.target.value,email));
     }
     
     return (
@@ -70,7 +70,7 @@ export default function OrdersPannel (){
                                 <li key={"4"} >City: {e.address.city}</li>
                                 <li key={"5"} >Postal Code: {e.address.postalCode}</li>
                                 <li key={"6"}> Shipping Status: 
-                                  <select  onChange={event=>changeStatus(event, e.idOrder)}>
+                                  <select  onChange={event=>changeStatus(event, e.idOrder,e.email)}>
                                     <option key={4} value={e.dispatched}>{e.dispatched}</option>
                                     {deliveryOptions.map((delivOption, index)=>{
                                       if(delivOption!==e.dispatched){

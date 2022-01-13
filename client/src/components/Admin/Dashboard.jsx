@@ -29,7 +29,13 @@ const Dashboard = () => {
                         <span className={s.bold}>usuarios</span>
                     </div>
                 </Link>
-                
+
+                <Link className={s.link} to="/admin/orders">
+                    <div className={s.button}>
+                        {/* acá va el icono */}
+                        <span className={s.bold}>ordenes</span>
+                    </div>
+                </Link>
             </div>
         </div>
     )

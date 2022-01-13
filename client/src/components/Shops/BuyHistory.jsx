@@ -6,14 +6,10 @@ import {getOrderProducts} from '../../actions/index'
 import { formatMoney } from 'accounting';
 import { getProductsCartUser,getProductId } from '../../actions';
 
- 
-
-
-
 export default function BuyHistory() {
 
     const dispatch = useDispatch()
-    const orders = useSelector(state => state.ordenReducer.orders)
+    const orders =  useSelector(state => state.ordenReducer.orders)
     const User = JSON.parse(localStorage.getItem("user"));
     const idUser = !User?null:User.idUser;
     
@@ -65,7 +61,7 @@ export default function BuyHistory() {
                         </div> 
 
                     </div>
-                )}):<div><h2>No se han encontrado Compras realizadas</h2></div>}
+                )}) :<div><h2>No se han encontrado Compras realizadas</h2></div>} 
 
             </div>
 

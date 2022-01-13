@@ -15,7 +15,7 @@ try {
     {
       model:User,
       as:"user",
-      attributes:["name", "lastname"]
+      attributes:["name", "lastname","email"]
     }]
   }) 
   let orders = rows.map(el=>{
@@ -24,7 +24,7 @@ try {
       let {details,...prodData}= prod;
       return {...prodData, amount:details.amount, price:details.price};
     });
-    return {...otherData,name:user.name, lastname:user.lastname, products};
+    return {...otherData,name:user.name, lastname:user.lastname, email:user.email, products};
   })
   
   res.status(200).json({count, orders});
