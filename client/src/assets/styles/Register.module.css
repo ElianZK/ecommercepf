@@ -23,7 +23,29 @@
     align-items: center;
     margin-bottom: 15px;
 }
-
+.formGroup i {
+  position: relative;
+  top: 38%;
+  right: 16%;
+  color:#272343
+}
+.password{
+  display:flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+.password input{
+  width: 100%;
+}
+.password i{
+  left: -8%;
+  width: 0%;
+}
+.password i:hover {
+  color: grey;
+  cursor: pointer;
+}
 .formGroup input{
     width: 95%;
     height: 40px;
@@ -44,6 +66,9 @@
     display: flex;
     justify-content: center;
 }
+.formGTerm label{
+  cursor:pointer;
+}
 .formGTerm input[type="checkbox"]{
     margin-right: 10px;
     width: 15px;
@@ -56,11 +81,14 @@
     border-radius: 10px;
     background-color: #FFD803;
     margin-top: 25px;
+    cursor:pointer;
 }
 
 @media (max-width: 1000px) {
     .form{
         width: 70%;
     }
-    
+    .password i{
+      left: -5%;
+    }
 }
