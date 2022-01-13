@@ -49,7 +49,7 @@ function Filters({setFilters, setPage, Pagination, handleChange,nButtons, page})
      }))
      setFilters(oldState=>({
       ...oldState,
-      ...priceLimits
+      priceLimits
     }));
     setPage(1);
   }
