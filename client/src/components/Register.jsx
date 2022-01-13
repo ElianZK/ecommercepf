@@ -10,6 +10,10 @@ import s from '../assets/styles/Register.module.css'
 // import { createUserWithEmailAndPassword, getAuth, GoogleAuthProvider } from 'firebase/auth';
 import AccountsButtons from './AccountsButtons';
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
+
+
 
 
 import { getAuth, 
@@ -22,22 +26,61 @@ import { getAuth,
 } from 'firebase/auth';
 
 // localhost:3001/users/CreateUser
+//PW: var regex = /^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]{6,}$/g
 
+//?[Function to validate error:
+function validate(input){
+  let err = {};
+  //*Validate name
+  if(input.name===''){
+    err.name = "Ingresa un nombre";
+  }else if(!input.name.match(/^[^*|\":<>[\]{}`\\()';.!¡@&$\[0-9]+$/) && input.name!==''){
+    err.name = "Ingrese solo letras mayúsculas o minúsculas."
+  }
+    //*Validate lastname
+  if(input.lastname===''){
+    err.lastname = "Ingresa un apellido";
+  }else if(!input.lastname.match(/^[^*|\":<>[\]{}`\\()';.!¡@&$\[0-9]+$/) && input.lastname!==''){
+    err.lastname = "Ingrese solo letras mayúsculas o minúsculas."
+  }
+  //*Validate other inputs
+  if(input.email === ""){
+    err.email= "Ingresa un email";
+  }else if(!isEmail(input.email) && input.mail!=='e'){
+    err.email="Ingresa un email válido"
+  }
+  if(input.password ===""){
+    err.password = "Ingrese una contraseña válida";
+  }else if(!input.password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*\.])(?=.{8,})/g) && input.password!==''){
+    err.password = "La contraseña debe contener mínimo 8 caracteres, 1 mayúscula, 1 minúscula y 1 caracter especial (!@#$%^&*)";
+
+  }
+  if(input.phone !== ""){
+    if(!input.phone.match(/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/)){
+      err.phone = "Ingrese un formato válido: Ej: +54 1155264083 / 1155264083"
+    }
+  }
+  if(input.chterm === false){
+    err.chterm = "Debe aceptar los terminos y condiciones para continuar con el registro";
+  }
+  return err;
+}
+
+function isEmail(email){
+  let reg = new RegExp(/^[a-zA-Z0-9.\-+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/);
+  return email.match(reg);
+}
 function Register() {    
     const auth = getAuth();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
-    // mensajitos al faltar un dato al autenticarse
-    let initialError={
-        name:'Ingresa un nombre',
-        lastname:'Ingresa un apellido',
-        email:'Ingresa un email valido',
-        pass:'Ingresa una contraseña',
-        tel:'Ingresa un telefono',
-        chterm:'Debe aceptar los terminos y condiciones para continuar con el registro',
-    }
-    //creo un estado interno data
+    //?|Para mostrar la contraseña
+    const [passwordShown, setPasswordShown] = useState(false);
+    //?|Para que se cambie la visibilidad:
+    const togglePasswordVisiblity = () => {
+      setPasswordShown(passwordShown ? false : true);
+    };
+    //[creo un estado interno de los datos del formulario
     let [data,setData] = useState({
         name: '',
         lastname:'',
@@ -46,12 +89,53 @@ function Register() {
         phone:'',
         chterm:false,
     })
+    //[Estado para saber si presioné el botón y debo mostrar los errores o no.
+    let [submitted, setSubmitted] = useState(false);
+    //[Estado de los errores
+    let [error,setError] = useState({})
 
-    let [error,setError] = useState(initialError)
+    //[Actualizo el error luego del cambio de estado
+    useEffect(()=>{
+      setError(validate(data))
+    },[data])
+    
+    //[Actualizo data con cada ingreso de info del usuario
+    const handleChange = (event)=>{
+      setData({
+        ...data,
+        [event.target.name]: event.target.value
+      })
+    };
+    //[Función para cuando presiono "REGISTRAR", acá valido y si hay errores los muestro, si no, despacho la creación del usuario.
+    function handleSubmit(event){
+      event.preventDefault();
+      //Si no tengo errores, entonces despacho la acción.
+      if(!Object.keys(error).length){
+        dispatch(createUser({
+          type:"user", 
+          ...data
+      }));
+        setSubmitted(false);
+      }else{
+        //si no, cambio submitted a true y muestro los campos con errores
+        Swal.fire({
+          title: "Error",
+          text: "Complete los campos",
+          icon: "error"
+        })
+        setSubmitted(true);
+      }
+    }
+    //[Función para cuando aprieten enter que intente ingresar el formulario:
+    const handleKeyDown = (e)=>{
+      //! console.log(e.keyCode); // 13 return 
+      if (e.keyCode === 13){
+        handleSubmit(e);
+      }
+    }
 
     // define que tipo de error hay al autenticarse
     const [AuthError, setAuthError] = useState("");
-
     const registerInfo = useSelector(state => state.usersReducer.registerInfo);
 
     useEffect(() => {
@@ -68,6 +152,7 @@ function Register() {
                     text: "Cree una cuenta con otro email",
                     icon: "info"
                 })
+                setData({...data, email:""});
             }else{
                 Swal.fire({
                     title: "Registro exitoso",
@@ -103,59 +188,7 @@ function Register() {
         }
     }, [AuthError])
 
-    const  validate =(e)=>{
-        let name=e.target.name;
-        let value=e.target.value;
-        let errort='';
-        
-        if((name==='name' || name==='lastname') && value && !/[a-zA-Záéíóú ]+$/.test(value)){
-            errort='Solo se admiten letras.'
-        }/*else if(name==='email' && value && /\S+@\S+\.\S+/.test(value)){
-            errort='Correo no válido';
-        }*/else if(name==='chterm' && data.chterm){
-            value=!data.chterm;
-            errort='Debe aceptar los terminos y condiciones para continuar'
-        } else if(value==='' && name!=='chterm'){
-            errort='Ingresa un valor para continuar'
-        }
-
-        setData({
-            ...data,
-            [name]: name !== 'chterm' ? value: !data.chterm
-        })
-
-        setError({...error, [name]: errort});
-    }
-
-    const onSubmit = e => {
-        e.preventDefault();
-        //const auth = getAuth();                
-        const {name, lastname, email, password, phone} = data;
-        console.log("voya crear un user" + data)
-        dispatch(createUser({
-            type:"user", 
-            email, 
-            password, 
-            phone,
-            name,
-            lastname
-        }));
-        /*createUserWithEmailAndPassword(auth, email, pass)
-        .then((userCredential) => {
-            // Signed in
-            // const user = userCredential.user;
-            console.log(userCredential);
-            navigate("/")
-        })
-        .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-        
-            console.log(errorCode);
-
-            setAuthError(errorCode.split("/")[1]);
-        });*/
-    }
+    
     const mkLogin= async (e,type)=>{
         e.preventDefault();
                 
@@ -165,7 +198,7 @@ function Register() {
         else if(type==='github') provider = new GithubAuthProvider();
         else if(type==='facebook') provider = new FacebookAuthProvider();
         
-        console.log("la sesión es de " + type)
+        //!console.log("la sesión es de " + type)
 
         setPersistence(auth, browserSessionPersistence)
         .then(async ()=>{
@@ -182,7 +215,7 @@ function Register() {
                     email: res.user.email
                 };
 
-                console.log(res.user);
+                //!console.log(res.user);
 
                 dispatch(createUser({
                     idUser: data.idUser,
@@ -209,22 +242,8 @@ function Register() {
     return (
         <div className={s.container}>
             <h2 className={s.title}>Formulario de Registro</h2>
-            <p><strong><i>Registrate y disfrutarás de una gran experiencia de compra</i></strong></p>
-            <form className={s.form} onSubmit={e => {
-                e.preventDefault();
-                const {name, lastname, email, password, phone} = data;
-
-                console.log(data);
-                
-                dispatch(createUser({
-                    type:"user", 
-                    email, 
-                    password, 
-                    phone,
-                    name,
-                    lastname
-                }));
-            }}>
+            <p><strong><i>Registrate para acceder a las últimas tendencias en tecnología</i></strong></p>
+            <form className={s.form} onSubmit={e => handleSubmit(e) } onKeyDown={e=>{handleKeyDown(e)}}>
                 <div className={s.formGroup}>
                     <label htmlFor="name">Nombre</label>
                     <input
@@ -232,10 +251,10 @@ function Register() {
                     id="name"
                     name="name"
                     value={data.name}
-                    onChange={(e) => validate(e)}
+                    onChange={(e) => handleChange(e)}
                     placeholder="Nombre"
                     />
-                    {error.name?<span className={s.error}>{error.name}</span>:null}
+                    {(submitted && error.name)?<span className={s.error}>{error.name}</span>:null}
                 </div>
 
                 <div className={s.formGroup}>
@@ -245,10 +264,10 @@ function Register() {
                     id="lastname"
                     name="lastname"
                     value={data.lastname}
-                    onChange={(e) => validate(e)}
+                    onChange={(e) => handleChange(e)}
                     placeholder="Apellidos"
                     />
-                    {error.lastname?<span className={s.error}>{error.lastname}</span>:null}
+                    {(submitted && error.lastname)?<span className={s.error}>{error.lastname}</span>:null}
                 </div>
                 <div className={s.formGroup}>
                     <label htmlFor="email">Email</label>
@@ -257,22 +276,26 @@ function Register() {
                     id="email"
                     name="email"
                     value={data.email}
-                    onChange={(e) => validate(e)}
+                    onChange={(e) => handleChange(e)}
                     placeholder="Email"
                     />
-                    {error.email?<span className={s.error}>{error.email}</span>:null}
+                    {(submitted && error.email)?<span className={s.error}>{error.email}</span>:null}
                 </div>
-                <div className={s.formGroup}>
+                <div className={`${s.formGroup}` }>
                     <label htmlFor="pass">Contraseña</label>
+                    <div className={s.password}>
+
                     <input
-                    type="password"
+                    type={passwordShown?"text":"password"}
                     id="pass"
                     name="password"
-                    value={data.pass}
-                    onChange={(e) => validate(e)}
+                    value={data.password}
+                    onChange={(e) => handleChange(e)}
                     placeholder="Contraseña"
                     />
-                    {error.pass?<span className={s.error}>{error.pass}</span>:null}
+                    <i onClick={togglePasswordVisiblity}><FontAwesomeIcon icon={faEye} /></i>
+                    </div>
+                    {(submitted && error.password)?<span className={s.error}>{error.password}</span>:null}
                 </div>
                 <div className={s.formGroup}>
                     <label htmlFor="tel">Telefono</label>
@@ -280,11 +303,11 @@ function Register() {
                     type="tel"
                     id="tel"
                     name="phone"
-                    value={data.tel}
-                    onChange={(e) => validate(e)}
+                    value={data.phone}
+                    onChange={(e) => handleChange(e)}
                     placeholder="Telefono"
                     />
-                    {error.tel?<span className={s.error}>{error.tel}</span>:null}
+                    {(submitted && error.phone)?<span className={s.error}>{error.phone}</span>:null}
                 </div>
                 <div className={s.formGroup}>
                     <div className={s.formGTerm}>
@@ -294,10 +317,10 @@ function Register() {
                         id="chterm"
                         name="chterm"
                         value=""
-                        onChange={(e) => validate(e)}
+                        onChange={(e) => handleChange(e)}
                         />Acepto los terminos y condiciones</label>
                     </div>
-                    {error.chterm?<span className={s.error}>{error.chterm}</span>:null}
+                    {(submitted && error.chterm)?<span className={s.error}>{error.chterm}</span>:null}
                 </div>
 
                 <AccountsButtons access={mkLogin}/>
