@@ -190,13 +190,7 @@ export default function Checkout() {
               {formatMoney(totalPrice.toFixed(2))}{" "}
             </span>{" "}
           </p>
-          <p className={s.neto_pasarela}>
-            iva:{" "}
-            <span className={s.subtotal_pasarela}>
-              {" "}
-              {formatMoney((totalPrice * 0.21).toFixed(2))}
-            </span>{" "}
-          </p>
+          
           <p className="total_pasarela">
             {" "}
             Total Amount:

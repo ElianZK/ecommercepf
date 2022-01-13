@@ -188,7 +188,7 @@ const SERVER = 'http://localhost:3001';
         }
     };
 
-    export function filterByPrice(payload){ //ver si tengo ruta
+    export function filterByPrice(payload){ 
         return{
             type: FILTER_PRODUCTS_BY_PRICE,
             payload
