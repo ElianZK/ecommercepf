@@ -10,22 +10,40 @@ module.exports = (sequelize) => {
             allowNull: false,
             defaultValue: DataTypes.UUIDV4
         },
-        date: {
-            type: DataTypes.DATE,
-            allowNull: false,
-            // unique:true
-        },
-        address: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
+        // date: {
+        //     type: DataTypes.DATE,
+        //     allowNull: false,
+        //     // unique:true
+        // },
+        address:{
+          type:DataTypes.JSON({
+              country:{type:DataTypes.STRING},
+              city:{type:DataTypes.STRING},
+              street:{type:DataTypes.STRING},
+              postalCode:{type:DataTypes.STRING}
+          }),
+          allowNull:false,
+          defaultValue: {
+            country:'',
+            city:'',
+            street:'',
+            postalCode:''
+          }
+      },
         totalPrice: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.FLOAT,
             allowNull: false,
         },
         status: {
-            type: DataTypes.ENUM("created","processing","canceled","completed"),
+            type: DataTypes.ENUM("created","processing","canceled","completed","rejected"),
             allowNull: false,
+        },
+        dispatched:{
+          type:DataTypes.ENUM("processing", "sent", "recieved"),
+          defaultValue:"processing"
         }
+    },{
+      createdAt: 'creationDate',
+      updatedAt: 'confirmationDate',
     });
 };

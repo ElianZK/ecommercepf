@@ -1,3 +1,6 @@
 node_modules
-package-lock.json
-.env
+api/package-lock.json
+client/package-lock.json
+*/.env
+client/build
+api/.gitignore

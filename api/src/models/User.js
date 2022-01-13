@@ -7,7 +7,7 @@ module.exports = (sequelize) => {
   // defino el modelo
     sequelize.define('user', {
         idUser:{
-            type: DataTypes.UUID,
+            type: DataTypes.STRING,
             primaryKey:true,
             allowNull: false,
             defaultValue: DataTypes.UUIDV4
@@ -17,25 +17,19 @@ module.exports = (sequelize) => {
             required: true,
             allowNull: false,
         },
-        DNI: {
-            type: DataTypes.INTEGER,
-            required: true,
-            allowNull: false,
-            unique:true
-        },
+
         name: {
-            type: DataTypes.STRING,
-            required: true,
-            allowNull: false
+            type: DataTypes.STRING
         },
-        lastName: {
-            type: DataTypes.STRING,
-            required: true,
-            allowNull: false
+
+        lastname: {
+            type: DataTypes.STRING
         },
+
         email: {
             type: DataTypes.STRING,
             allowNull: false,
+            required:true,
             unique:true,
             validate:{
                 isEmail: true
@@ -44,20 +38,40 @@ module.exports = (sequelize) => {
         password: {
             type: DataTypes.STRING,
             required: true,
-            allowNull: false,
-            // set(value){
-            //     this.setDataValue('password', bcrypt.hashSync(value,10))
-            // }
-        },        
-        phone: {
+            allowNull: false
+        },
+
+        changepassword:{
+            type:DataTypes.BOOLEAN,
+            defaultValue: false
+        },
+
+        phone:{
             type: DataTypes.STRING,
-            allowNull: false,
-            unique:true,
-            validate:{
-                len:[1,13]
+            allowNull:false
+        },
+        image:{
+            type:DataTypes.TEXT,
+            allowNull:false,
+            defaultValue: "https://icon-library.com/images/no-user-image-icon/no-user-image-icon-3.jpg"
+        },
+        address:{
+            type:DataTypes.JSON({
+                country:{type:DataTypes.STRING},
+                city:{type:DataTypes.STRING},
+                street:{type:DataTypes.STRING},
+                postalCode:{type:DataTypes.STRING}
+            }),
+            allowNull:true,
+            defaultValue: {
+              country:'',
+              city:'',
+              street:'',
+              postalCode:''
             }
         }
     },{
         timestamps:false
     });
 };
+//type, name, email, password, phone, image, address

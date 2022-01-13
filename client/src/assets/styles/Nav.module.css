@@ -17,7 +17,7 @@
     align-items: center;
 }
 .logo{
-    height: 90px;
+    height: 80px;
     cursor: pointer;
 }
 .search{
@@ -27,9 +27,10 @@
 }
 
 .buttons{
-    width: 350px;
+    width: auto;
     display: flex;
-    justify-content: space-around;
+    justify-content: flex-end;
+    padding-right: 50px;
 }
 .btn{
     width: 150px;
@@ -50,6 +51,7 @@
     transition: background-color .3s;
 }
 
+<<<<<<< HEAD
 .badge{
     background-color:crimson;
     color:antiquewhite;
@@ -57,4 +59,209 @@
     padding: 0.2rem 0.5rem;
     font-size: 1rem;
     margin-left: 0.2rem;
+=======
+.btnoptions {
+    cursor: pointer;
+}
+.group{
+    width: 100%;
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.profile{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile:hover{
+    cursor: pointer;
+}
+
+.photo{
+    width: 70px;
+    height: 70px;
+
+    border-radius: 50px;
+}
+
+.name{
+    margin: 0;
+    color: aliceblue;
+}
+
+
+
+/* ------------------------------------------------------------------------------------- */
+/*                                   MOBILE DESIGN                                    -*/
+/* --------------------------------------------------------------------------------- */
+
+/* 
+@media (min-width: 415px) {
+    .container{
+        height: 8%;
+        background-color: #2D334A;
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        z-index: 100;
+        color: #fff;
+        
+    }
+    .options{
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        height: 100%;
+        justify-content:stretch;
+        align-items: center;
+    }
+    .logo{
+        height: 70%;
+        cursor: pointer;
+    }
+    .search{
+        height: 40px;
+        width: 200px;
+        text-align: center;
+    }
+    
+    .buttons{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+    .nav_links{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .btn{
+        width: 150px;
+        height: 40px;
+        border-radius: 10px;
+        cursor: pointer;
+        background-color: rgb(230, 230, 230);
+        transition: background-color .3s;
+    }
+    
+    .btn:hover{
+        background-color: rgb(197, 197, 197);
+        transition: background-color .3s;
+    }
+    
+    .btn:active{
+        background-color: rgb(146, 146, 146);
+        transition: background-color .3s;
+    }
+
+    .Box{
+        height: 100%;
+        width: auto;
+        display:flex; 
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-size: 25px;
+    }
+    
+    .btnoptions {
+        height: 25px;
+        font-size: 15px;
+        cursor: pointer;
+        text-align: center;
+    }
+    .group{
+        width: 100%;
+        height: 80px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    
+    .profile{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .profile:hover{
+        cursor: pointer;
+    }
+    
+    .photo{
+        width: 50px;
+        height: 50px;
+    
+        border-radius: 50px;
+    }
+    
+    .name{
+        margin: 0;
+        color: aliceblue;
+    } */
+
+/* monitores SD */
+@media (min-width: 1024px) and (max-width: 1400px){
+    .container{
+        height: 60px;        
+    }
+
+    .logo{
+        height: 60px;
+    }
+}
+
+/* tablets */
+@media (min-width: 500px) and (max-width: 1023px){
+    .container{
+        height: 50px;        
+    }
+
+    .logo{
+        height: 40px;
+    }
+}
+
+/* celulares */
+@media (min-width: 300px) and (max-width: 499px){
+    .container{
+        height: 50px;   
+    }
+
+    .logo{
+        height: 25px;
+    }
+
+    .buttons{
+        padding-right: 10px;
+    }
+}
+@media (min-width:751px) {
+    .btnoptionsres{
+        display: none;
+    }
+    
+}
+@media (max-width:750px){ 
+    .btnoptions{
+        display: none;
+    }
+
+    .btnoptionsres{
+        display: block;
+    }
+    
+>>>>>>> origin/develop-fran
 }

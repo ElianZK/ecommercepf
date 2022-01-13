@@ -29,7 +29,7 @@ sequelize.models = Object.fromEntries(capsEntries);
 
 // En sequelize.models están todos los modelos importados como propiedades
 // Para relacionarlos hacemos un destructuring
-const { Category, Order, Product, User, Cart, Details, Brand, CategoryBrand} = sequelize.models;
+const { Category, Order, Product, User, Cart, Details, Brand, CategoryBrand, Reviews, WishList} = sequelize.models;
 
 // Aca vendrian las relaciones
 
@@ -41,6 +41,11 @@ User.belongsToMany(Product,{ through: Cart , foreignKey:"UserId"});  //products
 Product.belongsToMany(Order, { through: Details, foreignKey:"ProductId" }); //orders
 Order.belongsToMany(Product,{ through: Details , foreignKey:"OrderId"}); //products
 
+//Un usuario puede tener varias ordenes, pero cada orden pertenece a un único usuario
+Order.belongsTo(User, {as:"user", foreignKey:{name: 'UserId'} }); //user
+User.hasMany(Order, {as:"orders",foreignKey:{name:'UserId'}  }); //orders
+
+
 //Cada categoría puede tener distintas marcas y a su vez cada marca puede pertenecer a distintas categorías
 Category.belongsToMany(Brand, { through:"categoryBrand", foreignKey:"CategoryId" }); //brands
 Brand.belongsToMany(Category, { through: "categoryBrand", foreignKey:"BrandId"}); //categories
@@ -49,7 +54,13 @@ Brand.belongsToMany(Category, { through: "categoryBrand", foreignKey:"BrandId"})
 CategoryBrand.hasMany(Product, {as:"relation", foreignKey:{name:"idRelation",type: DataTypes.UUID,}}); //relation
 Product.belongsTo(CategoryBrand, {foreignKey:{ name:"idRelation", type: DataTypes.UUID, },as:"relation"}); //categoryBrand
 
+//puntuacion y comentarios del usuario a un producto
+Product.belongsToMany(User, {through:"reviews"});
+User.belongsToMany(Product, {through:"reviews"});
 
+//Lista de deseos
+Product.belongsToMany(User, { through: WishList ,as:"favourites", foreignKey:"ProductId"}); //users
+User.belongsToMany(Product,{ through: WishList , as:"favourites", foreignKey:"UserId"});  //products
 
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
