@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import {useDispatch , useSelector} from 'react-redux';
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons'
+import { faEnvelope, faLock, faEye } from '@fortawesome/free-solid-svg-icons'
 import s from "../assets/styles/login.module.css";
 
 import { getAuth, 
@@ -24,7 +24,12 @@ const Login = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const loginuser = useSelector(state => state.usersReducer.loginInfo);
-    
+    //?|Para mostrar la contraseña
+    const [passwordShown, setPasswordShown] = useState(false);
+    //?|Para que se cambie la visibilidad:
+    const togglePasswordVisiblity = () => {
+      setPasswordShown(passwordShown ? false : true);
+    };
     const [inputs, setInputs] = useState({
         email: "",
         password: ""
@@ -116,6 +121,7 @@ const Login = () => {
                 }}>
                     <h2 className={s.title}>Login</h2>
                     <div className={s.formGroup}>
+                        <i className={s.iconInput} ><FontAwesomeIcon  icon={faEnvelope}/></i>
                         <input 
                             onChange={e => setInputs(prev => {
                                 return{
@@ -129,9 +135,10 @@ const Login = () => {
                             type="email"
                             placeholder="Email"
                         />
-                        <FontAwesomeIcon className={s.iconInput} icon={faEnvelope}/>
+                        
                     </div>
-                    <div className={s.formGroup}>
+                    <div className={`${s.formGroup} ${s.password}`}>
+                    <i className={s.iconInput}><FontAwesomeIcon  icon={faLock}/></i>
                         <input 
                             onChange={e => setInputs(prev => {
                                 return{
@@ -142,10 +149,11 @@ const Login = () => {
                             className={s.input} 
                             name="password"
                             value={inputs.password} 
-                            type="password" 
+                            type={passwordShown?"text":"password"} 
                             placeholder="Contraseña"
                         />
-                        <FontAwesomeIcon className={s.iconInput} icon={faLock}/>
+                        <i onClick={togglePasswordVisiblity} className={s.toggleBtn}><FontAwesomeIcon  icon={faEye} /></i>
+                        
                     </div>
 
                     <Link className={s.link} to="/reset_pass">¿Olvidaste tu contraseña?</Link>
