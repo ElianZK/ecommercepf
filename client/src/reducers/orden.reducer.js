@@ -132,8 +132,8 @@ export function ordenReducer(state = initialState, action) {
             case GET_ALL_ORDERS:
                 return {
                     ...state,
-                    orders: action.payload,
-                    orderadici:action.payload,
+                    orders: [...action.payload],
+                    orderadici:[...action.payload],
                 }
 
 

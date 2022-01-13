@@ -866,23 +866,10 @@ const SERVER = 'http://localhost:3001';
 export function getAllOrders() {
     return async function (dispatch) {
         const {data} = await axios.get(`${SERVER}/admin/orders`)
-        let orders = data.orders.map(o=>{
-            console.log('ORDERSSS',o)
-            let user = data.data[0].filter(d=>{
-                console.log('USERRR', d)
-                console.log(d.idUser,o.UserId)
-                console.log(d.idUser === o.UserId)
-                return(d.idUser === o.UserId)
-                
-            })
-            return {
-                ...o,
-                user: user[0]
-            }
-        })
+        console.log("DAT: ", data);
         return dispatch({
             type: GET_ALL_ORDERS,
-            payload: orders
+            payload: data.orders
         })
     }
 }
