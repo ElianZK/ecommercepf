@@ -38,7 +38,7 @@ export default function BuyHistory() {
                             <h2 className={s.detailTitle}>Buy Detail</h2>
                         </div>
 
-                         <div className={s.cardContainer}>
+                        <div className={s.cardContainer}>
 
                             <ul className={s.stateAmount}>
                                 <li className={e.status=='completed'?`${s.status}`:`${s.statusfail}`}>{e.status.toUpperCase()}</li>
@@ -47,7 +47,7 @@ export default function BuyHistory() {
                                 </li>
                             </ul>
 
-                           <div className={s.detail}>  
+                            <div className={s.detail}>  
                                 <ul className={s.detailContainer}>
                                  {e.products.map((p,i)=>{
                                     return(

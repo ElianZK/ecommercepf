@@ -13,7 +13,9 @@ import {
   BUY_PRODUCT,
   ADMIN_FILTER_ORDERS_BY_STATE,
   ADMIN_FILTER_ORDERS_BY_PRICE,
-  GET_ALL_ORDERS
+  GET_ALL_ORDERS,
+  UPDATE_ORDERS
+  
 } from "../actions/actionsTypes";
 
 const initialState = {
@@ -86,42 +88,53 @@ export function ordenReducer(state = initialState, action) {
                 orderId: action.payload.orderId,
                     orders: action.payload.orders
             }
-
+ 
         case ADMIN_FILTER_ORDERS_BY_STATE:
-            let sort;
-            if (action.payload === '') sort = state.orders;
-
-            if(action.payload === 'created') sort = state.orders.sort(o=>
-                o.status === 'created'
-            )
-
-            if(action.payload === 'completed') sort = state.orders.sort(o=>
-                o.status === 'completed'
-            )
-
-            if(action.payload === 'rejected') sort = state.orders.sort(o=>
-                o.status === 'rejected'
-            )
-            return{
-                ...state,
-                orders:sort
-            }
+                
+                let sort;
+                //Shipping status
+                  if(action.payload === '') sort = state.orders;
+                  if(action.payload === 'processing') sort = state.orders.filter(o=>o.dispatched==='processing' )
+                  if(action.payload === 'sent') sort = state.orders.filter(o=>o.dispatched==='sent')
+                  if(action.payload === 'recieved') sort = state.orders.filter(o=>o.dispatched === 'recieved')
+                //Order Status
+                  if(action.payload === 'processing') sort = state.orders.filter(o=>o.status==='processing')
+                  if(action.payload === 'rejected') sort = state.orders.filter(o=>o.status==='rejected')
+                  if(action.payload === 'canceled') sort = state.orders.filter(o=>o.status === 'canceled' ) 
+                  if(action.payload === 'completed') sort = state.orders.filter(o=>o.status === 'completed')
+                  //!console.log("A VER: ",sort , "MODO: ", action.payload.payload, action.payload)
+                return{
+                  ...state,
+                  orderadici:[...sort]
+                };
 
         case ADMIN_FILTER_ORDERS_BY_PRICE:
             let sortPrice;
-            if(action.payload === 'All') sortPrice = state.orders;
-            if(action.payload === 'H-price') sortPrice = state.orders.map((a,b)=>b.totalPrice - a.totalPrice);
-            if(action.payload === 'L-price') sortPrice = state.orders.map((a,b)=>a.totalPrice - b.totalPrice);
+            if(action.payload === '') sortPrice = state.orders;
+            if(action.payload === 'H-price') sortPrice = state.orderadici.sort((a,b)=>b.totalPrice - a.totalPrice)
+            if(action.payload === 'L-price') sortPrice = state.orderadici.sort((a,b)=>a.totalPrice - b.totalPrice)
+            console.log(sortPrice)
             return {
                 ...state,
-                orders:sortPrice
+                orderadici:[...sortPrice]
             }
 
-        case GET_ALL_ORDERS:
-            return {
+            case GET_ALL_ORDERS:
+                return {
+                    ...state,
+                    orders: [...action.payload],
+                    orderadici:[...action.payload],
+                }
+            case UPDATE_ORDERS:
+              return {
                 ...state,
-                orders: action.payload
-        }
+                orderadici: [...state.orderadici.map(el=>{
+                  if(el.idOrder===action.payload.id){
+                    return {...el, dispatched:action.payload.status}
+                  }
+                  return el
+                })]
+              }
 
         case BUY_PRODUCT:
             console.log(action.payload);

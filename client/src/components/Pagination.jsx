@@ -4,7 +4,7 @@ import Stack from '@mui/material/Stack';
 
 export default function PaginationRounded({handleChange,nButtons, page}) {
   return (
-    <Stack spacing={2}>
+    <Stack spacing={2} >
       <Pagination count={parseInt(nButtons)} page={page} variant="outlined" shape="rounded" onChange={handleChange} />
     </Stack>
   );

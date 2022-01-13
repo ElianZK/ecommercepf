@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect,} from 'react';
 import { useSelector } from 'react-redux';
 import s from '../assets/styles/SearchBar.module.css'
 import Swal from 'sweetalert2';
