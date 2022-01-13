@@ -35,6 +35,8 @@ export const CLEAR_CART = 'CLEAR_CART'; // todo
 export const GET_PRODUCTS_CART='GET_PRODUCTS_CART';
 export const CHANGE_QTY = 'CHANGE_QTY';
 
+export const BUY_PRODUCT = 'BUY_PRODUCT';
+
 export const SET_ORDER_PRODUCTS = 'SET_ORDER_PRODUCTS';
 
 
@@ -58,3 +60,4 @@ export const GET_WISHLIST = "GET_WISHLIST";
 export const UPDATE_WISHLIST = "UPDATE_WISHLIST";
 export const DELETE_REVIEW='DELETE_REVIEW';
 export const UPDATE_REVIEW = 'UPDATE_REVIEW';
+export const UPDATE_ORDERS = "UPDATE_ORDERS";

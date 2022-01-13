@@ -10,6 +10,8 @@ import s from '../assets/styles/Register.module.css'
 // import { createUserWithEmailAndPassword, getAuth, GoogleAuthProvider } from 'firebase/auth';
 import AccountsButtons from './AccountsButtons';
 
+
+
 import { getAuth, 
     signInWithPopup, 
     GoogleAuthProvider,
@@ -74,7 +76,7 @@ function Register() {
                 });
 
                 dispatch(clearRegisterInfo());
-                navigate("/");
+                navigate("/login");
             }
         }
     }, [registerInfo])
@@ -129,6 +131,7 @@ function Register() {
         e.preventDefault();
         //const auth = getAuth();                
         const {name, lastname, email, password, phone} = data;
+        console.log("voya crear un user" + data)
         dispatch(createUser({
             type:"user", 
             email, 
@@ -211,6 +214,8 @@ function Register() {
                 e.preventDefault();
                 const {name, lastname, email, password, phone} = data;
 
+                console.log(data);
+                
                 dispatch(createUser({
                     type:"user", 
                     email, 

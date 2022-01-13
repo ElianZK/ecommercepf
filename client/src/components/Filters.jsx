@@ -56,35 +56,39 @@ function Filters({setFilters, setPage, Pagination, handleChange,nButtons, page})
 
   return (
     <div className={s.container}>
-      <select name='limit' onChange={handleChangeFilters}>
-        <option value='15'>15 Products</option>
-        <option value="25">25 Products</option>
-        <option value="35">35 Products</option>
-        <option value="50">50 Products</option>
-      </select>
+      <div>
+        <select name='limit' onChange={handleChangeFilters}>
+          <option value='15'>15 Products</option>
+          <option value="25">25 Products</option>
+          <option value="35">35 Products</option>
+          <option value="50">50 Products</option>
+        </select>
 
-      <select name='category' onChange={handleChangeCategory}>
-        <option value=''>Select Category</option>
-        {categories.map(el=>(<option key={el.idCategory} value={el.name}>{el.name}</option>))}
-      </select>
+        <select name='category' onChange={handleChangeCategory}>
+          <option value=''>Select Category</option>
+          {categories.map(el=>(<option key={el.idCategory} value={el.name}>{el.name}</option>))}
+        </select>
 
-      <select name='brand' onChange={handleChangeFilters}>
-        <option value=''>Select Brand</option>
-        {brands.map(el=>(<option key={el.idBrand} value={el.name}>{el.name}</option>))}
-      </select>
+        <select name='brand' onChange={handleChangeFilters}>
+          <option value=''>Select Brand</option>
+          {brands.map(el=>(<option key={el.idBrand} value={el.name}>{el.name}</option>))}
+        </select>
 
-        <input type="number" name="minPrice" min={0} onChange={handlePriceSet} placeholder="MinPrice"/>
-        <input type="number" name="maxPrice" min={0} onChange={handlePriceSet} placeholder='MaxPrice'/>
+          <input type="number" name="minPrice" min={0} onChange={handlePriceSet} placeholder="MinPrice"/>
+          <input type="number" name="maxPrice" min={0} onChange={handlePriceSet} placeholder='MaxPrice'/>
 
-      <select name='sort' onChange={handleChangeFilters}>
-        <option value=''>Sorts</option>
-        <option value='Desc_name'>Descendent name</option>
-        <option value='Asc_name'>Ascendent name</option>
-        <option value='Lower_price'>Lower Price</option>
-        <option value='Highest_price'>Highest price</option>
-      </select>
+        <select name='sort' onChange={handleChangeFilters}>
+          <option value=''>Sorts</option>
+          <option value='Desc_name'>Descendent name</option>
+          <option value='Asc_name'>Ascendent name</option>
+          <option value='Lower_price'>Lower Price</option>
+          <option value='Highest_price'>Highest price</option>
+        </select>
+      </div>
 
-      <div className={s.pagination}><Pagination page={page}  handleChange={handleChange} nButtons={nButtons}/></div>
+      <div className={s.pagination}>
+        <Pagination page={page}  handleChange={handleChange} nButtons={nButtons}/>
+      </div>
     </div>
   )
 }

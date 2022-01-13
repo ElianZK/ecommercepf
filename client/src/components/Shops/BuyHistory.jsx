@@ -31,7 +31,7 @@ export default function BuyHistory() {
             <h2 className={s.title}>SHOPPING HISTORY</h2>
 
                 {orders?.map((e, index)=>{return(
-                    <div className={s.card} key={e.index}>
+                    <div className={s.card} key={index}>
 
                         <div className={s.headerContainer}>
                             <h2 className={s.cardDate}>Date: {e.creationDate.substr(0,10)}</h2>
@@ -49,14 +49,14 @@ export default function BuyHistory() {
 
                             <div className={s.detail}>  
                                 <ul className={s.detailContainer}>
-                                 {e.products.map(p=>{
+                                 {e.products.map((p,i)=>{
                                     return(
-                                        <>                                      
+                                        <div key={i}>                                      
                                             <li className={s.productName}><p>{p.name}</p> <Link className={s.btnDetail} to={`/detail/${p.idProduct}`}>Ver detalles</Link></li>
                                             <li className={s.productQty}><strong>Quantity: </strong>{p.amount}</li>
                                             <li className={s.productPrice}>Price: {formatMoney(p.price)}</li>
                                             {/* <li className={s.subtotal}>Subtotal: {formatMoney(p.price*p.qty)} </li> */}
-                                        </>  
+                                        </div>  
                                     )
                                 })}{/**/}
                                 </ul>

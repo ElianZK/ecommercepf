@@ -4,46 +4,30 @@ const {Order,Product,User} = require("../../../../db");
 
 const getAllOrders = async(req,res,next)=>{
 try {
-   let orders = await Order.findAll({
+   let {count, rows} = await Order.findAndCountAll({
     attributes:{
       exclude:["confirmationDate"]
     },
-    include: [Product]
-
-   
+     include: [{
+      model:Product,
+      attributes:["idProduct", "name", "thumbnail"],
+    },
+    {
+      model:User,
+      as:"user",
+      attributes:["name", "lastname"]
+    }]
   }) 
-   let data=[]
-  for (let i = 0; i < orders.length; i++) {
-      let idUser = orders[i].UserId
-      let user = await User.findAll({
-        where: {
-          idUser
-        },
-        attributes:["name","lastname","idUser"]
-      })
-      console.log(user)
-      data.push(await user)
-  }
-  res.status(200).json({orders,data});
-  // let {count, rows} = await Order.findAndCountAll({
-  //   attributes:{
-  //     exclude:["confirmationDate"]
-  //   },
-  //   include: {
-  //     model:Product,
-  //     attributes:["idProduct", "name", "thumbnail"],
-  //   },
-  // }) 
+  let orders = rows.map(el=>{
+    let {products, user, ...otherData} = el.toJSON();
+    products = products.map(prod=>{
+      let {details,...prodData}= prod;
+      return {...prodData, amount:details.amount, price:details.price};
+    });
+    return {...otherData,name:user.name, lastname:user.lastname, products};
+  })
   
-  // let orders = rows.map(el=>{
-  //   let {products, ...otherData} = el.toJSON();
-  //   products = products.map(prod=>{
-  //     let {details,...prodData}= prod;
-  //     return {...prodData, amount:details.amount, price:details.price};
-  //   });
-  //   return {...otherData, products};
-  // })
-  // res.status(200).json({count, orders});
+  res.status(200).json({count, orders});
 
 } catch (error) {
   console.log('/admin/orders', error)

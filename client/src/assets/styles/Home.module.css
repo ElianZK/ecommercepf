@@ -44,23 +44,23 @@
    margin-bottom: 20px;;
 }
 
-
-
-@media (max-width:1230px) {
-   /* .container{
-      padding-top: 250px;
-   } */
-   .search{
-      
+/* monitores SD */
+@media (min-width: 1024px) and (max-width: 1400px){
+   .container{
+      padding-top: 60px;      
    }
 }
 
-@media (max-width:1037px) {
-   /* .container{
-      padding-top: 250px;
-   } */
+/* tablets */
+@media (min-width: 500px) and (max-width: 1023px){
+   .container{
+      padding-top: 50px;      
+   }
 }
 
-@media (max-width:615px) {
-  
+/* celulares */
+@media (min-width: 300px) and (max-width: 499px){
+   .container{
+      padding-top: 50px;      
+   }
 }
