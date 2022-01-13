@@ -5,13 +5,13 @@ let { Category, Order, Product, User, Cart, Details, Brand, CategoryBrand, Revie
 
 const startServer= async()=>{
   try {
-    
+     
     await Brand.sync({force:false});
     await Category.sync({force:false});
     await CategoryBrand.sync({force:false});
     await Product.sync({force:false});
     await User.sync({force:false});
-    await Order.sync({force:false});
+    await Order.sync({force:true});
     await Cart.sync({force:false});
     await Details.sync({force:false});
     await WishList.sync({force:false});

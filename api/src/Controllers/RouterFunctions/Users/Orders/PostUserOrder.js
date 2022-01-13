@@ -1,8 +1,12 @@
 const {Cart, User, Order, Product, Details} = require("../../../../db");
 const Stripe = require("stripe");
+//const { default: ShopConfirm } = require("../../EmailsFunctions/ShopConfirm");
 require('dotenv').config();
 const {STRIPE_CONN} = process.env;
 const stripe = new Stripe(STRIPE_CONN);
+
+const {ShopConfirm} = require('../../EmailsFunctions/ShopConfirm')
+const {SendEmails} = require('../../EmailsFunctions/SendEmails')
 
 const postUserOrder = async(req, res,next)=>{
   try {
@@ -48,6 +52,7 @@ const postUserOrder = async(req, res,next)=>{
       where:{
         OrderId:order.idOrder
       }
+      
     })
     //! console.log("ORDERPRODUCTS: ",orderProducts.map(el=>el.toJSON()));
 
@@ -92,7 +97,10 @@ const postUserOrder = async(req, res,next)=>{
     if(payment.status){
       await order.update({status:"completed"})
     }
-    
+
+    let codehtml= ShopConfirm(productsInfo,totalPrice,address);
+    SendEmails(email, 'Confirmación de compra', codehtml)
+    //console.log(`orderProducts`, orderProducts)
     return res.status(200).json({user, order, orderProducts})
 
   } catch (error) {

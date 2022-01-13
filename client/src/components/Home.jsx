@@ -11,6 +11,7 @@ import Swal from 'sweetalert2';
 const Home = ({filters,setFilters}) => {
     const User = JSON.parse(localStorage.getItem("user"));
     const idUser = !User?null:User.idUser;
+    const cart = useSelector(state => state.ordenReducer.cart)
     const dispatch = useDispatch();
 
     const products = useSelector((state) => {
@@ -36,7 +37,7 @@ const Home = ({filters,setFilters}) => {
     function addCart(product){
         //! console.log("datacard",product)
         //! console.log("usercard",idUser)  
-        dispatch(addToCart({...product,amount: 1},idUser))
+        dispatch(addToCart({...product,amount: 1},idUser,cart))
         Swal.fire({
             icon: 'success',
             text: 'Producto agregado exitosamente!',
@@ -59,9 +60,8 @@ const Home = ({filters,setFilters}) => {
 
     return (
         <div className={s.container}>
-            <Filters setFilters={setFilters} setPage={setPage} />
-            <div className={s.pagination}><Pagination page={page}  handleChange={handleChange} nButtons={nButtons}/></div>
-
+            {Array.isArray(products)&&products.length>0?<Filters setFilters={setFilters} setPage={setPage} Pagination={Pagination} page={page} handleChange={handleChange} nButtons={nButtons}/>:null}
+            
             {filters.search?<div className={s.search}><p>Resultados de busqueda de: <strong>{filters.search}</strong></p><button onClick={handleCloseSearch}>X</button></div>:null}
             <div className={s.cards}>
                 {Array.isArray(products)&&products.length>0?products.map((prod,i)=><Card key={i} id={prod.idProduct} name={prod.name} price={prod.price} image={prod.thumbnail} data={prod} add={addCart}/>)

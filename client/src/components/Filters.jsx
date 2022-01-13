@@ -5,7 +5,7 @@ import { getBrands} from '../actions/index';
 
 
 //| function Filters({handleChangeLimit, handleSortProducts, handleFilterByCategory, handleFilterByBrand}) {
-function Filters({setFilters, setPage}){
+function Filters({setFilters, setPage, Pagination, handleChange,nButtons, page}){
   const dispatch = useDispatch();
   const brands = useSelector(state=>state.productsReducer.brands);
   const categories = useSelector(state=>state.productsReducer.categories);
@@ -47,11 +47,7 @@ function Filters({setFilters, setPage}){
       ...oldState,
       [event.target.name]:event.target.value
      }))
-  }
-
-  const handleFormSubmit = (event)=>{
-    event.preventDefault();
-    setFilters(oldState=>({
+     setFilters(oldState=>({
       ...oldState,
       ...priceLimits
     }));
@@ -77,21 +73,18 @@ function Filters({setFilters, setPage}){
         {brands.map(el=>(<option key={el.idBrand} value={el.name}>{el.name}</option>))}
       </select>
 
-      <form onSubmit={handleFormSubmit} >
-        <label>MinPrice</label>
-        <input type="number" name="minPrice" min={0} onChange={e=>handlePriceSet(e)}/>
-        <label>MaxPrice</label>
-        <input type="number" name="maxPrice" min={0} onChange={handlePriceSet}/>
-        <button type="submit">Set</button>
-      </form>
+        <input type="number" name="minPrice" min={0} onChange={handlePriceSet} placeholder="MinPrice"/>
+        <input type="number" name="maxPrice" min={0} onChange={handlePriceSet} placeholder='MaxPrice'/>
 
       <select name='sort' onChange={handleChangeFilters}>
         <option value=''>Sorts</option>
+        <option value='Desc_name'>Descendent name</option>
+        <option value='Asc_name'>Ascendent name</option>
         <option value='Lower_price'>Lower Price</option>
-        <option value='Highest_price'>Highest_price</option>
+        <option value='Highest_price'>Highest price</option>
       </select>
 
-      
+      <div className={s.pagination}><Pagination page={page}  handleChange={handleChange} nButtons={nButtons}/></div>
     </div>
   )
 }

@@ -6,7 +6,9 @@ import {faHeart as HeartFill } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getProductId, addToCart, update, getWishList, addItemToWishList, deleteItemFromWishList} from '../actions/index.js'
-import { Slide } from 'react-slideshow-image'
+//import { Slide } from 'react-slideshow-image'
+import { Carousel } from 'react-responsive-carousel';
+//import {Carousel} from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import {formatMoney} from 'accounting'
 import Swal from 'sweetalert2';
@@ -20,12 +22,12 @@ const Details = () => {
     const navigate = useNavigate();
     const {idproduct} = useParams();
     const product = useSelector(state => state.productsReducer.productDetail[0])
-    const prod = JSON.parse(localStorage.getItem('cart')) || [].find(element => element.id === idproduct);
+    const cart = useSelector(state => state.ordenReducer.cart)
+    //const prod = JSON.parse(localStorage.getItem('cart')) || [].find(element => element.id === idproduct);
     //const [amount, setAmount] = useState(prod ?.amount||1); 
     const [amount, setAmount] = useState(1); 
-    // const Users = localStorage.getItem("user")
-    // console.log('Users details :>> ', Users);
-    // const idUser= Users!=="null"?JSON.parse(localStorage.getItem("user")).idUser:null
+    const [search, setSearch] = useState('')
+    const [searchres, setSearchres] = useState(null)
     
     // obtengo mi iduser de mi User
     const User = JSON.parse(localStorage.getItem("user"));
@@ -35,12 +37,12 @@ const Details = () => {
     const byhistory = JSON.parse(localStorage.getItem('byhistory'))
     const wishList = useSelector(state=>state.productsReducer.wishList);
     const [fav, setFav]=useState(Boolean(wishList.find(el=>el.idProduct===idproduct))); 
-
+    let filterhistory;
     if (byhistory===null) {
-        var filterhistory = []
+        filterhistory = []
     } else {
          //comprueba si existe mi idproducto existe en mi orders 
-        var filterhistory = byhistory.filter(e => e.products.find(p => p.idProduct===idproduct))
+        filterhistory = byhistory.filter(e => e.products.find(p => p.idProduct===idproduct))
     }
    
     
@@ -64,13 +66,13 @@ function handleAddToCart(e){
         dispatch(update(Number(amount)))
         if ((Number(amount)) <= product.stock) {
             setAmount(Number(amount));
-            dispatch(addToCart({ ...product,amount: amount},idUser)) //falta usuario 
+            dispatch(addToCart({ ...product,amount: amount},idUser,cart))
             Swal.fire({
                 icon: 'success',
                 text: 'Producto agregado exitosamente!',
                 showConfirmButton: false,
                 timer: 2000
-            })
+              })
         };
 }
 
@@ -83,7 +85,7 @@ function handleChangeamount(e){
   useEffect(() => {
       dispatch(getProductId(idproduct));
       dispatch(getWishList(idUser));
-  }, [dispatch, idproduct])
+  }, [dispatch])
 
 
   useEffect(()=>{
@@ -130,12 +132,19 @@ function handleChangeamount(e){
         {product?<div className={s.container}>
             <div className={s.data}>
                 <div className={`${s.subcontainer} ${s.imgcontainer}`}>
-                    <Slide easing="ease">
+                    {/* <Slide easing="ease">
                         <div className={s.images}>
                             {product.image.map((image, i)=>(
                             <div key={i} className={s.image}><img  src={image} alt="Producto"/></div>))}
                         </div>
-                    </Slide>
+                    </Slide> */}
+                    <Carousel axis="vertical" autoPlay={true} interval={6000} showIndicators={true} infiniteLoop={true} centerMode={true} centerSlidePercentage={true}>
+                    {product.image.map((image, i)=>(<div className={s.itemimage}>
+                            <div key={i} /* className={s.image} */><img  src={image} alt={`Producto ${i}`} className={s.image}/></div>
+                            </div>
+                        ))}
+
+                    </Carousel>
                 </div>
                 <div className={`${s.subcontainer} ${s.details}`}>
                     <button className={s.btnfav} onClick={e=>addToFavourites(e)}><FontAwesomeIcon icon={fav?HeartFill:Heartwhite} /></button>
@@ -151,17 +160,27 @@ function handleChangeamount(e){
                     <button 
                         className={`${s.btn}`} onClick={handleAddToCart}>Agregar al carrito</button>
 
-                    {/* <h3 className={s.titlepay}>Medios de pago</h3>
-                    <img className={s.payment} src="https://http2.mlstatic.com/secure/payment-logos/v2/payment-logo-mlm-consumer_credits-medium_v_ddbb2eb147.png" alt="Logo medio de pago mercado pago" />
-                    <img className={s.payment} src="https://tdinversiones.com/wp-content/uploads/2020/12/paypal-logo.png" alt="Logo medio de pago paypal" /> */}
                 </div>
             </div>
             <div className={s.desc}>
                 <h3>Información del producto</h3>
+                <div className={s.containerSearch}>
 
+                    <input name="name" placeholder="Ingrese su busqueda" onChange={(e)=>{
+                            let name= e.target.value;
+                            setSearch(name)
+                            setSearchres(
+                                product?.attributes.filter(p=>{
+                                    console.log(p)
+                                    return p.name.toLowerCase().includes(name.toLowerCase()) 
+                                })
+                            )
+                        }}/>
+                    </div>
                 <DataTable
+                    pagination
                     columns={columns}
-                    data={product.attributes}
+                    data={searchres?searchres:product.attributes}
                 />
                 {/* <p>El Samsung Galaxy A12 llega con una pantalla HD + de 6.5 pulgadas y potenciado por un procesador de ocho núcleos, 4GB RAM con 64GB de almacenamiento expandible mediante ranura microSD. La cámara posterior del Galaxy A12 es cuádruple, con lentes de 48MP, 5MP, 2MP y 2MP, mientras que la cámara frontal para selfies es de 8 megapíxeles. Completando las características del Samsung Galaxy A12 encontramos una batería de 5000 mAh de carga rápida, lector de huellas montadas de lado, y Android 10 a bordo. 
                     Pantalla HD + de 6.5 pulgadas$$ Almacenamiento expandible mediante ranura microSD$$Cámara posterior del Galaxy A12 es cuádruple, con lentes de 48MP, 5MP, 2MP y 2MP, mientras que la cámara frontal para selfies es de 8 megapíxeles$$Sensores: Huella digital (lateral), acelerómetro, Batería: 5000 mAh, Procesador: Octa-core 2.35 GHz</p> */}

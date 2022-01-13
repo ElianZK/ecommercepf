@@ -87,7 +87,7 @@ const Profile = () => {
 
                         <tr>
                             <td><h2 className={s.th}>password</h2></td>
-                            <td className={s.value}>{mode === "view" ? user.password : <input type="text" value={data.password} onChange={(e) => setData(prev => {
+                            <td className={s.value}>{mode === "view" ? <input type="password" value={data.password} disabled/> : <input type="text" value={data.password} onChange={(e) => setData(prev => {
                                 return {
                                     ...prev,
                                     password: e.target.value

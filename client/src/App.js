@@ -13,7 +13,8 @@ import Cart from './components/Shops/Cart';
 import Profile from './components/Profile.jsx';
 import BuyHistory from './components/Shops/BuyHistory'
 import UsersForm from './components/Admin/usersForm';
-import Checkout from './components/Shops/Checkout'
+import Checkout from './components/Shops/Checkout';
+import OrdersPannel from './components/Admin/Orders';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from './actions';
@@ -22,9 +23,15 @@ import axios from 'axios';
 import Dashboard from './components/Admin/Dashboard';
 
 //TODO: FALTA HACER LA RUTA DE ADMIN ACÁ CON LAS RUTAS INTERNAS. QUE EN LA DE ADMIN SE COMPRUEBE EL USUARIO 
+import EditReview from './components/EditReview';
 
 function App() {
   const dispatch = useDispatch();
+  const [isAdmin, setIsAdmin] = useState(true);
+
+  const idUser = useSelector(state => state.usersReducer.loginInfo.user.idUser);
+  /* const user = JSON.parse(localStorage.getItem("user"));
+  const idUser = !user?null:user.idUser; */
   const  [filters, setFilters] = useState({
     sort: '',
     category: '',
@@ -34,9 +41,11 @@ function App() {
     maxPrice: null,
     search: ''
   })
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
 
+  useEffect(async() => {
+    await axios.post("http://localhost:3001/user/adminExists");
+    const user = JSON.parse(localStorage.getItem("user"));
+    
     if(user){
       dispatch(login(user))
     }else{
@@ -44,11 +53,10 @@ function App() {
     }
   }, [dispatch])
 
-  const [isAdmin, setIsAdmin] = useState(false);
-
-  const idUser = useSelector(state => state.usersReducer.loginInfo.user.idUser);
+  
 
   useEffect(() => {
+    console.log(`idUser`, idUser)
       axios.get("http://localhost:3001/user/type/" + idUser)
       .then(res => {
           let { access } = res.data;
@@ -56,7 +64,6 @@ function App() {
           setIsAdmin(access && !!idUser)
       })
   }, [idUser]);
-
   return (
     <div className="App">
       <Nav isAdmin={isAdmin} filters={filters} setFilters={setFilters}/>
@@ -68,9 +75,9 @@ function App() {
         <Route exact path="/addToCart" element={<Cart />} />
         <Route exact path="/cart" element={<Cart />} />
         <Route exact path="/products" element={<Products />} />
-        <Route exact path="/userForm" element={<UsersForm/>} />
         <Route exact path="/buyHistory" element={<BuyHistory/>} />
         <Route exact path="/checkout" element={<Checkout />} />
+        <Route exact path="/admin/orders" element={<OrdersPannel />} />
 
         <Route exact path="/profile" element={<Profile/>} />
 
@@ -79,7 +86,9 @@ function App() {
         <Route exact path="/addBrand" element={isAdmin? <BrandForm/> : <CantAccess/>} /> {/* admin */}
         <Route exact path="/products" element={isAdmin? <Products /> : <CantAccess/>} /> {/* admin */}
         <Route exact path="/userForm" element={isAdmin ? <UsersForm/> : <CantAccess/>} /> {/* admin */}
+        <Route exact path="/product/:id/review/:idReview" element={<EditReview/>} />
       </Routes>
+      
     </div>
   );
 }

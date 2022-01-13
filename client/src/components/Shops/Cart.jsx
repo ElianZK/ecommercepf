@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import s from '../../assets/styles/Cart.module.css'
 import {getProductsCartUser, changeAmount, deleteItemFromCart, clearCart} from '../../actions/index'
 import Swal from 'sweetalert2';
-import { Link, useNavigate, useParams} from 'react-router-dom';
+import { Link, useNavigate} from 'react-router-dom';
 import DataTable from 'react-data-table-component';
 import {faTrashAlt} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'

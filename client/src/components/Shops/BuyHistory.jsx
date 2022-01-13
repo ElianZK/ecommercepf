@@ -4,8 +4,12 @@ import { Link } from 'react-router-dom';
 import s from '../../assets/styles/BuyHistory.module.css'
 import {getOrderProducts} from '../../actions/index'
 import { formatMoney } from 'accounting';
+import { getProductsCartUser,getProductId } from '../../actions';
 
  
+
+
+
 export default function BuyHistory() {
 
     const dispatch = useDispatch()
@@ -26,31 +30,31 @@ export default function BuyHistory() {
 
             <h2 className={s.title}>SHOPPING HISTORY</h2>
 
-                {orders?.map((e)=>{return(
-                    <div className={s.card} key={e.id}>
+                {orders?.map((e, index)=>{return(
+                    <div className={s.card} key={e.index}>
 
                         <div className={s.headerContainer}>
                             <h2 className={s.cardDate}>Date: {e.creationDate.substr(0,10)}</h2>
                             <h2 className={s.detailTitle}>Buy Detail</h2>
                         </div>
 
-                         <div className={s.cardContainer}>
+                        <div className={s.cardContainer}>
 
                             <ul className={s.stateAmount}>
                                 <li className={e.status=='completed'?`${s.status}`:`${s.statusfail}`}>{e.status.toUpperCase()}</li>
                                 <li className={s.amount}>
-                                    Total: {formatMoney(e.totalPrice*10)}
+                                    Total: {formatMoney(e.totalPrice)}
                                 </li>
                             </ul>
 
-                           <div className={s.detail}>  
+                            <div className={s.detail}>  
                                 <ul className={s.detailContainer}>
                                  {e.products.map(p=>{
                                     return(
                                         <>                                      
                                             <li className={s.productName}><p>{p.name}</p> <Link className={s.btnDetail} to={`/detail/${p.idProduct}`}>Ver detalles</Link></li>
-                                            <li className={s.productQty}><strong>Quantity: </strong>{p.details.amount}</li>
-                                            <li className={s.productPrice}>Price: {formatMoney(p.details.price)}</li>
+                                            <li className={s.productQty}><strong>Quantity: </strong>{p.amount}</li>
+                                            <li className={s.productPrice}>Price: {formatMoney(p.price)}</li>
                                             {/* <li className={s.subtotal}>Subtotal: {formatMoney(p.price*p.qty)} </li> */}
                                         </>  
                                     )
