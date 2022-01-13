@@ -41,3 +41,42 @@
     font-size: 2em;
     font-weight: bold;
 }
+
+
+/* monitores SD */
+@media (min-width: 1024px) and (max-width: 1400px){
+    .container{
+        padding-top: 120px;
+    }
+}
+
+/* tablets */
+@media (min-width: 500px) and (max-width: 1023px){
+    .container{
+        padding-top: 120px;
+    }
+}
+
+/* celulares */
+@media (min-width: 300px) and (max-width: 499px){
+    .container{
+        padding-top: 80px;
+    }
+
+    .panel{
+        width: 320px;
+        height: 300px;
+    }
+
+    .button{
+        width: 120px;
+        height: 120px;
+    
+        border-radius: 20px;
+    }
+
+    .bold{
+        font-size: 1.3em;
+        font-weight: bold;
+    }
+}
