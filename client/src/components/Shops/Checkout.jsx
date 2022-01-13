@@ -1,17 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
 import Swal from "sweetalert2";
+
 import {
   CardElement,
   Elements,
   useElements,
   useStripe,
 } from "@stripe/react-stripe-js";
+
 import { loadStripe } from "@stripe/stripe-js";
 import { setOrderProducts, clearCart } from "../../actions";
 import s from "../../assets/styles/Checkout.module.css";
 import { formatMoney } from "accounting";
-
+import { useEffect } from "react";
 
 const stripePromise = loadStripe(
   "pk_test_51KE0nYFfD78XPAGcGPPH7JVRgUrvShCe00gJQTJ8do8OhF6s205GYs2OrB7qBEdQVhQj3Xh0YtjqE6pAuBQSyomS00FxVwsPvF"
@@ -23,6 +26,44 @@ export default function Checkout() {
   const User = JSON.parse(localStorage.getItem("user"));
   const idUser = !User ? null : User.idUser;
   const cart = useSelector((state) => state.ordenReducer.cart);
+  const product = useSelector((state) => state.ordenReducer.product);
+
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [buys, setBuys] = useState([]);
+  const [iva, setIva] = useState(0);
+
+  useEffect(() => {
+    if(product != null){
+      console.log(product);
+      setTotalPrice(product.price);
+    }
+  }, [product]);
+
+  useEffect(() => {
+    console.log(totalPrice)
+  }, [totalPrice]);
+
+  useEffect(() => {
+    if(cart.length > 0){
+      for (const i in cart) {
+        buys.push({
+          idProduct: cart[i].idProduct,
+          name: cart[i].name,
+          image: cart[i].image,
+          price: Number(cart[i].price),
+          amount: Number(cart[i].amount),
+        });
+
+        setTotalPrice(prev => prev + cart[i].price * cart[i].amount);
+        // totalPrice += cart[i].price * cart[i].amount;
+        //iva = (totalPrice*0.21)
+        // console.log("comp",buys)
+        // console.log("iva",iva)
+      }
+
+      console.log(buys);
+    }
+  }, [cart]);
 
   //const token=localStorage.getItem('token')
 
@@ -38,22 +79,23 @@ export default function Checkout() {
     },
   });
 
-  let totalPrice = 0;
-  let iva = 0;
-  let buys = [];
-  for (const i in cart) {
-    buys.push({
-      idProduct: cart[i].idProduct,
-      name: cart[i].name,
-      image: cart[i].image,
-      price: Number(cart[i].price),
-      amount: Number(cart[i].amount),
-    });
-    totalPrice += cart[i].price * cart[i].amount;
-    //iva = (totalPrice*0.21)
-    // console.log("comp",buys)
-    // console.log("iva",iva)
-  }
+  // let totalPrice = 0;
+  // let iva = 0;
+  // let buys = [];
+  // for (const i in cart) {
+  //   buys.push({
+  //     idProduct: cart[i].idProduct,
+  //     name: cart[i].name,
+  //     image: cart[i].image,
+  //     price: Number(cart[i].price),
+  //     amount: Number(cart[i].amount),
+  //   });
+  //   setTotalPrice(prev => prev + cart[i].price * cart[i].amount);
+  //   // totalPrice += cart[i].price * cart[i].amount;
+  //   //iva = (totalPrice*0.21)
+  //   // console.log("comp",buys)
+  //   // console.log("iva",iva)
+  // }
 
   function handleChange(e) {
     setState({
@@ -62,127 +104,169 @@ export default function Checkout() {
     });
   }
 
-  /* const Payment = () => {
+  // const Payment = () => {
+  //   const stripe = useStripe();
+  //   const elements = useElements();
+
+  //   const handleSubmit = async (e) => {
+  //     e.preventDefault();
+  //     const { error, paymentMethod } = await stripe.createPaymentMethod({
+  //       type: "card",
+  //       card: elements.getElement(CardElement),
+  //     });
+  //     if (!error) {
+  //       const { id } = paymentMethod;
+  //       let pay = {
+  //         productsInfo: buys,
+  //         email: state.email,
+  //         address: {
+  //           country: state.country,
+  //           postalCode: state.postalCode,
+  //           city: state.city,
+  //           direction: state.street,
+  //         },
+  //         totalPrice: Math.round(totalPrice),
+  //         id: id,
+  //       }; 
+        
+  const Payment = () => {
     const stripe = useStripe();
     const elements = useElements();
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async(e) => {
       e.preventDefault();
-      const { error, paymentMethod } = await stripe.createPaymentMethod({
-        type: "card",
-        card: elements.getElement(CardElement),
-      });
-      if (!error) {
-        const { id } = paymentMethod;
+      
+      const {error, paymentMethod} = await stripe.createPaymentMethod({
+        type:"card",
+        card: elements.getElement(CardElement)
+      })
+    
+      if(!error) {
+        const {id} = paymentMethod;
         let pay = {
-          productsInfo: buys,
+          productsInfo: product ? [product] : buys,
           email: state.email,
+          //country: state.country,
+          //phone: state.phone,
           address: {
-            country: state.country,
-            postalCode: state.postalCode,
-            city: state.city,
-            direction: state.street,
+              country: state.country,
+              postalCode: state.postalCode,
+              city: state.city,
+              street:state.street
           },
           totalPrice: Math.round(totalPrice),
-          id: id,
-        }; */
-        
-        const Payment = () => {
-            const stripe = useStripe();
-            const elements = useElements();
+          id: id
+        }
 
-            const handleSubmit = async(e) => {
-            e.preventDefault();
-            const {error, paymentMethod} = await stripe.createPaymentMethod({
-                type:"card",
-                card: elements.getElement(CardElement)
-            })
-                    if(!error) {
-                        const {id} = paymentMethod;
-                        let pay = {
-                            productsInfo: buys,
-                            email: state.email,
-                            //country: state.country,
-                            //phone: state.phone,
-                            address: {
-                                country: state.country,
-                                postalCode: state.postalCode,
-                                city: state.city,
-                                street:state.street
-                            },
-                            totalPrice: Math.round(totalPrice),
-                            id: id
-                        }
-                dispatch(setOrderProducts(pay, User.idUser)) //aca deberia ir la ruta post
-                    Swal.fire({
-                        icon: 'success',
-                        text: "Thank you for your purchase , you will receive an email with the details",
-                        showConfirmButton: true,
-                     }).then((result)=>{
-                        if(result.value){
-                           //navigate('/buyHistory') //q vaya a ordenes
-                           window.location='/buyHistory'
-                        }
-                     });
-                dispatch(clearCart(User.idUser))
-                
-                } else {
-                    console.log(error); 
-                }
-        }
-            return <form className= {s.form_compra}  
-                            onSubmit={handleSubmit}>
-                        <CardElement className={s.card}/>     
-                        {state.email && state.address &&
-                        <button className={s.btn}>
-                                Buy
-                            </button>}
-                    </form>       
-        }
+        dispatch(setOrderProducts(pay, User.idUser,product !== null ? true : false)) //aca deberia ir la ruta post
+          
+        Swal.fire({
+          icon: 'success',
+          text: "Thank you for your purchase , you will receive an email with the details",
+          showConfirmButton: true,
+        }).then((result)=>{
+          if(result.value){
+            //navigate('/buyHistory') //q vaya a ordenes
+            window.location='/buyHistory'
+          }
+        });
+        
+        // dispatch(clearCart(User.idUser))          
+      } else {
+        console.log(error); 
+      }
+    }
+    
+    return <form className= {s.form_compra} onSubmit={handleSubmit}>
+              <CardElement className={s.card}/>     
+                {state.email && state.address &&
+                  <button className={s.btn}>Buy</button>}
+            </form>       
+  }
 
   return (
     <div className={s.container}>
       <h1 className={s.title}>Order Summary</h1>
+
       <div className={s.container_pasarela}>
-        <div className={s.pasarela_card}>
-          {cart?.map((e) => {
-            /*aca va token*/
-            return (
-              <div key={e.idProduct} className={s.pasarela_cdtm}>
+        
+        {!product ? (<>
+          <div className={s.pasarela_card}>
+            {cart?.map((e) => {
+              /*aca va token*/
+              return (
+                <div key={e.idProduct} className={s.pasarela_cdtm}>
+                  <div>
+                    <img
+                      className={s.image_pasarela}
+                      alt="imagen_pasarela"
+                      src={e.image}
+                    ></img>
+                  </div>
+
+                  <div className={s.pasarela_info}>
+                    <div>
+                      <p className={s.titulo_pasarela}>{e.name}</p>
+                    </div>
+
+                    <div>
+                      <p className={s.unidades_pasarela}>Unidades: {e.amount}</p>
+                    </div>
+
+                    <div>
+                      <p className={s.precio_pasarela}>
+                        <span className={s.peso_pasarela}></span>{" "}
+                        {formatMoney(e.price)}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </>) : (<>
+          <div className={s.pasarela_card}>
+            {product != null ? (<>
+              <div key={product.idProduct} className={s.pasarela_cdtm}>
                 <div>
                   <img
                     className={s.image_pasarela}
                     alt="imagen_pasarela"
-                    src={e.image}
+                    src={product.image}
                   ></img>
                 </div>
+
                 <div className={s.pasarela_info}>
                   <div>
-                    <p className={s.titulo_pasarela}>{e.name}</p>
+                    <p className={s.titulo_pasarela}>{product.name}</p>
                   </div>
 
                   <div>
-                    <p className={s.unidades_pasarela}>Unidades: {e.amount}</p>
+                    <p className={s.unidades_pasarela}>Unidades: {product.amount}</p>
                   </div>
+
                   <div>
                     <p className={s.precio_pasarela}>
                       <span className={s.peso_pasarela}></span>{" "}
-                      {formatMoney(e.price)}
+                      {formatMoney(product.price)}
                     </p>
                   </div>
                 </div>
               </div>
-            );
-          })}
-        </div>
+            </>) : null}
+          </div>
+        </>)}
+
+
         <div className={s.datos_pasarela}>
           <p className={s.neto_pasarela}>
             Sub-Total:{" "}
+            
             <span className={s.subtotal_pasarela}>
-              {" "}
-              {formatMoney(totalPrice.toFixed(2))}{" "}
+              {" "}{formatMoney(totalPrice.toFixed(2))}{" "}
             </span>{" "}
           </p>
+
           <p className={s.neto_pasarela}>
             iva:{" "}
             <span className={s.subtotal_pasarela}>
@@ -190,6 +274,7 @@ export default function Checkout() {
               {formatMoney((totalPrice * 0.21).toFixed(2))}
             </span>{" "}
           </p>
+
           <p className="total_pasarela">
             {" "}
             Total Amount:
@@ -203,6 +288,7 @@ export default function Checkout() {
         <div className={s.contenedor_facturacion}>
           <p className={s.facturacion_pasarela}>Facturación</p>
           <p className={s.direccion_pasarela}>Address Shipping</p>
+          
           <div className={s.datos_personales_pasarela}>
             <div>
               <label>Name</label>
@@ -215,6 +301,7 @@ export default function Checkout() {
                 onChange={(e) => handleChange(e)}
               />
             </div>
+
             <div>
               <label>Phone</label>
               <input
@@ -226,6 +313,7 @@ export default function Checkout() {
                 onChange={(e) => handleChange(e)}
               />
             </div>
+
             <div>
               <label>Email</label>
               <input
@@ -249,6 +337,7 @@ export default function Checkout() {
                 onChange={(e) => handleChange(e)}
               />
             </div>
+
             <div>
               <label>City</label>
               <input
@@ -260,6 +349,7 @@ export default function Checkout() {
                 onChange={(e) => handleChange(e)}
               />
             </div>
+
             <div>
               <label>Street</label>
               <input
@@ -271,6 +361,7 @@ export default function Checkout() {
                 onChange={(e) => handleChange(e)}
               />
             </div>
+
             <div>
               <label>Postal Code</label>
               <input
@@ -283,6 +374,7 @@ export default function Checkout() {
               />
             </div>
           </div>
+
           <div>
             <Elements stripe={stripePromise}>
               <Payment />

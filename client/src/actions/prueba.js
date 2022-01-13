@@ -1,9 +1,7 @@
-const user = {
-    token: "123213213123"
-};
+const a = [];
 
-if(user.token){
-    console.log("registrado");
+if(a){
+    console.log("bien");
 }else{
-    console.log("no registrado");
+    console.log("mal")
 }

@@ -13,6 +13,7 @@ import {
     SET_ORDER_PRODUCTS,
     ADMIN_FILTER_ORDERS_BY_STATE,
     ADMIN_FILTER_ORDERS_BY_PRICE,
+    BUY_PRODUCT,
 } from '../actions/actionsTypes'
 
 
@@ -20,7 +21,7 @@ import {
 const initialState = {
     cart: JSON.parse(localStorage.getItem("cart")) || [],
     orders: [],
-    
+    product: null
 }
 
 
@@ -66,7 +67,6 @@ export function ordenReducer(state = initialState, action) {
 
 
         case CLEAR_CART:
-
             return {
                 ...state,
                 cart: [],
@@ -95,24 +95,25 @@ export function ordenReducer(state = initialState, action) {
             }
 
         case ADMIN_FILTER_ORDERS_BY_STATE:
-                let sort;
-                if (action.payload === '') sort = state.orders;
+            let sort;
+            if (action.payload === '') sort = state.orders;
 
-                if(action.payload === 'created') sort = state.orders.sort(o=>
-                    o.status === 'created'
-                )
+            if(action.payload === 'created') sort = state.orders.sort(o=>
+                o.status === 'created'
+            )
 
-                if(action.payload === 'completed') sort = state.orders.sort(o=>
-                    o.status === 'completed'
-                )
+            if(action.payload === 'completed') sort = state.orders.sort(o=>
+                o.status === 'completed'
+            )
 
-                if(action.payload === 'rejected') sort = state.orders.sort(o=>
-                    o.status === 'rejected'
-                )
-                return{
-                    ...state,
-                    orders:sort
-                }
+            if(action.payload === 'rejected') sort = state.orders.sort(o=>
+                o.status === 'rejected'
+            )
+            return{
+                ...state,
+                orders:sort
+            }
+
         case ADMIN_FILTER_ORDERS_BY_PRICE:
             let sortPrice;
             if(action.payload === 'All') sortPrice = state.orders;
@@ -123,13 +124,21 @@ export function ordenReducer(state = initialState, action) {
                 orders:sortPrice
             }
 
-            case GET_ALL_ORDERS:
-                return {
-                    ...state,
-                    orders: action.payload
-                }
+        case GET_ALL_ORDERS:
+            return {
+                ...state,
+                orders: action.payload
+        }
 
-                default:
-                    return state
+        case BUY_PRODUCT:
+            console.log(action.payload);
+
+            return {
+                ...state,
+                product: action.payload
+            };
+
+        default:
+            return state
     }
 }

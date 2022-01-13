@@ -6,6 +6,7 @@ import s2 from '../../assets/styles/CategoryForm.module.css';
 import DataTable from 'react-data-table-component';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faTrashAlt, faEdit } from '@fortawesome/free-solid-svg-icons'
+import Swal from "sweetalert2";
 
 const Products = () => {
     const dispatch = useDispatch();
@@ -55,7 +56,7 @@ const Products = () => {
         },
         {
             name: 'ACCIONES',
-            selector: row => [<abbr title="Editar categoria" key={0}><button className={s2.btnEdit} onClick={()=>editProduct(row)} ><FontAwesomeIcon icon={faEdit}/></button></abbr>/* ,
+            selector: row => [<abbr title="Editar producto" key={0}><button className={s2.btnEdit} onClick={()=>editProduct(row)} ><FontAwesomeIcon icon={faEdit}/></button></abbr>/* ,
             <abbr title="Eliminar categoria" key={1}><button className={s2.btnDel}><FontAwesomeIcon icon={faTrashAlt}/></button></abbr> */],
             sortable: false,
         },
@@ -73,10 +74,19 @@ const Products = () => {
         e.preventDefault();
         let name= e.target.name;
         let value= e.target.value;
-        setData({
-            ...data,
-            [name]: value
-        })
+        if(name==='category'){
+            if(!data.categories.find(c=>c===value)){
+                setData({
+                    ...data,
+                    categories: [...data.categories,value]
+                })
+            }
+        }else {
+            setData({
+                ...data,
+                [name]: value
+            })
+        }
     }
 
     let handleAtt= (e)=>{
@@ -100,8 +110,15 @@ const Products = () => {
         })
     }
 
-    let handlerRegister = ()=>{
+    let handlerRegister = (e)=>{
+        e.preventDefault()
         dispatch(createProduct(data))
+        Swal.fire({
+            icon: 'success',
+            text: 'Producto Registrado Correctamente!',
+            showConfirmButton: false,
+            timer: 3000
+          })
     }
     return (
         <div className={s.Container}>
@@ -132,7 +149,7 @@ const Products = () => {
                     <input id="thumbnail" name="thumbnail" type="text" placeholder="Type a small image" onChange={handleChange}></input>
                 </div>
                 <div className={s.formGroup}>
-                    <select name='category' /* onChange={handleChangeCategory} */>
+                    <select name='category' onChange={handleChange}>
                         <option value=''>Select Category</option>
                         {categories.map(el=>(<option key={el.idCategory} value={el.name}>{el.name}</option>))}
                     </select>

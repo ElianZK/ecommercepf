@@ -43,7 +43,7 @@ export default function BuyHistory() {
                             <ul className={s.stateAmount}>
                                 <li className={e.status=='completed'?`${s.status}`:`${s.statusfail}`}>{e.status.toUpperCase()}</li>
                                 <li className={s.amount}>
-                                    Total: {formatMoney(e.totalPrice*10)}
+                                    Total: {formatMoney(e.totalPrice)}
                                 </li>
                             </ul>
 
@@ -53,8 +53,8 @@ export default function BuyHistory() {
                                     return(
                                         <>                                      
                                             <li className={s.productName}><p>{p.name}</p> <Link className={s.btnDetail} to={`/detail/${p.idProduct}`}>Ver detalles</Link></li>
-                                            <li className={s.productQty}><strong>Quantity: </strong>{p.details.amount}</li>
-                                            <li className={s.productPrice}>Price: {formatMoney(p.details.price)}</li>
+                                            <li className={s.productQty}><strong>Quantity: </strong>{p.amount}</li>
+                                            <li className={s.productPrice}>Price: {formatMoney(p.price)}</li>
                                             {/* <li className={s.subtotal}>Subtotal: {formatMoney(p.price*p.qty)} </li> */}
                                         </>  
                                     )
