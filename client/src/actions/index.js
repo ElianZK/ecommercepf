@@ -948,7 +948,7 @@ export function getUserInfo(userId){
     export function forgot_password(values){
         console.log('values :>> ', values);
         return dispatch => {
-            axios.patch(`http://localhost:3001/users/forgotPassword?`, values)
+            axios.patch(`${SERVER}/users/forgotPassword?`, values)
             .then((result) => {
                 console.log('result.data :>> ', result.data);
                 return dispatch({
@@ -965,7 +965,7 @@ export function getUserInfo(userId){
     export function reset_password(id, token,values){
         console.log('values :>> ', values);
         return dispatch => {
-            axios.put(`http://localhost:3001/users/passwordReset/${id}/${token}`, values)
+            axios.put(`${SERVER}/users/passwordReset/${id}/${token}`, values)
             .then((result) => {
                 console.log('result.data :>> ', result.data);
                 return dispatch({

@@ -5,21 +5,8 @@ let { Category, Order, Product, User, Cart, Details, Brand, CategoryBrand, Revie
 
 const startServer= async()=>{
   try {
-<<<<<<< HEAD
-     
-    await Brand.sync({force:false});
-    await Category.sync({force:false});
-    await CategoryBrand.sync({force:false});
-    await Product.sync({force:false});
-    await User.sync({force:false});
-    await Order.sync({force:false});
-    await Cart.sync({force:false});
-    await Details.sync({force:false});
-    await WishList.sync({force:false});
-    await Reviews.sync({force:false});
-=======
     
-    let variable = false;
+    let variable = true;
 
     await Brand.sync({force:variable});
     await Category.sync({force:variable});
@@ -31,7 +18,6 @@ const startServer= async()=>{
     await Details.sync({force:variable});
     await WishList.sync({force:variable});
     await Reviews.sync({force:variable});
->>>>>>> origin/develop-cris
     
     let aux = await Product.count();
     console.log("Products Registered in the DB: ",aux);
