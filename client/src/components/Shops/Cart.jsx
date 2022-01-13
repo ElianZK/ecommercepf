@@ -123,13 +123,15 @@ import { formatMoney } from 'accounting';
         rowsPerPageText: "Files per Page",
         rangesSeparatorText: "of",
         selectAllRowsItem: true,
-        selectAllRowsItemText: "All"
+        selectAllRowsItemText: "All",
+        responsive: true
     } 
 
      return (
          <>
             <div className={s.container}>
-            <DataTable
+            <DataTable 
+                className={s.table}
                 title ={<h1>My Shopping Cart</h1>} 
                 columns = {columns}
                 data = {products}
