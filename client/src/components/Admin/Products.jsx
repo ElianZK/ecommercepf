@@ -66,8 +66,12 @@ const Products = () => {
     useEffect(() => {
         dispatch(getAllProducts(null,true))
         dispatch(getCategories());
-        dispatch(getBrands())
+    
     }, [dispatch])
+
+    useEffect(()=> {
+        dispatch(getBrands(categories[0]))
+    }, [categories])
 
     let handleChange= (e)=>{
         e.preventDefault();
@@ -184,11 +188,13 @@ const Products = () => {
             <button className={s.button} onClick={()=>cancelEdit}>Registrar Nuevo Producto</button>
             <input name="name" placeholder="Ingrese su busqueda" onChange={(e)=>{
                     let name= e.target.value;
+                    name = name.toLowerCase()
                     setSearch(name)
                     setSearchres(
                         products.filter(p=>{
                             console.log(p)
-                            return p.name.toLowerCase().includes(name.toLowerCase()) 
+                            let aux = p.name.toLowerCase()
+                            return aux.includes(name.toLowerCase()) 
                         })
                     )
                 }}/>

@@ -172,10 +172,12 @@ export default function BrandForm (){
                 <div className={s.containerSearch}>
                     <input name="name" placeholder="Ingrese la marca" onChange={(e)=>{
                         let name= e.target.value;
+                        name= name.toLowerCase()
                         setSearch(name)
                         setSearchres(
                             tbrands.filter(br=>{
-                                return br.name.includes(name)
+                                let aux = br.name.toLowerCase()
+                                return aux.includes(name)
                             })
                         )
                     }}/>

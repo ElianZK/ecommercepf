@@ -61,7 +61,7 @@ const SERVER = 'https://e-commerce-pf.herokuapp.com';
                     products = await axios.get(`${SERVER}/products?all=true`);
                 }else{
                     let {offset=0, limit=25, search=null, minPrice=0,  maxPrice=null,brand = null, category=null, sort=null} = data;
-                    search= search? `&name=${search}`:'';
+                    search= search? `&search=${search}`:'';
                     minPrice= minPrice?`&minPrice=${minPrice}`: '';
                     maxPrice=maxPrice?`&maxPrice=${maxPrice}`:'';
                     brand=brand? `&brand=${brand}`:'';
